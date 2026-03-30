@@ -9,6 +9,6 @@ Local businesses are drowning in data but starving for speed. Pulse is an autono
 
 ### Viewing the Deck
 To view the presentation:
-1. Visit the live link: [Insert your GitHub Pages link here]
+1. Visit the live link: https://mradnanelahi.github.io/pulse-pitch/
 2. Press **F11** to enter Full-Screen mode for the best cinematic experience.
 3. Use the **Left/Right Arrow Keys** or **Spacebar** to navigate between slides.
