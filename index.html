@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pulse by Mrkters - Complete Pitch Deck</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* =========================================
+           GLOBAL RESET & DECK ENGINE (NO GRAIN)
+           ========================================= */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: #030008; display: flex; align-items: center; justify-content: center; height: 100vh; overflow: hidden; color: #ffffff; }
+        
+        .deck { position: relative; width: 1280px; height: 720px; background-color: #030008; box-shadow: 0 20px 50px rgba(0,0,0,0.8); overflow: hidden; }
+
+        .slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; visibility: hidden; transition: opacity 0.4s ease-in-out, visibility 0.4s; z-index: 1; display: flex; flex-direction: column; background-color: #030008; }
+        .slide.active { opacity: 1; visibility: visible; z-index: 10; }
+
+        /* Navigation Dots */
+        .nav-controls { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; gap: 12px; z-index: 100; opacity: 0.3; transition: opacity 0.3s; }
+        .nav-controls:hover { opacity: 1; }
+        .nav-dot { width: 12px; height: 12px; border-radius: 50%; background: rgba(255,255,255,0.2); cursor: pointer; transition: all 0.3s; border: 1px solid transparent; }
+        .nav-dot.active { background: #8b5cf6; box-shadow: 0 0 10px #8b5cf6; transform: scale(1.2); }
+
+        /* =========================================
+           SHARED SLIDE UI ELEMENTS
+           ========================================= */
+        .slide-glow { position: absolute; pointer-events: none; z-index: 1; filter: blur(80px); }
+        .slide-header { position: absolute; top: 40px; left: 60px; right: 60px; display: flex; justify-content: space-between; align-items: center; z-index: 15; }
+        .logo { font-size: 1.5rem; font-weight: 800; letter-spacing: -1px; display: flex; align-items: center; gap: 12px; }
+        .logo-icon { width: 32px; height: 32px; background: linear-gradient(135deg, #8b5cf6, #d946ef); border-radius: 8px; box-shadow: 0 0 20px rgba(139, 92, 246, 0.4); }
+        .presentation-context { font-size: 1rem; color: #71717a; font-weight: 500; letter-spacing: 0.5px; }
+        .slide-number { position: absolute; bottom: 40px; right: 60px; font-size: 1rem; font-weight: 700; color: #52525b; z-index: 15; }
+
+        .slide-content { flex: 1; display: flex; flex-direction: column; z-index: 15; position: relative; padding: 100px 60px 40px; align-items: center; text-align: center; }
+        
+        .badge { display: inline-flex; align-items: center; padding: 6px 16px; border-radius: 100px; font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); color: #c4b5fd; }
+        .slide-title { font-size: 3.5rem; font-weight: 800; letter-spacing: -1.5px; margin-bottom: 30px; background: linear-gradient(180deg, #ffffff 0%, #a1a1aa 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; max-width: 1000px;}
+        .slide-subtitle { font-size: 1.25rem; color: #a1a1aa; line-height: 1.6; max-width: 800px; margin-bottom: 40px; }
+        
+        .highlight-text { color: #ffffff; font-weight: 600; }
+        .highlight-stat { color: #ff4f4f; font-weight: 600; }
+
+        /* Animation Classes */
+        .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.8s cubic-bezier(0.25, 0.8, 0.25, 1), transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1); }
+        .active .reveal.active { opacity: 1; transform: translateY(0); }
+        .delay-100 { transition-delay: 0.1s; } .delay-200 { transition-delay: 0.2s; } 
+        .delay-300 { transition-delay: 0.3s; } .delay-400 { transition-delay: 0.4s; }
+
+        /* =========================================
+           SLIDE-SPECIFIC STYLES
+           ========================================= */
+
+        /* Slide 1 Styles */
+        #slide-1 .slide-content { justify-content: center; padding: 0 120px; margin-top: -20px; }
+        #slide-1 .pulse-glow { top: 50%; left: 50%; transform: translate(-50%, -50%); width: 800px; height: 800px; background: radial-gradient(circle, rgba(139, 92, 246, 0.2) 0%, rgba(217, 70, 239, 0.05) 40%, transparent 70%); filter: blur(60px); z-index: 1; position: absolute; pointer-events: none;}
+        #slide-1 .badge { padding: 8px 20px; font-size: 1rem; margin-bottom: 32px; box-shadow: 0 4px 20px rgba(139, 92, 246, 0.15); backdrop-filter: blur(10px); }
+        #slide-1 .headline { font-size: 4.5rem; font-weight: 800; line-height: 1.1; letter-spacing: -2px; margin-bottom: 32px; background: linear-gradient(180deg, #ffffff 0%, #a1a1aa 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; max-width: 1000px; }
+        #slide-1 .sub-headline { font-size: 1.5rem; line-height: 1.6; color: #a1a1aa; max-width: 800px; font-weight: 400; }
+        #slide-1 .slide-footer { position: absolute; bottom: 40px; left: 60px; z-index: 15; display: flex; align-items: center; gap: 16px; }
+        .presenter-avatar { width: 48px; height: 48px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+        .presenter-info h4 { font-size: 1.1rem; color: #fff; margin-bottom: 2px; }
+        .presenter-info p { font-size: 0.9rem; color: #71717a; }
+
+        /* Slide 2 Styles */
+        #slide-2 .slide-content { padding: 80px 60px 40px; }
+        #slide-2 .slide-glow { top: 40%; left: 50%; transform: translate(-50%, -50%); width: 900px; height: 500px; background: radial-gradient(ellipse, rgba(255, 79, 79, 0.08) 0%, rgba(139, 92, 246, 0.05) 50%, transparent 70%); }
+        #slide-2 .slide-title { font-size: 3rem; margin-bottom: 24px; }
+        .problem-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; flex: 1; width: 100%; text-align: left; }
+        .problem-card { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 24px; padding: 24px 32px; display: flex; flex-direction: column; backdrop-filter: blur(20px); position: relative; overflow: hidden; }
+        .problem-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: linear-gradient(90deg, transparent, #ff4f4f, transparent); opacity: 0.5; }
+        .visual-container { height: 140px; margin-bottom: 20px; border-radius: 16px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.3); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .funnel-visual { width: 100px; height: 100px; position: relative; }
+        .funnel-part { position: absolute; left: 50%; transform: translateX(-50%); background: rgba(255, 79, 79, 0.1); border: 2px solid rgba(255, 79, 79, 0.4); border-radius: 4px; }
+        .funnel-top { width: 100%; height: 20px; top: 0; border-radius: 10px; } .funnel-mid { width: 70%; height: 30px; top: 25px; } .funnel-btm { width: 40%; height: 25px; top: 60px; }
+        .leak-drop { position: absolute; bottom: 5px; left: 50%; width: 8px; height: 8px; background-color: #ff4f4f; border-radius: 50%; transform: translateX(-50%); box-shadow: 0 0 10px #ff4f4f; animation: funnel-leak 1.5s infinite ease-in-out; }
+        @keyframes funnel-leak { 0% { transform: translate(-50%, 0) scale(1); opacity: 1; } 100% { transform: translate(-50%, 20px) scale(0.5); opacity: 0; } }
+        .labyrinth-visual { width: 120px; height: 80px; position: relative; background-image: linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px); background-size: 15px 15px; border-radius: 8px; border: 2px solid rgba(255, 255, 255, 0.1); }
+        .floating-question { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 2.5rem; font-weight: 800; color: rgba(255, 255, 255, 0.15); animation: labyrinth-float 3s infinite ease-in-out; }
+        @keyframes labyrinth-float { 0%, 100% { transform: translate(-50%, -45%); } 50% { transform: translate(-50%, -55%); } }
+        .card-header { display: flex; align-items: center; gap: 16px; margin-bottom: 12px; }
+        .card-icon { width: 48px; height: 48px; background: rgba(255, 79, 79, 0.1); border: 1px solid rgba(255, 79, 79, 0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: #ff4f4f; }
+        .problem-card h3 { font-size: 1.7rem; font-weight: 700; color: #ffffff; letter-spacing: -0.5px; }
+        .problem-card p { font-size: 1.05rem; color: #a1a1aa; line-height: 1.5; margin-bottom: 12px; }
+
+        /* Slide 3 Styles */
+        #slide-3 .slide-content { padding: 100px 80px 40px; }
+        #slide-3 .slide-glow { top: 40%; left: 50%; transform: translate(-50%, -50%); width: 900px; height: 600px; background: radial-gradient(ellipse, rgba(45, 212, 191, 0.1) 0%, rgba(139, 92, 246, 0.1) 50%, transparent 70%); }
+        #slide-3 .badge { background: rgba(45, 212, 191, 0.1); border-color: rgba(45, 212, 191, 0.3); color: #2dd4bf; margin-bottom: 16px;}
+        #slide-3 .slide-title { margin-bottom: 12px; }
+        #slide-3 .slide-subtitle { margin-bottom: 32px; }
+        .solution-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; width: 100%; }
+        .solution-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 24px; padding: 32px 24px; display: flex; flex-direction: column; align-items: center; text-align: center; backdrop-filter: blur(20px); position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .solution-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; }
+        .sol-1::before { background: linear-gradient(90deg, transparent, #8b5cf6, transparent); }
+        .sol-2::before { background: linear-gradient(90deg, transparent, #d946ef, transparent); }
+        .sol-3::before { background: linear-gradient(90deg, transparent, #2dd4bf, transparent); }
+        .sol-icon { width: 56px; height: 56px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin-bottom: 16px; }
+        .icon-1 { background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); color: #c4b5fd; }
+        .icon-2 { background: rgba(217, 70, 239, 0.1); border: 1px solid rgba(217, 70, 239, 0.3); color: #f0abfc; }
+        .icon-3 { background: rgba(45, 212, 191, 0.1); border: 1px solid rgba(45, 212, 191, 0.3); color: #5eead4; }
+        .solution-card h3 { font-size: 1.5rem; font-weight: 700; margin-bottom: 12px; }
+        .solution-card p { font-size: 1.05rem; color: #a1a1aa; line-height: 1.6; }
+
+        /* Slide 4 Styles */
+        #slide-4 .slide-content { padding: 120px 80px 40px; }
+        #slide-4 .slide-glow { top: 60%; left: 50%; transform: translate(-50%, -50%); width: 1000px; height: 300px; background: linear-gradient(90deg, rgba(45, 212, 191, 0.1) 0%, rgba(139, 92, 246, 0.15) 50%, rgba(217, 70, 239, 0.1) 100%); }
+        #slide-4 .slide-title { margin-bottom: 60px; }
+        .process-wrapper { position: relative; display: flex; justify-content: space-between; align-items: flex-start; width: 100%; padding-top: 40px; }
+        .connecting-line { position: absolute; top: 76px; left: 10%; right: 10%; height: 4px; background: linear-gradient(90deg, #2dd4bf, #8b5cf6, #d946ef); z-index: 1; box-shadow: 0 0 15px rgba(139, 92, 246, 0.5); }
+        .step { flex: 1; display: flex; flex-direction: column; align-items: center; position: relative; z-index: 2; padding: 0 20px; }
+        .step-node { width: 72px; height: 72px; border-radius: 50%; background: #09090b; border: 3px solid #3f3f46; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; font-weight: 800; margin-bottom: 24px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+        .step-1 .step-node { border-color: #2dd4bf; color: #2dd4bf; box-shadow: 0 0 20px rgba(45, 212, 191, 0.2); }
+        .step-2 .step-node { border-color: #8b5cf6; color: #8b5cf6; box-shadow: 0 0 20px rgba(139, 92, 246, 0.2); }
+        .step-3 .step-node { border-color: #d946ef; color: #d946ef; box-shadow: 0 0 20px rgba(217, 70, 239, 0.2); }
+        .step-title { font-size: 1.6rem; font-weight: 700; margin-bottom: 16px; }
+        .step-desc { font-size: 1.05rem; color: #a1a1aa; line-height: 1.6; }
+        .tech-badge { margin-top: 16px; display: inline-flex; align-items: center; padding: 4px 12px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 6px; font-size: 0.8rem; font-weight: 600; color: #c4b5fd; }
+
+        /* Slide 5 Styles */
+        #slide-5 .slide-glow { top: 50%; left: 50%; transform: translate(-50%, -50%); width: 900px; height: 500px; background: radial-gradient(ellipse, rgba(139, 92, 246, 0.15) 0%, rgba(217, 70, 239, 0.05) 50%, transparent 70%); }
+        #slide-5 .slide-title { margin-bottom: 12px; }
+        .pricing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; width: 100%; max-width: 900px; text-align: left; }
+        .price-card { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 24px; padding: 40px; backdrop-filter: blur(20px); position: relative; overflow: hidden; display: flex; flex-direction: column; }
+        .price-card.premium { background: linear-gradient(145deg, rgba(20, 15, 30, 0.8), rgba(0, 0, 0, 0.6)); border-color: rgba(139, 92, 246, 0.4); box-shadow: 0 20px 40px rgba(139, 92, 246, 0.15); }
+        .price-card.premium::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, #8b5cf6, #d946ef); }
+        .tier-name { font-size: 1.6rem; font-weight: 700; margin-bottom: 8px; }
+        .tier-desc { font-size: 1.05rem; color: #a1a1aa; margin-bottom: 24px; min-height: 50px; }
+        .price-point { font-size: 4rem; font-weight: 800; line-height: 1; margin-bottom: 32px; display: flex; align-items: flex-end; gap: 8px; color: #ffffff;}
+        .price-point span { font-size: 1.25rem; color: #71717a; font-weight: 500; margin-bottom: 8px; }
+        .checklist { list-style: none; flex: 1; }
+        .checklist li { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px; color: #e4e4e7; font-size: 1.05rem; line-height: 1.4; }
+        .checklist li::before { content: '✓'; color: #8b5cf6; font-weight: bold; }
+        .premium-list li::before { color: #d946ef; }
+
+        /* Slide 6 Styles */
+        #slide-6 .slide-content { padding: 140px 80px 40px; flex-direction: row; gap: 60px; }
+        #slide-6 .slide-glow { top: 50%; right: 10%; transform: translateY(-50%); width: 800px; height: 600px; background: radial-gradient(ellipse, rgba(56, 189, 248, 0.1) 0%, rgba(139, 92, 246, 0.1) 50%, transparent 70%); }
+        .narrative-col { flex: 1; display: flex; flex-direction: column; align-items: flex-start; text-align: left; }
+        #slide-6 .badge { align-self: flex-start; }
+        #slide-6 .slide-title { text-align: left; margin-bottom: 24px; }
+        .beta-col { flex: 1; display: flex; justify-content: center; }
+        .beta-card { width: 100%; max-width: 500px; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 24px; padding: 40px; backdrop-filter: blur(20px); box-shadow: 0 20px 40px rgba(0,0,0,0.3); text-align: left;}
+        .status-header { display: flex; align-items: center; gap: 12px; margin-bottom: 32px; padding-bottom: 24px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+        .status-dot { width: 12px; height: 12px; background-color: #2dd4bf; border-radius: 50%; box-shadow: 0 0 10px #2dd4bf; animation: pulse-dot 2s infinite; }
+        @keyframes pulse-dot { 0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(45, 212, 191, 0.7); } 70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(45, 212, 191, 0); } 100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(45, 212, 191, 0); } }
+        .status-text { font-size: 1.2rem; font-weight: 700; text-transform: uppercase; color: #fff;}
+        .milestone-list { list-style: none; }
+        .milestone-list li { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 24px; }
+        .milestone-icon { width: 32px; height: 32px; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #c4b5fd; font-size: 1rem; flex-shrink: 0; }
+        .milestone-content h4 { font-size: 1.1rem; margin-bottom: 4px; font-weight: 600; color: #fff; }
+        .milestone-content p { font-size: 0.95rem; color: #a1a1aa; line-height: 1.4; }
+
+        /* Slide 7 Styles */
+        #slide-7 .slide-glow { bottom: -10%; left: 50%; transform: translateX(-50%); width: 1000px; height: 500px; background: radial-gradient(ellipse, rgba(139, 92, 246, 0.15) 0%, rgba(45, 212, 191, 0.1) 50%, transparent 70%); }
+        #slide-7 .slide-title { margin-bottom: 60px; }
+        .metrics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; width: 100%; }
+        .metric-card { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 24px; padding: 50px 32px; backdrop-filter: blur(20px); position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center; box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
+        .metric-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; }
+        .mc-1::before { background: linear-gradient(90deg, transparent, #8b5cf6, transparent); }
+        .mc-2::before { background: linear-gradient(90deg, transparent, #2dd4bf, transparent); }
+        .mc-3::before { background: linear-gradient(90deg, transparent, #d946ef, transparent); }
+        .metric-value { font-size: 4.5rem; font-weight: 800; letter-spacing: -2px; margin-bottom: 16px; line-height: 1; }
+        .val-1 { background: linear-gradient(135deg, #c4b5fd, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .val-2 { background: linear-gradient(135deg, #5eead4, #2dd4bf); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .val-3 { background: linear-gradient(135deg, #f0abfc, #d946ef); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .metric-label { font-size: 1.25rem; font-weight: 700; margin-bottom: 12px; letter-spacing: -0.5px; }
+        .metric-desc { font-size: 1rem; color: #a1a1aa; line-height: 1.5; }
+
+        /* Slide 8 Styles */
+        #slide-8 .slide-content { align-items: flex-start; }
+        #slide-8 .slide-glow { top: 55%; right: 15%; transform: translateY(-50%); width: 600px; height: 600px; background: radial-gradient(circle, rgba(139, 92, 246, 0.2) 0%, rgba(217, 70, 239, 0.05) 50%, transparent 70%); }
+        #slide-8 .badge { align-self: flex-start; }
+        #slide-8 .slide-title { font-size: 3.2rem; margin-bottom: 40px; text-align: left; }
+        .comparison-grid { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 24px; align-items: stretch; flex: 1; width: 100%; text-align: left;}
+       .comp-card { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 20px; padding: 32px; backdrop-filter: blur(10px); display: flex; flex-direction: column; text-align: left; position: relative; overflow: hidden; }
+        .legacy-card { opacity: 0.6; transition: opacity 0.3s; }
+        .legacy-card:hover { opacity: 1; }
+        .comp-card-header { font-size: 1.4rem; font-weight: 700; margin-bottom: 8px; color: #fff;}
+        .comp-card-sub { font-size: 0.9rem; color: #71717a; margin-bottom: 24px; min-height: 40px; }
+        .pulse-card { background: linear-gradient(145deg, rgba(20, 15, 30, 0.9), rgba(10, 10, 15, 0.9)); border: 1px solid rgba(139, 92, 246, 0.5); box-shadow: 0 20px 50px rgba(139, 92, 246, 0.15); transform: scale(1.05); z-index: 2; }
+        .pulse-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, #8b5cf6, #d946ef); }
+        .pulse-card .comp-card-header { font-size: 1.6rem; display: flex; align-items: center; gap: 8px; }
+        .pulse-card .comp-card-sub { color: #c4b5fd; }
+        .feature-list { list-style: none; flex: 1; }
+        .feature-list li { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px; font-size: 0.95rem; line-height: 1.5; color: #a1a1aa; }
+        .legacy-card .feature-list li::before { content: '✗'; color: #ef4444; font-weight: bold; }
+        .pulse-card .feature-list li { color: #e4e4e7; font-size: 1.05rem; }
+        .pulse-card .feature-list li::before { content: '✓'; color: #d946ef; font-weight: bold; }
+        .tech-highlight { background: rgba(139, 92, 246, 0.15); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 8px; padding: 12px; margin-top: auto; font-size: 0.85rem; color: #e4e4e7; text-align: center; }
+        .tech-highlight strong { color: #d946ef; }
+
+        /* Slide 9 Styles */
+        #slide-9 .slide-content { align-items: flex-start; text-align: left; }
+        #slide-9 .slide-glow { bottom: 0; right: 0; width: 800px; height: 600px; background: radial-gradient(circle at bottom right, rgba(217, 70, 239, 0.15) 0%, rgba(139, 92, 246, 0.05) 50%, transparent 70%); }
+        #slide-9 .badge { align-self: flex-start;}
+        #slide-9 .slide-title { margin-bottom: 40px; }
+        .strategy-container { display: flex; justify-content: space-between; align-items: stretch; gap: 24px; position: relative; flex: 1; width: 100%; }
+        .strategy-container::before { content: ''; position: absolute; top: 50%; left: 10%; right: 10%; height: 2px; background: linear-gradient(90deg, rgba(45, 212, 191, 0.2), rgba(139, 92, 246, 0.5), rgba(217, 70, 239, 0.2)); z-index: 0; transform: translateY(-50%); }
+        .phase-card { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; padding: 40px 32px; backdrop-filter: blur(20px); display: flex; flex-direction: column; flex: 1; z-index: 2; box-shadow: 0 20px 40px rgba(0,0,0,0.2); position: relative; overflow: hidden; transition: transform 0.3s ease; }
+        .phase-card:hover { transform: translateY(-5px); }
+        .phase-1 { border-top: 4px solid #2dd4bf; } .phase-2 { border-top: 4px solid #8b5cf6; } .phase-3 { border-top: 4px solid #d946ef; }
+        .phase-badge { display: inline-flex; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }
+        .phase-1 .phase-badge { color: #5eead4; } .phase-2 .phase-badge { color: #c4b5fd; } .phase-3 .phase-badge { color: #f0abfc; }
+        .phase-title { font-size: 1.6rem; font-weight: 700; margin-bottom: 24px; }
+        .phase-desc { font-size: 1.05rem; color: #a1a1aa; line-height: 1.6; }
+        .icon-container { width: 56px; height: 56px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 24px; }
+        .phase-1 .icon-container { background: rgba(45, 212, 191, 0.1); border: 1px solid rgba(45, 212, 191, 0.3); color: #2dd4bf; }
+        .phase-2 .icon-container { background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); color: #8b5cf6; }
+        .phase-3 .icon-container { background: rgba(217, 70, 239, 0.1); border: 1px solid rgba(217, 70, 239, 0.3); color: #d946ef; }
+
+        /* Slide 10 Styles */
+        #slide-10 .slide-content { align-items: stretch; text-align: left; }
+        #slide-10 .slide-glow { bottom: -10%; right: 10%; width: 800px; height: 600px; background: radial-gradient(circle at bottom right, rgba(139, 92, 246, 0.2) 0%, rgba(217, 70, 239, 0.1) 50%, transparent 70%); }
+        .header-layout { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; width: 100%;}
+        #slide-10 .badge { align-self: flex-start; margin-bottom: 20px; }
+        #slide-10 .slide-title { margin-bottom: 0; }
+        .margin-badge { background: linear-gradient(145deg, rgba(20, 15, 30, 0.8), rgba(10, 10, 15, 0.8)); border: 1px solid rgba(139, 92, 246, 0.5); padding: 16px 24px; border-radius: 16px; box-shadow: 0 10px 30px rgba(139, 92, 246, 0.2); text-align: right; backdrop-filter: blur(10px); }
+        .margin-badge h4 { font-size: 1.8rem; color: #d946ef; margin-bottom: 4px; line-height: 1; }
+        .margin-badge p { font-size: 0.85rem; color: #a1a1aa; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+        .chart-grid { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex: 1; padding-top: 40px; position: relative; }
+        .chart-grid::before { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 1px; background: rgba(255, 255, 255, 0.1); }
+        .chart-grid::after { content: ''; position: absolute; bottom: 50%; left: 0; width: 100%; height: 1px; background: rgba(255, 255, 255, 0.05); border-top: 1px dashed rgba(255, 255, 255, 0.1); }
+        /* Slide 10 Styles (FIXED BOTTOM OVERLAP) */
+        .pillar { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.08); border-bottom: none; border-top-left-radius: 24px; border-top-right-radius: 24px; padding: 24px 24px 32px; backdrop-filter: blur(20px); display: flex; flex-direction: column; width: 31%; position: relative; box-shadow: 0 -10px 30px rgba(0,0,0,0.2); z-index: 2; text-align: left; }
+        .year-1 { height: 60%; border-top: 4px solid #2dd4bf; } 
+        .year-2 { height: 80%; border-top: 4px solid #8b5cf6; background: rgba(139, 92, 246, 0.03); } 
+        .year-3 { height: 100%; border-top: 4px solid #d946ef; background: linear-gradient(180deg, rgba(217, 70, 239, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%); }
+        .year-label { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
+        .year-1 .year-label { color: #5eead4; } .year-2 .year-label { color: #c4b5fd; } .year-3 .year-label { color: #f0abfc; }
+        .arr-value { font-size: 3rem; font-weight: 800; margin-bottom: 8px; line-height: 1; letter-spacing: -1px; }
+        .user-count { display: inline-block; padding: 4px 12px; background: rgba(255, 255, 255, 0.1); border-radius: 100px; font-size: 0.85rem; font-weight: 600; color: #e4e4e7; margin-bottom: 16px; align-self: flex-start; }
+        .focus-text { font-size: 0.95rem; color: #a1a1aa; line-height: 1.5; margin-top: auto; }
+
+       /* Slide 11 Styles (COMPRESSED TO PREVENT OVERLAP) */
+        #slide-11 .slide-content { padding: 50px 60px 70px; align-items: center; text-align: center; }
+        #slide-11 .slide-glow { top: 50%; left: 50%; transform: translate(-50%, -50%); width: 1000px; height: 600px; background: radial-gradient(ellipse, rgba(139, 92, 246, 0.15) 0%, rgba(217, 70, 239, 0.1) 50%, transparent 70%); }
+        #slide-11 .badge { background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); color: #c4b5fd; margin-bottom: 12px; align-self: center; }
+        #slide-11 .slide-title { font-size: 3rem; margin-bottom: 24px; max-width: 900px; }
+        .team-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; align-items: stretch; flex: 1; width: 100%; }
+        .team-card { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 20px; padding: 20px 16px; backdrop-filter: blur(10px); display: flex; flex-direction: column; align-items: center; position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.2); transition: transform 0.3s ease;}
+        .team-card:hover { transform: translateY(-5px); }
+        .team-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; }
+        .adnan::before { background: linear-gradient(90deg, transparent, #2dd4bf, transparent); } .anupom::before { background: linear-gradient(90deg, transparent, #8b5cf6, transparent); } .nabil::before { background: linear-gradient(90deg, transparent, #d946ef, transparent); }
+        .adnan { box-shadow: 0 10px 30px rgba(45, 212, 191, 0.1); } .anupom { box-shadow: 0 10px 30px rgba(139, 92, 246, 0.15); } .nabil { box-shadow: 0 10px 30px rgba(217, 70, 239, 0.1); }
+        .icon-ring { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; margin-bottom: 12px; border: 1px solid rgba(255, 255, 255, 0.1); }
+        .adnan .icon-ring { background: rgba(45, 212, 191, 0.1); border-color: rgba(45, 212, 191, 0.3); color: #2dd4bf; box-shadow: 0 0 15px rgba(45, 212, 191, 0.4); }
+        .anupom .icon-ring { background: rgba(139, 92, 246, 0.1); border-color: rgba(139, 92, 246, 0.3); color: #c4b5fd; box-shadow: 0 0 15px rgba(139, 92, 246, 0.4); }
+        .nabil .icon-ring { background: rgba(217, 70, 239, 0.1); border-color: rgba(217, 70, 239, 0.3); color: #f0abfc; box-shadow: 0 0 15px rgba(217, 70, 239, 0.4); }
+        .member-name { font-size: 1.4rem; font-weight: 700; margin-bottom: 4px; color: #fff;}
+        .member-title { font-size: 0.85rem; color: #a1a1aa; margin-bottom: 12px; min-height: 24px; text-transform: uppercase; font-weight: 500; letter-spacing: 0.5px; }
+        .member-desc { list-style: none; flex: 1; text-align: left; align-self: flex-start; }
+        .member-desc li { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 10px; color: #e4e4e7; font-size: 0.85rem; line-height: 1.3; }
+        .member-desc li::before { content: '✓'; color: #71717a; font-weight: bold; }
+        .anupom-list li:first-child h4 { color: #f0abfc; font-weight: 700; font-size: 0.85rem;} .nabil-list li:nth-child(2) h4 { color: #5eead4; font-weight: 700; font-size: 0.85rem;} .adnan-list li:first-child h4 { color: #c4b5fd; font-weight: 700; font-size: 0.85rem;}
+        #slide-11 .slide-footer { position: absolute; bottom: 40px; left: 60px; right: 60px; display: flex; justify-content: space-between; align-items: center; z-index: 5; }
+        .footer-text { font-size: 1rem; color: #a1a1aa; font-weight: 400; line-height: 1.6; margin-bottom: 0; }
+
+        /* Slide 12 Styles */
+        #slide-12 .slide-content { padding: 100px 60px 60px; }
+        #slide-12 .slide-glow { top: 40%; left: 50%; transform: translate(-50%, -50%); width: 900px; height: 600px; background: radial-gradient(ellipse, rgba(45, 212, 191, 0.15) 0%, rgba(139, 92, 246, 0.1) 50%, transparent 70%); }
+        #slide-12 .badge { background: rgba(45, 212, 191, 0.1); border-color: rgba(45, 212, 191, 0.3); color: #2dd4bf; margin-bottom: 16px; align-self: center;}
+        #slide-12 .slide-title { margin-bottom: 20px; max-width: 1000px; }
+        #slide-12 .slide-subtitle { margin-bottom: 36px; max-width: 800px; }
+        .allocation-container { width: 100%; max-width: 1100px; position: relative; }
+        .allocation-header { text-align: left; font-size: 1.1rem; font-weight: 700; color: #71717a; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 16px; padding-left: 12px; }
+        .allocation-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+        .alloc-card { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; padding: 32px 24px; backdrop-filter: blur(20px); display: flex; flex-direction: column; align-items: flex-start; text-align: left; position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.2); transition: transform 0.3s ease; }
+        .alloc-card:hover { transform: translateY(-5px); }
+        .alloc-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; }
+        .card-1::before { background: linear-gradient(90deg, transparent, #2dd4bf, transparent); } .card-2::before { background: linear-gradient(90deg, transparent, #8b5cf6, transparent); } .card-3::before { background: linear-gradient(90deg, transparent, #d946ef, transparent); }
+        .icon-box { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; margin-bottom: 16px; }
+        .card-1 .icon-box { background: rgba(45, 212, 191, 0.1); border: 1px solid rgba(45, 212, 191, 0.3); color: #5eead4; } .card-2 .icon-box { background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); color: #c4b5fd; } .card-3 .icon-box { background: rgba(217, 70, 239, 0.1); border: 1px solid rgba(217, 70, 239, 0.3); color: #f0abfc; }
+        .alloc-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 10px; color: #fff;}
+        .alloc-desc { font-size: 1.05rem; color: #a1a1aa; line-height: 1.5; }
+
+        /* Slide 13 Styles */
+        #slide-13 .slide-content { padding: 100px 80px 40px; }
+        #slide-13 .slide-glow { top: 50%; left: 50%; transform: translate(-50%, -50%); width: 1000px; height: 800px; background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, rgba(217, 70, 239, 0.05) 40%, transparent 70%); }
+        #slide-13 .badge { margin-bottom: 24px; align-self: center; }
+        #slide-13 .slide-title { font-size: 4rem; margin-bottom: 20px; max-width: 1000px; }
+        #slide-13 .slide-subtitle { margin-bottom: 50px; max-width: 850px; }
+        .summary-grid { display: flex; justify-content: center; gap: 24px; width: 100%; max-width: 1000px; margin-bottom: 60px; }
+        .summary-bar { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 24px; backdrop-filter: blur(20px); display: flex; flex-direction: column; align-items: center; text-align: center; flex: 1; position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.2); transition: transform 0.3s ease; }
+        .summary-bar:hover { transform: translateY(-5px); }
+        .bar-1 { border-bottom: 3px solid #2dd4bf; } .bar-2 { border-bottom: 3px solid #8b5cf6; } .bar-3 { border-bottom: 3px solid #d946ef; }
+        .bar-icon { font-size: 2rem; margin-bottom: 12px; }
+        .bar-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; color: #fff;}
+        .bar-desc { font-size: 0.95rem; color: #a1a1aa; line-height: 1.4; }
+        .final-cta { margin-top: auto; display: flex; align-items: center; gap: 16px; padding: 16px 32px; background: linear-gradient(145deg, rgba(20, 15, 30, 0.8), rgba(10, 10, 15, 0.8)); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; box-shadow: 0 10px 30px rgba(139, 92, 246, 0.2); }
+        .final-cta-text { font-size: 1.5rem; font-weight: 800; background: linear-gradient(90deg, #8b5cf6, #d946ef); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+        .final-cta-sub { font-size: 1rem; color: #a1a1aa; font-weight: 500; border-left: 1px solid rgba(255,255,255,0.1); padding-left: 16px; }
+
+    </style>
+</head>
+<body>
+
+    <div class="deck" id="deck">
+
+        <section class="slide active" id="slide-1">
+            <div class="pulse-glow"></div>
+            <div class="slide-header">
+                <div class="logo"><div class="logo-icon"></div> Pulse <span style="font-weight: 400; font-size: 1.2rem; color: #a1a1aa; margin-top: 2px;">by Mrkters</span></div>
+                <div class="presentation-context">Wright Venture Pitch • 2026</div>
+            </div>
+            <div class="slide-content">
+                <div class="badge reveal">⚡ The 10-Minute Delay</div>
+                <h1 class="headline reveal delay-100">Small businesses lose billions to a problem they don't even know they have.</h1>
+                <p class="sub-headline reveal delay-200">The AI solution that ensures you never miss a lead, a call, or a dollar of ROI again.</p>
+            </div>
+            <div class="slide-footer reveal delay-300">
+                <div class="presenter-avatar">👨‍💻</div>
+                <div class="presenter-info"><h4>Adnan</h4><p>Co-Founder, Mrkters</p></div>
+            </div>
+        </section>
+
+        <section class="slide" id="slide-2">
+            <div class="slide-glow"></div>
+            <div class="slide-header">
+                <div class="logo"><div class="logo-icon"></div> Pulse <span style="font-weight: 400; font-size: 1.2rem; color: #a1a1aa; margin-top: 2px;">by Mrkters</span></div>
+                <div class="presentation-context">Wright Venture Pitch • Slide 02</div>
+            </div>
+            <div class="slide-content">
+                <h2 class="slide-title reveal">Local Businesses Are Drowning in Data but Starving for Speed.</h2>
+                <div class="problem-grid">
+                    <div class="problem-card reveal delay-100">
+                        <div class="visual-container">
+                            <div class="funnel-visual">
+                                <div class="funnel-part funnel-top"></div><div class="funnel-part funnel-mid"></div><div class="funnel-part funnel-btm"></div>
+                                <div class="leak-drop"></div>
+                            </div>
+                        </div>
+                        <div class="card-header"><div class="card-icon">⏱️</div><h3>The Response Gap</h3></div>
+                        <p><span class="highlight-stat">62% of customer calls and web inquiries</span> go unanswered during busy hours or after-hours.</p>
+                        <p style="color: #e4e4e7; font-weight: 500;">By the time an owner finally replies, the customer has already booked with a competitor. Missed inquiries equal lost revenue.</p>
+                    </div>
+                    <div class="problem-card reveal delay-200">
+                        <div class="visual-container">
+                            <div class="labyrinth-visual"><div class="floating-question">?</div></div>
+                        </div>
+                        <div class="card-header"><div class="card-icon">📦</div><h3>The Marketing "Black Box"</h3></div>
+                        <p>Owners spend thousands monthly on Meta and Google Ads, yet have <span class="highlight-stat">zero visibility</span> on the actual ROI of specific campaigns.</p>
+                        <p style="color: #e4e4e7; font-weight: 500;">They are operating completely blind, unable to prove which exact ad generated the sale, leading to wasted ad spend.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">02</div>
+        </section>
+
+        <section class="slide" id="slide-3">
+            <div class="slide-glow"></div>
+            <div class="slide-header">
+                <div class="logo"><div class="logo-icon"></div> Pulse <span style="font-weight: 400; font-size: 1.2rem; color: #a1a1aa; margin-top: 2px;">by Mrkters</span></div>
+                <div class="presentation-context">Wright Venture Pitch • Slide 03</div>
+            </div>
+            <div class="slide-content">
+                <div class="badge reveal">The Fix</div>
+                <h2 class="slide-title reveal delay-100">Meet your 24/7 AI Marketing Analyst.</h2>
+                <p class="slide-subtitle reveal delay-200">Pulse by Mrkters is an autonomous receptionist and data engine that plugs the leaks in your business, answering every inquiry and proving exactly where your revenue comes from.</p>
+                <div class="solution-grid">
+                    <div class="solution-card card-1 sol-1 reveal delay-300">
+                        <div class="card-icon icon-1">⚡</div>
+                        <h3>5-Second Omni-Response</h3>
+                        <p>Answers every single call, text, and web chat <span class="highlight-text">within 5 seconds</span>, using your exact knowledge base to speak to customers naturally.</p>
+                    </div>
+                    <div class="solution-card card-2 sol-2 reveal delay-400">
+                        <div class="card-icon icon-2">📅</div>
+                        <h3>Autonomous Booking</h3>
+                        <p>Stops lead leakage instantly by qualifying prospects and <span class="highlight-text">booking appointments</span> directly into your calendar and CRM.</p>
+                    </div>
+                    <div class="solution-card card-3 sol-3 reveal delay-400">
+                        <div class="card-icon icon-3">📊</div>
+                        <h3>Plain-English Analytics</h3>
+                        <p>Delivers daily ROI reports that prove <span class="highlight-text">exactly which marketing channels</span> and specific ads are driving real revenue.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">03</div>
+        </section>
+
+        <section class="slide" id="slide-4">
+            <div class="slide-glow"></div>
+            <div class="slide-header">
+                <div class="logo"><div class="logo-icon"></div> Pulse <span style="font-weight: 400; font-size: 1.2rem; color: #a1a1aa; margin-top: 2px;">by Mrkters</span></div>
+                <div class="presentation-context">Wright Venture Pitch • Slide 04</div>
+            </div>
+            <div class="slide-content">
+                <div class="badge reveal">The Product</div>
+                <h2 class="slide-title reveal delay-100">How the Engine Works</h2>
+                <div class="process-wrapper reveal delay-200">
+                    <div class="connecting-line"></div>
+                    <div class="step step-1">
+                        <div class="step-node">1</div><h3 class="step-title">Connect</h3>
+                        <p class="step-desc">Pulse integrates directly and securely into the business's existing <span class="highlight-text">phone line, website, and social channels</span> (Facebook, Instagram DMs).</p>
+                    </div>
+                    <div class="step step-2">
+                        <div class="step-node">2</div><h3 class="step-title">Engage & Capture</h3>
+                        <p class="step-desc">Our engine instantly answers inquiries with human-like voice or text. It references the business's <span class="highlight-text">specific knowledge base</span> to answer questions and qualify the prospect.</p>
+                        <div class="tech-badge">🐍 Custom Python Architecture</div>
+                    </div>
+                    <div class="step step-3">
+                        <div class="step-node">3</div><h3 class="step-title">Analyze & Sync</h3>
+                        <p class="step-desc">Pulse secures the booking, pushes the data seamlessly into the client's CRM, and updates a dashboard showing <span class="highlight-text">exactly where that customer originated from</span>.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">04</div>
+        </section>
+
+        <section class="slide" id="slide-5">
+            <div class="slide-glow"></div>
+            <div class="slide-header">
+                <div class="logo"><div class="logo-icon"></div> Pulse <span style="font-weight: 400; font-size: 1.2rem; color: #a1a1aa; margin-top: 2px;">by Mrkters</span></div>
+                <div class="presentation-context">Wright Venture Pitch • Slide 05</div>
+            </div>
+            <div class="slide-content">
+                <div class="badge reveal">Business Model</div>
+                <h2 class="slide-title reveal delay-100">The Revenue Engine</h2>
+                <p class="slide-subtitle reveal delay-100">A highly scalable Software-with-a-Service (SwaS) model.</p>
+                <div class="pricing-grid">
+                    <div class="price-card reveal delay-200">
+                        <div class="tier-name">Tier 1: The Software</div>
+                        <div class="tier-desc">Pure SaaS model. Highly scalable recurring revenue engine.</div>
+                        <div class="price-point">$299<span>/mo</span></div>
+                        <ul class="checklist">
+                            <li>24/7 AI Voice & Text Receptionist</li><li>Plain-English ROI Analytics Dashboard</li><li>Direct CRM and Calendar Integration</li>
+                        </ul>
+                    </div>
+                    <div class="price-card premium reveal delay-300">
+                        <div class="tier-name">Tier 2: The Ascend</div>
+                        <div class="tier-desc">High-ticket SwaS. Retainer-based execution for top clients.</div>
+                        <div class="price-point">$1,000+<span>/mo</span></div>
+                        <ul class="checklist premium-list">
+                            <li><strong>Everything in Tier 1, plus:</strong></li><li>Active Meta & Google ad management</li><li>Custom Python workflow development</li><li>Dedicated growth strategy & consulting</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">05</div>
+        </section>
+
+        <section class="slide" id="slide-6">
+            <div class="slide-glow"></div>
+            <div class="slide-header">
+                <div class="logo"><div class="logo-icon"></div> Pulse <span style="font-weight: 400; font-size: 1.2rem; color: #a1a1aa; margin-top: 2px;">by Mrkters</span></div>
+                <div class="presentation-context">Wright Venture Pitch • Slide 06</div>
+            </div>
+            <div class="slide-content" style="flex-direction: row; align-items: center; gap: 60px;">
+                <div class="narrative-col">
+                    <div class="badge reveal">Market Validation</div>
+                    <h2 class="slide-title reveal delay-100" style="text-align: left;">Born from a real agency. Validated by real clients.</h2>
+                    <p class="slide-subtitle reveal delay-200" style="text-align: left; margin-bottom: 24px;">We didn't just guess this was a problem—we lived it alongside our clients. As an established marketing agency, we found that business owners constantly demanded faster lead capture and clearer ROI.</p>
+                    <p class="slide-subtitle reveal delay-200" style="color: #e4e4e7; font-weight: 500; text-align: left;">We are currently transitioning our initial cohort of agency clients onto the Pulse platform to build our baseline case studies.</p>
+                </div>
+                <div class="beta-col reveal delay-300">
+                    <div class="beta-card">
+                        <div class="status-header"><div class="status-dot"></div><div class="status-text">Pulse Beta Active</div></div>
+                        <ul class="milestone-list">
+                            <li><div class="milestone-icon">👥</div><div class="milestone-content"><h4>Client Transition</h4><p>Onboarding initial cohort of existing agency clients to the Pulse engine.</p></div></li>
+                            <li><div class="milestone-icon">⚡</div><div class="milestone-content"><h4>Speed Validation</h4><p>Actively proving the 5-second response model in live business environments.</p></div></li>
+                            <li><div class="milestone-icon">📈</div><div class="milestone-content"><h4>ROI Baseline</h4><p>Establishing dollar-for-dollar case studies to drive future SaaS acquisition.</p></div></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">06</div>
+        </section>
+
+        <section class="slide" id="slide-7">
+            <div class="slide-glow"></div>
+            <div class="slide-header">
+                <div class="logo"><div class="logo-icon"></div> Pulse <span style="font-weight: 400; font-size: 1.2rem; color: #a1a1aa; margin-top: 2px;">by Mrkters</span></div>
+                <div class="presentation-context">Wright Venture Pitch • Slide 07</div>
+            </div>
+            <div class="slide-content">
+                <div class="badge reveal">The Opportunity</div>
+                <h2 class="slide-title reveal delay-100">A massive market hiding in plain sight.</h2>
+                <div class="metrics-grid">
+                    <div class="metric-card mc-1 reveal delay-200">
+                        <div class="metric-value val-1">$40B+</div><div class="metric-label">Total Addressable Market</div><div class="metric-desc">The expanding US market for small business marketing automation software.</div>
+                    </div>
+                    <div class="metric-card mc-2 reveal delay-300">
+                        <div class="metric-value val-2">33M</div><div class="metric-label">Small Businesses in the US</div><div class="metric-desc">Every single one requires faster lead capture and clearer return on ad spend.</div>
+                    </div>
+                    <div class="metric-card mc-3 reveal delay-400">
+                        <div class="metric-value val-3">$118M</div><div class="metric-label">Annual Recurring Revenue</div><div class="metric-desc">Achievable by capturing just <strong>0.1%</strong> of the market with our base $299/mo tier.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">07</div>
+        </section>
+
+        <section class="slide" id="slide-8">
+            <div class="slide-glow"></div>
+            <div class="slide-header">
+                <div class="logo"><div class="logo-icon"></div> Pulse <span style="font-weight: 400; font-size: 1.2rem; color: #a1a1aa; margin-top: 2px;">by Mrkters</span></div>
+                <div class="presentation-context">Wright Venture Pitch • Slide 08</div>
+            </div>
+            <div class="slide-content" style="align-items: flex-start;">
+                <div class="badge reveal" style="align-self: flex-start;">The Landscape</div>
+                <h2 class="slide-title reveal delay-100" style="text-align: left;">Why legacy solutions are failing SMBs.</h2>
+                <div class="comparison-grid">
+                    <div class="comp-card legacy-card reveal delay-200">
+                        <div class="comp-card-header">Human Answering</div><div class="comp-card-sub">Services like Ruby Receptionists</div>
+                        <ul class="feature-list"><li>Incredibly expensive ($300+/mo for limited minutes).</li><li>High rate of human error and inconsistent tone.</li><li>Zero attribution to marketing spend.</li></ul>
+                    </div>
+                    <div class="comp-card legacy-card reveal delay-300">
+                        <div class="comp-card-header">Generic Chatbots</div><div class="comp-card-sub">Standard "No-Code" widgets</div>
+                        <ul class="feature-list"><li>Lacks voice capabilities—text only.</li><li>Rigid decision trees that frustrate customers.</li><li>Fails to sync natively with most CRMs.</li></ul>
+                    </div>
+                    <div class="comp-card pulse-card reveal delay-400">
+                        <div class="comp-card-header">Pulse by Mrkters</div><div class="comp-card-sub">Autonomous AI Analyst & Receptionist</div>
+                        <ul class="feature-list"><li><strong>Cross-channel AI:</strong> Handles both natural Voice and Text perfectly.</li><li><strong>Dollar-to-dollar attribution:</strong> Deep sync proves exact marketing ROI.</li><li><strong>Highly Customizable:</strong> Books directly into the specific calendar/CRM.</li></ul>
+                        <div class="tech-highlight">Built on <strong>Custom Python Architecture</strong>. Not fragile "no-code" templates.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">08</div>
+        </section>
+
+        <section class="slide" id="slide-9">
+            <div class="slide-glow"></div>
+            <div class="slide-header">
+                <div class="logo"><div class="logo-icon"></div> Pulse <span style="font-weight: 400; font-size: 1.2rem; color: #a1a1aa; margin-top: 2px;">by Mrkters</span></div>
+                <div class="presentation-context">Wright Venture Pitch • Slide 09</div>
+            </div>
+            <div class="slide-content" style="align-items: flex-start; text-align: left;">
+                <div class="badge reveal" style="align-self: flex-start;">Acquisition Strategy</div>
+                <h2 class="slide-title reveal delay-100">The Go-To-Market Playbook</h2>
+                <div class="strategy-container reveal delay-200">
+                    <div class="phase-card phase-1">
+                        <div class="icon-container">🤝</div><div class="phase-badge">Phase 1: Direct</div><h3 class="phase-title">Warm Network</h3>
+                        <p class="phase-desc">Upselling the software to our <span class="highlight-text">existing agency clients</span> and leveraging local networking in the Dayton and Fairborn business communities to secure our first cohort.</p>
+                    </div>
+                    <div class="phase-card phase-2">
+                        <div class="icon-container">🧲</div><div class="phase-badge">Phase 2: Scale</div><h3 class="phase-title">Automated Funnels</h3>
+                        <p class="phase-desc">Running targeted Meta and LinkedIn ads offering a <span class="highlight-text">"Free Lead-Leakage Audit"</span>, which automatically drops prospects into a tailored 5-day nurture sequence.</p>
+                    </div>
+                    <div class="phase-card phase-3">
+                        <div class="icon-container">🌐</div><div class="phase-badge">Phase 3: Multiply</div><h3 class="phase-title">White-Labeling</h3>
+                        <p class="phase-desc">Partnering with other niche marketing agencies, allowing them to <span class="highlight-text">white-label the Pulse engine</span> to offer elite AI voice services to their own client bases.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">09</div>
+        </section>
+
+        <section class="slide" id="slide-10">
+            <div class="slide-glow"></div>
+            <div class="slide-header">
+                <div class="logo"><div class="logo-icon"></div> Pulse <span style="font-weight: 400; font-size: 1.2rem; color: #a1a1aa; margin-top: 2px;">by Mrkters</span></div>
+                <div class="presentation-context">Wright Venture Pitch • Slide 10</div>
+            </div>
+            <div class="slide-content" style="align-items: stretch; text-align: left;">
+                <div class="header-layout w-full" style="width: 100%;">
+                    <div><div class="badge reveal" style="align-self: flex-start; margin-bottom: 20px;">Financials</div><h2 class="slide-title reveal delay-100" style="margin-bottom: 0;">3-Year ARR Projection</h2></div>
+                    <div class="margin-badge reveal delay-200"><h4>75%+</h4><p>Gross Margins via Python</p></div>
+                </div>
+                <div class="chart-grid">
+                    <div class="pillar year-1 reveal delay-200">
+                        <div class="year-label">Year 1</div><div class="arr-value">$358K</div><div class="user-count">100 Active Users</div>
+                        <div class="focus-text">Focus on product refinement, beta onboarding, and <span class="highlight-text">local market penetration</span>.</div>
+                    </div>
+                    <div class="pillar year-2 reveal delay-300">
+                        <div class="year-label">Year 2</div><div class="arr-value">$1.6M</div><div class="user-count">450 Active Users</div>
+                        <div class="focus-text">Scaling aggressively through <span class="highlight-text">paid ad funnels</span> and automated lead-leakage audits.</div>
+                    </div>
+                    <div class="pillar year-3 reveal delay-400">
+                        <div class="year-label">Year 3</div><div class="arr-value">$5.3M</div><div class="user-count">1,500 Active Users</div>
+                        <div class="focus-text">Exponential expansion through <span class="highlight-text">white-label agency partnerships</span> and scalable SaaS infrastructure.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">10</div>
+        </section>
+
+        <section class="slide" id="slide-11">
+            <div class="slide-glow"></div>
+            <div class="slide-header">
+                <div class="logo"><div class="logo-icon"></div> Pulse <span style="font-weight: 400; font-size: 1.2rem; color: #a1a1aa; margin-top: 2px;">by Mrkters</span></div>
+                <div class="presentation-context">Wright Venture Pitch • Slide 11</div>
+            </div>
+            <div class="slide-content">
+                <div class="badge reveal">THE EXPERTISE</div>
+                <h1 class="slide-title reveal delay-100">Marketers who actually know how to code.</h1>
+                <div class="team-grid">
+                    <div class="team-card adnan reveal delay-200">
+                        <div class="icon-ring"><div style="width: 24px; height: 24px; border: 2px solid currentColor; display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; padding: 2px;"><div style="border: 2px solid currentColor;"></div><div style="border: 2px solid currentColor;"></div><div style="border: 2px solid currentColor;"></div><div style="border: 2px solid currentColor;"></div></div></div>
+                        <h3 class="member-name">ADNAN</h3><p class="member-title">Technical Lead & AI Architecture</p>
+                        <ul class="member-desc adnan-list"><li><h4>SPECIALIZED BACKGROUND IN MARKETING ANALYTICS</h4></li><li><h4>DEVELOPING CUSTOM PYTHON-DRIVEN AI ARCHITECTURE</h4></li><li><h4>BRIDGING DATA SCIENCE WITH REVENUE GROWTH</h4></li></ul>
+                    </div>
+                    <div class="team-card anupom reveal delay-300">
+                        <div class="icon-ring"><div style="width: 28px; height: 28px; border: 4px solid currentColor; border-radius: 50%; position: relative;"><div style="width: 16px; height: 16px; background: #030008; border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"></div><div style="width: 6px; height: 4px; background: currentColor; position: absolute; top: -4px; left: calc(50% - 3px);"></div><div style="width: 6px; height: 4px; background: currentColor; position: absolute; bottom: -4px; left: calc(50% - 3px);"></div><div style="width: 4px; height: 6px; background: currentColor; position: absolute; left: -4px; top: calc(50% - 3px);"></div><div style="width: 4px; height: 6px; background: currentColor; position: absolute; right: -4px; top: calc(50% - 3px);"></div></div></div>
+                        <h3 class="member-name">ANUPOM</h3><p class="member-title">Operations & Strategic Growth</p>
+                        <ul class="member-desc anupom-list"><li><h4>DRIVING BUSINESS OPERATIONS & LOGISTICS</h4></li><li><h4>STRATEGIC PLANNING FOR SCALABLE GROWTH</h4></li><li><h4>OPTIMIZING INTERNAL WORKFLOWS</h4></li></ul>
+                    </div>
+                    <div class="team-card nabil reveal delay-400">
+                        <div class="icon-ring"><div style="width: 26px; height: 26px; border: 2px solid currentColor; border-bottom-width: 4px; position: relative;"><div style="width: 16px; height: 4px; background: #030008; position: absolute; bottom: 6px; right: 0;"></div><div style="width: 12px; height: 12px; background: currentColor; position: absolute; top: 0; left: 0;"></div><div style="width: 0; height: 0; border-style: solid; border-width: 0 8px 12px 8px; border-color: transparent transparent currentColor transparent; position: absolute; top: -14px; left: -1px;"></div></div></div>
+                        <h3 class="member-name">NABIL</h3><p class="member-title">Client Acquisition & Success</p>
+                        <ul class="member-desc nabil-list"><li><h4>LEADING CLIENT ACQUISITION STRATEGIES</h4></li><li><h4>DEDICATED TO CLIENT SUCCESS & RETENTION</h4></li><li><h4>ORCHESTRATING GROWTH MARKETING CAMPAIGNS</h4></li></ul>
+                    </div>
+                </div>
+            </div>
+            <div id="slide-11" class="slide-footer reveal delay-400" style="position: absolute; bottom: 40px; left: 60px; right: 60px; display: flex; justify-content: space-between; align-items: center; z-index: 5;">
+                <p class="footer-text">We aren't just developers; we are marketers who know exactly how to solve a marketing problem.</p>
+            </div>
+            <div class="slide-number">11</div>
+        </section>
+
+        <section class="slide" id="slide-12">
+            <div class="slide-glow"></div>
+            <div class="slide-header">
+                <div class="logo"><div class="logo-icon"></div> Pulse <span style="font-weight: 400; font-size: 1.2rem; color: #a1a1aa; margin-top: 2px;">by Mrkters</span></div>
+                <div class="presentation-context">Wright Venture Pitch • Slide 12</div>
+            </div>
+            <div class="slide-content">
+                <div class="badge reveal">THE ASK</div>
+                <h1 class="slide-title reveal delay-100">Fueling the Go-To-Market.</h1>
+                <p class="slide-subtitle reveal delay-200">We are seeking <span class="highlight-text">Wright Venture funding</span> to accelerate our deployment. This capital acts as the immediate catalyst for our server architecture and local market penetration.</p>
+                <div class="allocation-container reveal delay-300">
+                    <div class="allocation-header">Proposed Capital Allocation</div>
+                    <div class="allocation-grid">
+                        <div class="alloc-card card-1">
+                            <div class="icon-box">🖥️</div><h3 class="alloc-title">Server Infrastructure</h3>
+                            <p class="alloc-desc">Deploying and securing the robust <span class="highlight-text">custom Python environment</span> required to process real-time webhooks and host our proprietary N8N instances without latency.</p>
+                        </div>
+                        <div class="alloc-card card-2">
+                            <div class="icon-box">🧠</div><h3 class="alloc-title">API Computation</h3>
+                            <p class="alloc-desc">Covering the early-stage operational costs for our <span class="highlight-text">Voice and LLM models</span> (OpenAI/LangChain) during the high-volume beta testing and optimization phase.</p>
+                        </div>
+                        <div class="alloc-card card-3">
+                            <div class="icon-box">🎯</div><h3 class="alloc-title">Local Acquisition</h3>
+                            <p class="alloc-desc">Launching our first highly-targeted <span class="highlight-text">localized ad campaigns</span> aimed specifically at service-based businesses in the Ohio market to drive our Year-1 MRR.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">12</div>
+        </section>
+
+        <section class="slide" id="slide-13">
+            <div class="slide-glow"></div>
+            <div class="slide-header">
+                <div class="logo"><div class="logo-icon"></div> Pulse <span style="font-weight: 400; font-size: 1.2rem; color: #a1a1aa; margin-top: 2px;">by Mrkters</span></div>
+                <div class="presentation-context">Wright Venture Pitch • Slide 13</div>
+            </div>
+            <div class="slide-content">
+                <div class="badge reveal">THE CLOSE</div>
+                <h1 class="slide-title reveal delay-100">Ready to turn missed calls into measurable profit.</h1>
+                <p class="slide-subtitle reveal delay-200">Pulse by Mrkters is tackling a massive, universal problem for millions of business owners: missed leads and wasted ad spend. With your backing, we are ready to deploy the solution.</p>
+                <div class="summary-grid reveal delay-300">
+                    <div class="summary-bar bar-1"><div class="bar-icon">🛡️</div><div class="bar-title">Defensible Tech</div><div class="bar-desc">Custom-built Python architecture capturing leads instantly.</div></div>
+                    <div class="summary-bar bar-2"><div class="bar-icon">📈</div><div class="bar-title">Scalable Model</div><div class="bar-desc">High-margin SaaS recurring revenue built for infinite scale.</div></div>
+                    <div class="summary-bar bar-3"><div class="bar-icon">🧠</div><div class="bar-title">Expert Team</div><div class="bar-desc">Founders uniquely trained to bridge AI and analytics.</div></div>
+                </div>
+                <div class="final-cta reveal delay-400">
+                    <div class="final-cta-text">Thank You.</div><div class="final-cta-sub">We'd love to answer your questions.</div>
+                </div>
+            </div>
+            <div class="slide-number">13</div>
+        </section>
+
+    </div>
+
+    <div class="nav-controls" id="dots-container"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const slides = document.querySelectorAll('.slide');
+            const dotsContainer = document.getElementById('dots-container');
+            let currentSlide = 0;
+
+            // Generate Nav Dots
+            slides.forEach((_, i) => {
+                const dot = document.createElement('div');
+                dot.classList.add('nav-dot');
+                if (i === 0) dot.classList.add('active');
+                dot.addEventListener('click', () => goToSlide(i));
+                dotsContainer.appendChild(dot);
+            });
+
+            const dots = document.querySelectorAll('.nav-dot');
+
+            // Navigation Function
+            function goToSlide(n) {
+                if (n < 0 || n >= slides.length) return; // Boundary check
+                
+                slides[currentSlide].classList.remove('active');
+                dots[currentSlide].classList.remove('active');
+                
+                slides[currentSlide].querySelectorAll('.reveal').forEach(el => el.classList.remove('active'));
+
+                currentSlide = n;
+
+                slides[currentSlide].classList.add('active');
+                dots[currentSlide].classList.add('active');
+
+                setTimeout(() => {
+                    slides[currentSlide].querySelectorAll('.reveal').forEach(el => el.classList.add('active'));
+                }, 50);
+            }
+
+            // Keyboard/Clicker Listeners
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+                    e.preventDefault();
+                    if (currentSlide < slides.length - 1) goToSlide(currentSlide + 1);
+                }
+                if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+                    e.preventDefault();
+                    if (currentSlide > 0) goToSlide(currentSlide - 1);
+                }
+            });
+
+            // Initial Trigger
+            setTimeout(() => {
+                slides[0].querySelectorAll('.reveal').forEach(el => el.classList.add('active'));
+            }, 100);
+        });
+    </script>
+</body>
+</html>
