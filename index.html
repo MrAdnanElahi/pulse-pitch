@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pulse - Pitch Deck</title>
+    <title>Pulse by Mrkters - Complete Pitch Deck</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         /* =========================================
@@ -12,7 +12,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         body { background-color: #030008; display: flex; align-items: center; justify-content: center; height: 100vh; overflow: hidden; color: #ffffff; }
         
-        .deck { position: relative; width: 1280px; height: 720px; background-color: #030008; box-shadow: 0 20px 50px rgba(0,0,0,0.8); overflow: hidden; }
+        .deck { position: relative; width: 1280px; height: 720px; background-color: #030008; box-shadow: 0 20px 50px rgba(0,0,0,0.8); overflow: hidden; transform-origin: center center; }
 
         .slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; visibility: hidden; transition: opacity 0.4s ease-in-out, visibility 0.4s; z-index: 1; display: flex; flex-direction: column; background-color: #030008; }
         .slide.active { opacity: 1; visibility: visible; z-index: 10; }
@@ -128,7 +128,7 @@
         .comp-card { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 20px; padding: 32px; backdrop-filter: blur(10px); display: flex; flex-direction: column; text-align: left; position: relative; overflow: hidden; }
         .legacy-card { opacity: 0.6; transition: opacity 0.3s; }
         .legacy-card:hover { opacity: 1; }
-        .comp-card-header { font-size: 1.4rem; font-weight: 700; margin-bottom: 4px; color: #fff;}
+        .comp-card-header { font-size: 1.4rem; font-weight: 700; margin-bottom: 8px; color: #fff;}
         .comp-card-sub { font-size: 0.9rem; color: #71717a; margin-bottom: 24px; min-height: 40px; }
         .pulse-card { background: linear-gradient(145deg, rgba(20, 15, 30, 0.9), rgba(10, 10, 15, 0.9)); border: 1px solid rgba(139, 92, 246, 0.5); box-shadow: 0 20px 50px rgba(139, 92, 246, 0.15); transform: scale(1.05); z-index: 2; }
         .pulse-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, #8b5cf6, #d946ef); }
@@ -152,6 +152,7 @@
         .beta-card { width: 100%; max-width: 500px; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 24px; padding: 40px; backdrop-filter: blur(20px); box-shadow: 0 20px 40px rgba(0,0,0,0.3); text-align: left;}
         .status-header { display: flex; align-items: center; gap: 12px; margin-bottom: 32px; padding-bottom: 24px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
         .status-dot { width: 12px; height: 12px; background-color: #2dd4bf; border-radius: 50%; box-shadow: 0 0 10px #2dd4bf; animation: pulse-dot 2s infinite; }
+        @keyframes pulse-dot { 0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(45, 212, 191, 0.7); } 70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(45, 212, 191, 0); } 100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(45, 212, 191, 0); } }
         .status-text { font-size: 1.2rem; font-weight: 700; text-transform: uppercase; color: #fff;}
         .milestone-list { list-style: none; }
         .milestone-list li { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 24px; }
@@ -236,7 +237,6 @@
         #slide-11 .slide-glow { top: 50%; left: 50%; transform: translate(-50%, -50%); width: 1000px; height: 600px; background: radial-gradient(ellipse, rgba(139, 92, 246, 0.15) 0%, rgba(217, 70, 239, 0.1) 50%, transparent 70%); }
         #slide-11 .badge { background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); color: #c4b5fd; margin-bottom: 12px; align-self: center; }
         #slide-11 .slide-title { font-size: 3rem; margin-bottom: 24px; max-width: 900px; }
-        /* Shifted to flexbox for perfectly centering 2 cards */
         .team-grid { display: flex; justify-content: center; gap: 40px; align-items: stretch; flex: 1; width: 100%; max-width: 900px; margin: 0 auto; }
         .team-card { width: 100%; max-width: 400px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 20px; padding: 32px 24px; backdrop-filter: blur(10px); display: flex; flex-direction: column; align-items: center; position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.2); transition: transform 0.3s ease;}
         .team-card:hover { transform: translateY(-5px); }
@@ -290,7 +290,7 @@
                 <h1 class="headline reveal delay-100">Stop losing revenue to missed calls.</h1>
                 <p class="sub-headline reveal delay-200">Pulse is the 24/7 AI engine that captures every lead and proves every dollar of ROI.</p>
             <!-- </div>
-             <div class="slide-footer reveal delay-300">
+            <div class="slide-footer reveal delay-300">
                 <div class="presenter-avatar">👨‍💻</div>
                 <div class="presenter-info"><h4>Adnan</h4><p>Co-Founder, Pulse</p></div>
             </div> -->
@@ -523,7 +523,7 @@
                     </div>
                     <div class="price-card premium reveal delay-300">
                         <div class="tier-name">Tier 2: The Ascend</div>
-                        <div class="tier-desc">High-ticket SwaS. Retainer-based execution for top clients.</div>
+                        <div class="tier-desc">High-ticket SwaS. Full agency execution available via custom quote.</div>
                         <div class="price-point">$1,000+<span>/mo</span></div>
                         <ul class="checklist premium-list">
                             <li><strong>Everything in Tier 1, plus:</strong></li>
@@ -645,7 +645,7 @@
             const dotsContainer = document.getElementById('dots-container');
             let currentSlide = 0;
 
-            // Generate Nav Dots
+            // 1. Generate Nav Dots
             slides.forEach((_, i) => {
                 const dot = document.createElement('div');
                 dot.classList.add('nav-dot');
@@ -657,7 +657,7 @@
 
             const dots = document.querySelectorAll('.nav-dot');
 
-            // Navigation Function
+            // 2. Navigation Function
             function goToSlide(n) {
                 if (n < 0 || n >= slides.length) return; // Boundary check
                 
@@ -676,7 +676,7 @@
                 }, 50);
             }
 
-            // Keyboard/Clicker Listeners
+            // 3. Keyboard Listeners
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
                     e.preventDefault();
@@ -688,7 +688,50 @@
                 }
             });
 
-            // Initial Trigger
+            // 4. Responsive Scale-to-Fit Engine
+            function resizeDeck() {
+                const deck = document.getElementById('deck');
+                const availableWidth = window.innerWidth;
+                const availableHeight = window.innerHeight;
+                
+                // Calculate the scale needed to fit both width and height perfectly
+                const scaleX = availableWidth / 1280;
+                const scaleY = availableHeight / 720;
+                let scale = Math.min(scaleX, scaleY);
+                
+                // Add a tiny margin on smaller screens so it doesn't touch the exact edges
+                if (scale < 1) scale = scale * 0.98;
+
+                deck.style.transform = `scale(${scale})`;
+            }
+
+            window.addEventListener('resize', resizeDeck);
+            resizeDeck(); // Init on load
+
+            // 5. Mobile Swipe Gestures
+            let touchStartX = 0;
+            let touchEndX = 0;
+
+            document.addEventListener('touchstart', e => {
+                touchStartX = e.changedTouches[0].screenX;
+            }, { passive: true });
+
+            document.addEventListener('touchend', e => {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            }, { passive: true });
+
+            function handleSwipe() {
+                const swipeThreshold = 50; // minimum pixel distance to trigger swipe
+                if (touchEndX < touchStartX - swipeThreshold) {
+                    if (currentSlide < slides.length - 1) goToSlide(currentSlide + 1); // Swiped Left
+                }
+                if (touchEndX > touchStartX + swipeThreshold) {
+                    if (currentSlide > 0) goToSlide(currentSlide - 1); // Swiped Right
+                }
+            }
+
+            // 6. Initial Animation Trigger
             setTimeout(() => {
                 slides[0].querySelectorAll('.reveal').forEach(el => el.classList.add('active'));
             }, 100);
