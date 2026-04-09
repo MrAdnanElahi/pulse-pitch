@@ -62,7 +62,9 @@
            ========================================= */
 
         /* Slide 1 Styles */
-        #slide-1 .slide-glow { top: 50%; left: 50%; transform: translate(-50%, -50%); width: 800px; height: 800px; background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, rgba(217, 70, 239, 0.05) 40%, transparent 70%); filter: blur(60px); z-index: 1; position: absolute; pointer-events: none;}
+        #slide-1 .slide-content { justify-content: center; padding: 0 120px; margin-top: -20px; }
+        #slide-1 .pulse-glow { top: 50%; left: 50%; transform: translate(-50%, -50%); width: 800px; height: 800px; background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, rgba(217, 70, 239, 0.05) 40%, transparent 70%); filter: blur(60px); z-index: 1; position: absolute; pointer-events: none;}
+        #slide-1 .badge { padding: 8px 20px; font-size: 1rem; margin-bottom: 32px; box-shadow: 0 4px 20px rgba(139, 92, 246, 0.1); }
         #slide-1 .headline { font-size: 5.5rem; font-weight: 800; line-height: 1.1; letter-spacing: -2px; margin-bottom: 32px; background: linear-gradient(180deg, #18181b 0%, #52525b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; max-width: 1000px; }
         #slide-1 .sub-headline { font-size: 1.5rem; line-height: 1.6; color: #52525b; max-width: 800px; font-weight: 400; }
         #slide-1 .slide-footer { position: absolute; bottom: 40px; left: 60px; z-index: 15; display: flex; align-items: center; gap: 16px; }
@@ -73,15 +75,15 @@
         /* Slide 2 Styles */
         #slide-2 .slide-glow { top: 40%; left: 50%; transform: translate(-50%, -50%); width: 900px; height: 500px; background: radial-gradient(ellipse, rgba(239, 68, 68, 0.08) 0%, rgba(139, 92, 246, 0.05) 50%, transparent 70%); }
         .problem-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; width: 100%; max-width: 900px; margin: 0 auto; text-align: left; }
-        .problem-card { border-radius: 20px; padding: 24px 32px; display: flex; flex-direction: column; position: relative; overflow: hidden; background: #fafafa; }
+        .problem-card { border-radius: 20px; padding: 20px 24px; display: flex; flex-direction: column; position: relative; overflow: hidden; background: #fafafa; }
         .problem-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: linear-gradient(90deg, transparent, #ef4444, transparent); opacity: 0.8; }
-        .visual-container { height: 80px; margin-bottom: 16px; border-radius: 12px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #ffffff; border: 1px solid #e4e4e7; }
-        .funnel-visual { width: 80px; height: 80px; position: relative; }
+        .visual-container { height: 70px; margin-bottom: 16px; border-radius: 12px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #ffffff; border: 1px solid #e4e4e7; }
+        .funnel-visual { width: 80px; height: 80px; position: relative; transform: scale(0.85); }
         .funnel-part { position: absolute; left: 50%; transform: translateX(-50%); background: rgba(239, 68, 68, 0.1); border: 2px solid rgba(239, 68, 68, 0.4); border-radius: 4px; }
         .funnel-top { width: 100%; height: 16px; top: 0; border-radius: 8px; } .funnel-mid { width: 70%; height: 24px; top: 20px; } .funnel-btm { width: 40%; height: 20px; top: 48px; }
         .leak-drop { position: absolute; bottom: 5px; left: 50%; width: 6px; height: 6px; background-color: #ef4444; border-radius: 50%; transform: translateX(-50%); box-shadow: 0 0 10px rgba(239, 68, 68, 0.5); animation: funnel-leak 1.5s infinite ease-in-out; }
         @keyframes funnel-leak { 0% { transform: translate(-50%, 0) scale(1); opacity: 1; } 100% { transform: translate(-50%, 15px) scale(0.5); opacity: 0; } }
-        .labyrinth-visual { width: 100px; height: 60px; position: relative; background-image: linear-gradient(rgba(0,0,0,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.05) 1px, transparent 1px); background-size: 12px 12px; border-radius: 8px; border: 2px solid rgba(0,0,0,0.1); }
+        .labyrinth-visual { width: 100px; height: 60px; position: relative; background-image: linear-gradient(rgba(0,0,0,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.05) 1px, transparent 1px); background-size: 12px 12px; border-radius: 8px; border: 2px solid rgba(0,0,0,0.1); transform: scale(0.9); }
         .floating-question { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 2rem; font-weight: 800; color: rgba(0,0,0,0.2); animation: labyrinth-float 3s infinite ease-in-out; }
         @keyframes labyrinth-float { 0%, 100% { transform: translate(-50%, -45%); } 50% { transform: translate(-50%, -55%); } }
         .card-header { display: flex; align-items: center; gap: 16px; margin-bottom: 12px; }
@@ -232,17 +234,17 @@
 
         /* Slide 10 Styles */
         #slide-10 .slide-glow { bottom: -10%; right: 10%; width: 800px; height: 600px; background: radial-gradient(circle at bottom right, rgba(124, 58, 237, 0.1) 0%, rgba(192, 38, 211, 0.05) 50%, transparent 70%); }
-        .header-layout { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; width: 100%; max-width: 1000px;}
+        .header-layout { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; width: 100%; max-width: 1000px;}
         .margin-badge { background: #ffffff; border: 1px solid #e4e4e7; padding: 16px 24px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); text-align: right; }
         .margin-badge h4 { font-size: 1.8rem; color: #c026d3; margin-bottom: 4px; line-height: 1; font-weight: 800;}
         .margin-badge p { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin: 0; }
-        .chart-grid { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; width: 100%; max-width: 1000px; margin: 0 auto; padding-top: 40px; position: relative; }
+        .chart-grid { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; width: 100%; max-width: 1000px; margin: 0 auto; position: relative; height: 320px; }
         .chart-grid::before { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 1px; background: rgba(0, 0, 0, 0.1); }
         .chart-grid::after { content: ''; position: absolute; bottom: 50%; left: 0; width: 100%; height: 1px; background: transparent; border-top: 1px dashed rgba(0, 0, 0, 0.1); }
-        .pillar { border-bottom: none; border-top-left-radius: 24px; border-top-right-radius: 24px; padding: 24px 24px 32px; display: flex; flex-direction: column; width: 31%; position: relative; box-shadow: 0 -5px 20px rgba(0,0,0,0.03); z-index: 2; text-align: left; }
-        .year-1 { height: 60%; border-top: 4px solid #2dd4bf; } 
-        .year-2 { height: 80%; border-top: 4px solid #8b5cf6; background: rgba(139, 92, 246, 0.02); } 
-        .year-3 { height: 100%; border-top: 4px solid #d946ef; background: linear-gradient(180deg, rgba(217, 70, 239, 0.05) 0%, rgba(255, 255, 255, 0) 100%); }
+        .pillar { border-bottom: none; border-top-left-radius: 24px; border-top-right-radius: 24px; padding: 24px 24px 24px; display: flex; flex-direction: column; width: 31%; position: relative; box-shadow: 0 -5px 20px rgba(0,0,0,0.03); z-index: 2; text-align: left; }
+        .year-1 { height: 230px; border-top: 4px solid #2dd4bf; } 
+        .year-2 { height: 275px; border-top: 4px solid #8b5cf6; background: rgba(139, 92, 246, 0.02); } 
+        .year-3 { height: 320px; border-top: 4px solid #d946ef; background: linear-gradient(180deg, rgba(217, 70, 239, 0.05) 0%, rgba(255, 255, 255, 0) 100%); }
         .year-label { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
         .year-1 .year-label { color: #0d9488; } .year-2 .year-label { color: #7c3aed; } .year-3 .year-label { color: #c026d3; }
         .arr-value { font-size: 3rem; font-weight: 800; margin-bottom: 8px; line-height: 1; letter-spacing: -1px; color: #18181b;}
@@ -356,7 +358,7 @@
             <div class="slide-content">
                 <div class="badge reveal">The Solution</div>
                 <h2 class="slide-title reveal delay-100" style="margin-bottom: 16px;">Enterprise-grade AI, priced for Main Street.</h2>
-                <p class="slide-subtitle reveal delay-200" style="margin-bottom: 40px;">Pulse is a 24/7 Autonomous AI Receptionist and data engine that plugs the leaks in your business. It answers the phone when you can't, and books customers directly into your calendar.</p>
+                <p class="slide-subtitle reveal delay-200" style="margin-bottom: 40px;">Pulse is an autonomous receptionist and data engine that plugs the leaks in your business. It answers the phone when you can't, and books customers directly into your calendar.</p>
                 <div class="solution-grid">
                     <div class="solution-card card-1 sol-1 reveal delay-300">
                         <div class="card-icon icon-1 sol-icon">⚡</div>
@@ -675,7 +677,7 @@
                 <div class="logo"><div class="logo-icon"></div> Pulse</div>
                 <div class="presentation-context">Wright Venture Pitch • Slide 12</div>
             </div>
-            <div class="slide-content">
+            <div class="slide-content" style="padding: 80px 60px 40px;">
                 <div class="badge reveal">THE ASK & THE CLOSE</div>
                 <h1 class="slide-title reveal delay-100" style="margin-bottom: 12px;">Fueling the Go-To-Market.</h1>
                 <p class="slide-subtitle reveal delay-200" style="margin-bottom: 30px;">We are seeking the <span class="highlight-text">$5,000 Wright Venture prize</span> to launch our prototype, stress-test our servers, and fund local market penetration.</p>
