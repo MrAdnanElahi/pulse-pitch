@@ -34,11 +34,11 @@
         .slide-number { position: absolute; bottom: 40px; right: 60px; font-size: 1rem; font-weight: 700; color: #a1a1aa; z-index: 15; }
         .citation { position: absolute; bottom: 20px; left: 60px; font-size: 10px; color: #a1a1aa; text-align: left; line-height: 1.4; z-index: 15; }
 
-        /* UNIFIED FLEX CENTERING PADDING */
-        .slide-content { flex: 1; display: flex; flex-direction: column; justify-content: center; z-index: 15; position: relative; padding: 100px 80px 80px; align-items: center; text-align: center; }
+        /* PERFECT FLEX CENTERING */
+        .slide-content { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; z-index: 15; position: relative; padding: 80px 80px; }
         
         .badge { display: inline-flex; align-items: center; padding: 6px 16px; border-radius: 100px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); color: #7c3aed; }
-        .slide-title { font-size: 3.2rem; font-weight: 800; letter-spacing: -1.5px; margin-bottom: 24px; background: linear-gradient(180deg, #18181b 0%, #52525b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; max-width: 1000px;}
+        .slide-title { font-size: 3.2rem; font-weight: 800; letter-spacing: -1.5px; margin-bottom: 20px; background: linear-gradient(180deg, #18181b 0%, #52525b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; max-width: 1000px;}
         .slide-subtitle { font-size: 1.2rem; color: #52525b; line-height: 1.6; max-width: 800px; margin-bottom: 36px; }
         
         .highlight-text { color: #18181b; font-weight: 700; }
@@ -62,9 +62,7 @@
            ========================================= */
 
         /* Slide 1 Styles */
-        #slide-1 .slide-content { padding: 0 120px; }
-        #slide-1 .pulse-glow { top: 50%; left: 50%; transform: translate(-50%, -50%); width: 800px; height: 800px; background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, rgba(217, 70, 239, 0.05) 40%, transparent 70%); filter: blur(60px); z-index: 1; position: absolute; pointer-events: none;}
-        #slide-1 .badge { padding: 8px 20px; font-size: 1rem; margin-bottom: 32px; box-shadow: 0 4px 20px rgba(139, 92, 246, 0.1); }
+        #slide-1 .slide-glow { top: 50%; left: 50%; transform: translate(-50%, -50%); width: 800px; height: 800px; background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, rgba(217, 70, 239, 0.05) 40%, transparent 70%); filter: blur(60px); z-index: 1; position: absolute; pointer-events: none;}
         #slide-1 .headline { font-size: 5.5rem; font-weight: 800; line-height: 1.1; letter-spacing: -2px; margin-bottom: 32px; background: linear-gradient(180deg, #18181b 0%, #52525b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; max-width: 1000px; }
         #slide-1 .sub-headline { font-size: 1.5rem; line-height: 1.6; color: #52525b; max-width: 800px; font-weight: 400; }
         #slide-1 .slide-footer { position: absolute; bottom: 40px; left: 60px; z-index: 15; display: flex; align-items: center; gap: 16px; }
@@ -74,10 +72,10 @@
 
         /* Slide 2 Styles */
         #slide-2 .slide-glow { top: 40%; left: 50%; transform: translate(-50%, -50%); width: 900px; height: 500px; background: radial-gradient(ellipse, rgba(239, 68, 68, 0.08) 0%, rgba(139, 92, 246, 0.05) 50%, transparent 70%); }
-        .problem-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; width: 100%; max-width: 1000px; text-align: left; }
+        .problem-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; width: 100%; max-width: 900px; margin: 0 auto; text-align: left; }
         .problem-card { border-radius: 20px; padding: 24px 32px; display: flex; flex-direction: column; position: relative; overflow: hidden; background: #fafafa; }
         .problem-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: linear-gradient(90deg, transparent, #ef4444, transparent); opacity: 0.8; }
-        .visual-container { height: 110px; margin-bottom: 20px; border-radius: 12px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #ffffff; border: 1px solid #e4e4e7; }
+        .visual-container { height: 80px; margin-bottom: 16px; border-radius: 12px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #ffffff; border: 1px solid #e4e4e7; }
         .funnel-visual { width: 80px; height: 80px; position: relative; }
         .funnel-part { position: absolute; left: 50%; transform: translateX(-50%); background: rgba(239, 68, 68, 0.1); border: 2px solid rgba(239, 68, 68, 0.4); border-radius: 4px; }
         .funnel-top { width: 100%; height: 16px; top: 0; border-radius: 8px; } .funnel-mid { width: 70%; height: 24px; top: 20px; } .funnel-btm { width: 40%; height: 20px; top: 48px; }
@@ -88,13 +86,13 @@
         @keyframes labyrinth-float { 0%, 100% { transform: translate(-50%, -45%); } 50% { transform: translate(-50%, -55%); } }
         .card-header { display: flex; align-items: center; gap: 16px; margin-bottom: 12px; }
         .card-icon { width: 42px; height: 42px; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; color: #ef4444; }
-        .problem-card h3 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.5px; }
+        .problem-card h3 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.5px; margin: 0; }
         .problem-card p { font-size: 0.95rem; line-height: 1.5; margin-bottom: 8px; }
 
         /* Slide 3 Styles */
         #slide-3 .slide-glow { top: 40%; left: 50%; transform: translate(-50%, -50%); width: 900px; height: 600px; background: radial-gradient(ellipse, rgba(13, 148, 136, 0.1) 0%, rgba(139, 92, 246, 0.08) 50%, transparent 70%); }
-        #slide-3 .badge { background: rgba(13, 148, 136, 0.1); border-color: rgba(13, 148, 136, 0.3); color: #0f766e; margin-bottom: 16px;}
-        .solution-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; width: 100%; }
+        #slide-3 .badge { background: rgba(13, 148, 136, 0.1); border-color: rgba(13, 148, 136, 0.3); color: #0f766e;}
+        .solution-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; width: 100%; max-width: 1050px; margin: 0 auto; }
         .solution-card { border-radius: 20px; padding: 32px 24px; display: flex; flex-direction: column; align-items: flex-start; text-align: left; position: relative; overflow: hidden; }
         .solution-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; }
         .sol-1::before { background: linear-gradient(90deg, transparent, #8b5cf6, transparent); }
@@ -104,12 +102,12 @@
         .icon-1 { background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); color: #7c3aed; }
         .icon-2 { background: rgba(217, 70, 239, 0.1); border: 1px solid rgba(217, 70, 239, 0.3); color: #c026d3; }
         .icon-3 { background: rgba(45, 212, 191, 0.1); border: 1px solid rgba(45, 212, 191, 0.3); color: #0d9488; }
-        .solution-card h3 { font-size: 1.4rem; font-weight: 700; margin-bottom: 10px; }
-        .solution-card p { font-size: 1rem; line-height: 1.6; }
+        .solution-card h3 { font-size: 1.3rem; font-weight: 700; margin-bottom: 10px; }
+        .solution-card p { font-size: 0.95rem; line-height: 1.6; margin: 0; }
 
         /* Slide 4 Styles (Lottie-Style Flowchart) */
         #slide-4 .slide-glow { top: 50%; left: 50%; transform: translate(-50%, -50%); width: 1000px; height: 500px; background: radial-gradient(ellipse, rgba(13, 148, 136, 0.08) 0%, rgba(124, 58, 237, 0.1) 50%, rgba(192, 38, 211, 0.08) 100%); z-index: 0; }
-        .flow-wrapper { position: relative; width: 100%; max-width: 1050px; height: 400px; display: flex; justify-content: space-between; align-items: center; margin-top: 10px; z-index: 2; }
+        .flow-wrapper { position: relative; width: 100%; max-width: 1050px; height: 380px; display: flex; justify-content: space-between; align-items: center; margin: 0 auto; z-index: 2; }
         .flow-col { display: flex; flex-direction: column; justify-content: space-between; height: 100%; z-index: 5; width: 280px; }
         .flow-col.center { justify-content: center; width: 320px; }
         
@@ -147,9 +145,8 @@
 
         /* Slide 5 Styles (Competitor Landscape) */
         #slide-5 .slide-glow { top: 55%; right: 15%; transform: translateY(-50%); width: 600px; height: 600px; background: radial-gradient(circle, rgba(124, 58, 237, 0.1) 0%, rgba(192, 38, 211, 0.05) 50%, transparent 70%); }
-        #slide-5 .badge { align-self: flex-start; }
-        .comparison-grid { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 24px; align-items: stretch; width: 100%; text-align: left;}
-        .comp-card { border-radius: 20px; padding: 24px 24px; display: flex; flex-direction: column; text-align: left; position: relative; overflow: hidden; }
+        .comparison-grid { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 24px; align-items: stretch; width: 100%; max-width: 1050px; margin: 0 auto; text-align: left;}
+        .comp-card { border-radius: 20px; padding: 32px 24px; display: flex; flex-direction: column; text-align: left; position: relative; overflow: hidden; }
         
         /* Legacy Card Soft Background */
         .legacy-card { background: #f9fafb; border: 1px solid #f4f4f5; opacity: 0.9; transition: opacity 0.3s, transform 0.3s; }
@@ -162,7 +159,7 @@
         .pulse-card .comp-card-header { font-size: 1.5rem; display: flex; align-items: center; gap: 8px; margin-bottom: 4px; color: #18181b;}
         .pulse-card .comp-card-sub { color: #7c3aed; font-weight: 600;}
         .feature-list { list-style: none; flex: 1; }
-        .feature-list li { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; font-size: 0.9rem; line-height: 1.4; color: #52525b; }
+        .feature-list li { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; font-size: 0.9rem; line-height: 1.4; color: #52525b; }
         .legacy-card .feature-list li::before { content: '✗'; color: #ef4444; font-weight: bold; }
         .pulse-card .feature-list li { color: #18181b; font-size: 0.95rem; }
         .pulse-card .feature-list li::before { content: '✓'; color: #d946ef; font-weight: bold; }
@@ -170,10 +167,9 @@
         .tech-highlight strong { color: #7c3aed; }
 
         /* Slide 6 Styles */
-        #slide-6 .slide-content { flex-direction: row; align-items: center; gap: 60px; text-align: left; }
+        #slide-6 .slide-content { flex-direction: row; justify-content: center; gap: 60px; }
         #slide-6 .slide-glow { top: 50%; right: 10%; transform: translateY(-50%); width: 800px; height: 600px; background: radial-gradient(ellipse, rgba(13, 148, 136, 0.1) 0%, rgba(124, 58, 237, 0.1) 50%, transparent 70%); }
-        .narrative-col { flex: 1; display: flex; flex-direction: column; align-items: flex-start; }
-        #slide-6 .badge { align-self: flex-start; }
+        .narrative-col { flex: 1; display: flex; flex-direction: column; align-items: flex-start; text-align: left; }
         #slide-6 .slide-title { text-align: left; margin-bottom: 24px; }
         .beta-col { flex: 1; display: flex; justify-content: center; }
         .beta-card { width: 100%; max-width: 500px; background: #ffffff; border: 1px solid #e4e4e7; border-radius: 24px; padding: 40px; box-shadow: 0 20px 40px rgba(0,0,0,0.05); text-align: left;}
@@ -185,12 +181,11 @@
         .milestone-list li { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 24px; }
         .milestone-icon { width: 32px; height: 32px; background: rgba(124, 58, 237, 0.1); border: 1px solid rgba(124, 58, 237, 0.2); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #7c3aed; font-size: 1rem; flex-shrink: 0; }
         .milestone-content h4 { font-size: 1.1rem; margin-bottom: 4px; font-weight: 600; color: #18181b; }
-        .milestone-content p { font-size: 0.95rem; color: #52525b; line-height: 1.4; }
+        .milestone-content p { font-size: 0.95rem; color: #52525b; line-height: 1.4; margin: 0; }
 
         /* Slide 7 Styles */
         #slide-7 .slide-glow { bottom: -10%; left: 50%; transform: translateX(-50%); width: 1000px; height: 500px; background: radial-gradient(ellipse, rgba(124, 58, 237, 0.1) 0%, rgba(13, 148, 136, 0.05) 50%, transparent 70%); }
-        #slide-7 .slide-title { margin-bottom: 60px; }
-        .metrics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; width: 100%; }
+        .metrics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; width: 100%; max-width: 1100px; margin: 0 auto; }
         .metric-card { border-radius: 24px; padding: 50px 32px; position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center; }
         .metric-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; }
         .mc-1::before { background: linear-gradient(90deg, transparent, #8b5cf6, transparent); }
@@ -203,10 +198,8 @@
         .metric-label { font-size: 1.15rem; font-weight: 700; margin-bottom: 12px; letter-spacing: -0.5px; }
 
         /* Slide 8 Styles (Acquisition) */
-        #slide-8 .slide-content { align-items: flex-start; text-align: left; }
         #slide-8 .slide-glow { bottom: 0; right: 0; width: 800px; height: 600px; background: radial-gradient(circle at bottom right, rgba(192, 38, 211, 0.1) 0%, rgba(124, 58, 237, 0.05) 50%, transparent 70%); }
-        #slide-8 .badge { align-self: flex-start;}
-        .strategy-container { display: flex; justify-content: space-between; align-items: stretch; gap: 24px; position: relative; width: 100%; }
+        .strategy-container { display: flex; justify-content: space-between; align-items: stretch; gap: 24px; position: relative; width: 100%; max-width: 1100px; margin: 0 auto; text-align: left; }
         .strategy-container::before { content: ''; position: absolute; top: 50%; left: 10%; right: 10%; height: 2px; background: linear-gradient(90deg, rgba(13, 148, 136, 0.2), rgba(124, 58, 237, 0.5), rgba(192, 38, 211, 0.2)); z-index: 0; transform: translateY(-50%); }
         .phase-card { border-radius: 20px; padding: 40px 32px; display: flex; flex-direction: column; flex: 1; z-index: 2; position: relative; overflow: hidden; transition: transform 0.3s ease; }
         .phase-card:hover { transform: translateY(-5px); }
@@ -221,7 +214,7 @@
 
         /* Slide 9 Styles (Pricing) */
         #slide-9 .slide-glow { top: 50%; left: 50%; transform: translate(-50%, -50%); width: 900px; height: 500px; background: radial-gradient(ellipse, rgba(124, 58, 237, 0.1) 0%, rgba(192, 38, 211, 0.05) 50%, transparent 70%); }
-        .pricing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; width: 100%; max-width: 900px; text-align: left; }
+        .pricing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; width: 100%; max-width: 900px; margin: 0 auto; text-align: left; }
         .price-card { border-radius: 24px; padding: 32px 36px; position: relative; overflow: hidden; display: flex; flex-direction: column; }
         .price-card.premium { background: #ffffff; border: 2px solid #8b5cf6; box-shadow: 0 20px 40px rgba(139, 92, 246, 0.1); }
         .price-card.premium::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, #8b5cf6, #d946ef); }
@@ -231,22 +224,19 @@
         .price-point { font-size: 3.2rem; font-weight: 800; line-height: 1; margin-bottom: 16px; display: flex; align-items: flex-end; gap: 8px; color: #18181b;}
         .price-point span { font-size: 1.1rem; color: #71717a; font-weight: 500; margin-bottom: 6px; }
         .tier-name { font-size: 1.5rem; font-weight: 700; margin-bottom: 8px; }
-        .tier-desc { font-size: 0.95rem; color: #52525b; margin-bottom: 20px; }
-        .checklist { list-style: none; flex: 1; }
+        .tier-desc { font-size: 0.95rem; color: #52525b; margin-bottom: 24px; }
+        .checklist { list-style: none; flex: 1; margin: 0;}
         .checklist li { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; font-size: 1rem; line-height: 1.4; color: #52525b;}
         .checklist li::before { content: '✓'; color: #7c3aed; font-weight: bold; }
         .premium-list li::before { color: #c026d3; }
 
         /* Slide 10 Styles */
-        #slide-10 .slide-content { align-items: stretch; text-align: left; }
         #slide-10 .slide-glow { bottom: -10%; right: 10%; width: 800px; height: 600px; background: radial-gradient(circle at bottom right, rgba(124, 58, 237, 0.1) 0%, rgba(192, 38, 211, 0.05) 50%, transparent 70%); }
-        .header-layout { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; width: 100%;}
-        #slide-10 .badge { align-self: flex-start; margin-bottom: 20px; }
-        #slide-10 .slide-title { margin-bottom: 0; }
+        .header-layout { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; width: 100%; max-width: 1000px;}
         .margin-badge { background: #ffffff; border: 1px solid #e4e4e7; padding: 16px 24px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); text-align: right; }
         .margin-badge h4 { font-size: 1.8rem; color: #c026d3; margin-bottom: 4px; line-height: 1; font-weight: 800;}
-        .margin-badge p { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
-        .chart-grid { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex: 1; padding-top: 40px; position: relative; }
+        .margin-badge p { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin: 0; }
+        .chart-grid { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; width: 100%; max-width: 1000px; margin: 0 auto; padding-top: 40px; position: relative; }
         .chart-grid::before { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 1px; background: rgba(0, 0, 0, 0.1); }
         .chart-grid::after { content: ''; position: absolute; bottom: 50%; left: 0; width: 100%; height: 1px; background: transparent; border-top: 1px dashed rgba(0, 0, 0, 0.1); }
         .pillar { border-bottom: none; border-top-left-radius: 24px; border-top-right-radius: 24px; padding: 24px 24px 32px; display: flex; flex-direction: column; width: 31%; position: relative; box-shadow: 0 -5px 20px rgba(0,0,0,0.03); z-index: 2; text-align: left; }
@@ -257,44 +247,44 @@
         .year-1 .year-label { color: #0d9488; } .year-2 .year-label { color: #7c3aed; } .year-3 .year-label { color: #c026d3; }
         .arr-value { font-size: 3rem; font-weight: 800; margin-bottom: 8px; line-height: 1; letter-spacing: -1px; color: #18181b;}
         .user-count { display: inline-block; padding: 4px 12px; background: #f4f4f5; border-radius: 100px; font-size: 0.85rem; font-weight: 600; border: 1px solid #e4e4e7; margin-bottom: 16px; align-self: flex-start; }
-        .focus-text { font-size: 0.95rem; line-height: 1.5; margin-top: auto; }
+        .focus-text { font-size: 0.95rem; line-height: 1.5; margin: 0; }
 
         /* =========================================
            Slide 11 Styles (TEAM OVERRIDES)
            ========================================= */
-        #slide-11 .slide-content { padding: 60px 60px 80px; align-items: center; text-align: center; justify-content: flex-start; } /* Push content up */
+        #slide-11 .slide-content { padding: 60px 60px 80px; align-items: center; text-align: center; justify-content: flex-start; } 
         #slide-11 .slide-glow { top: 50%; left: 50%; transform: translate(-50%, -50%); width: 1000px; height: 600px; background: radial-gradient(ellipse, rgba(124, 58, 237, 0.1) 0%, rgba(192, 38, 211, 0.05) 50%, transparent 70%); }
         #slide-11 .badge { margin-bottom: 12px; align-self: center; }
         #slide-11 .slide-title { font-size: 3rem; margin-bottom: 24px; max-width: 900px; }
         #slide-11 .team-grid { display: flex; justify-content: center; gap: 40px; align-items: stretch; width: 100%; max-width: 900px; margin: 0 auto; }
-        #slide-11 .team-card { width: 100%; max-width: 400px; border-radius: 20px; padding: 24px; display: flex; flex-direction: column; align-items: center; position: relative; overflow: hidden; transition: transform 0.3s ease;} /* Reduced inner padding */
+        #slide-11 .team-card { width: 100%; max-width: 400px; border-radius: 20px; padding: 24px; display: flex; flex-direction: column; align-items: center; position: relative; overflow: hidden; transition: transform 0.3s ease;}
         #slide-11 .team-card:hover { transform: translateY(-5px); }
         #slide-11 .team-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; }
         #slide-11 .adnan::before { background: linear-gradient(90deg, transparent, #2dd4bf, transparent); } 
         #slide-11 .anupom::before { background: linear-gradient(90deg, transparent, #8b5cf6, transparent); } 
-        #slide-11 .icon-ring { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; margin-bottom: 12px; border: 1px solid rgba(0, 0, 0, 0.05); } /* Shrunk icon */
+        #slide-11 .icon-ring { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; margin-bottom: 12px; border: 1px solid rgba(0, 0, 0, 0.05); }
         #slide-11 .adnan .icon-ring { background: rgba(13, 148, 136, 0.05); border-color: rgba(13, 148, 136, 0.2); color: #0d9488; }
         #slide-11 .anupom .icon-ring { background: rgba(124, 58, 237, 0.05); border-color: rgba(124, 58, 237, 0.2); color: #7c3aed; }
-        #slide-11 .member-title { font-size: 0.9rem; margin-bottom: 16px; min-height: 24px; text-transform: uppercase; font-weight: 500; letter-spacing: 0.5px; } /* Shrunk text & margins */
-        #slide-11 .member-desc { list-style: none; flex: 1; text-align: left; align-self: flex-start; }
-        #slide-11 .member-desc li { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; font-size: 0.9rem; line-height: 1.4; } /* Shrunk gaps */
+        #slide-11 .member-title { font-size: 0.9rem; margin-bottom: 16px; min-height: 24px; text-transform: uppercase; font-weight: 500; letter-spacing: 0.5px; }
+        #slide-11 .member-desc { list-style: none; flex: 1; text-align: left; align-self: flex-start; margin: 0;}
+        #slide-11 .member-desc li { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; font-size: 0.9rem; line-height: 1.4; }
         #slide-11 .member-desc li::before { content: '✓'; color: #a1a1aa; font-weight: bold; }
-        #slide-11 .anupom-list li h4 { color: #c026d3; font-weight: 700; font-size: 0.9rem;} 
-        #slide-11 .adnan-list li h4 { color: #7c3aed; font-weight: 700; font-size: 0.9rem;}
+        #slide-11 .anupom-list li h4 { color: #c026d3; font-weight: 700; font-size: 0.9rem; margin: 0;} 
+        #slide-11 .adnan-list li h4 { color: #7c3aed; font-weight: 700; font-size: 0.9rem; margin: 0;}
         #slide-11 .slide-footer { position: absolute; bottom: 30px; left: 60px; right: 60px; display: flex; justify-content: space-between; align-items: center; z-index: 5; }
-        #slide-11 .footer-text { font-size: 1rem; color: #52525b; font-weight: 400; line-height: 1.6; margin-bottom: 0;}
+        #slide-11 .footer-text { font-size: 1rem; color: #52525b; font-weight: 400; line-height: 1.6; margin: 0;}
 
         /* Slide 12 Styles (Ask + Close) */
         #slide-12 .slide-glow { top: 40%; left: 50%; transform: translate(-50%, -50%); width: 900px; height: 600px; background: radial-gradient(ellipse, rgba(13, 148, 136, 0.1) 0%, rgba(124, 58, 237, 0.05) 50%, transparent 70%); }
-        .allocation-container { width: 100%; max-width: 1100px; position: relative; }
-        .allocation-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+        .allocation-container { width: 100%; max-width: 1100px; position: relative; margin: 0 auto; }
+        .allocation-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; width: 100%; }
         .alloc-card { border-radius: 20px; padding: 24px 24px; display: flex; flex-direction: column; align-items: flex-start; text-align: left; position: relative; overflow: hidden; transition: transform 0.3s ease; }
         .alloc-card:hover { transform: translateY(-5px); }
         .alloc-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; }
         .card-1::before { background: linear-gradient(90deg, transparent, #2dd4bf, transparent); } .card-2::before { background: linear-gradient(90deg, transparent, #8b5cf6, transparent); } .card-3::before { background: linear-gradient(90deg, transparent, #d946ef, transparent); }
         .icon-box { width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; margin-bottom: 12px; }
         .card-1 .icon-box { background: rgba(13, 148, 136, 0.1); border: 1px solid rgba(13, 148, 136, 0.2); color: #0d9488; } .card-2 .icon-box { background: rgba(124, 58, 237, 0.1); border: 1px solid rgba(124, 58, 237, 0.2); color: #7c3aed; } .card-3 .icon-box { background: rgba(192, 38, 211, 0.1); border: 1px solid rgba(192, 38, 211, 0.2); color: #c026d3; }
-        .final-cta { margin-top: 32px; display: flex; align-items: center; gap: 16px; padding: 16px 32px; background: #ffffff; border: 1px solid #e4e4e7; border-radius: 100px; box-shadow: 0 10px 30px rgba(139, 92, 246, 0.1); }
+        .final-cta { margin-top: 40px; display: flex; align-items: center; gap: 16px; padding: 16px 32px; background: #ffffff; border: 1px solid #e4e4e7; border-radius: 100px; box-shadow: 0 10px 30px rgba(139, 92, 246, 0.1); }
         .final-cta-text { font-size: 1.5rem; font-weight: 800; background: linear-gradient(90deg, #8b5cf6, #d946ef); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
         .final-cta-sub { font-size: 1rem; color: #52525b; font-weight: 500; border-left: 1px solid #e4e4e7; padding-left: 16px; }
 
@@ -328,9 +318,11 @@
                 <div class="presentation-context">Wright Venture Pitch • Slide 02</div>
             </div>
             <div class="slide-content">
-                <h2 class="slide-title reveal">Local Businesses Are Drowning in Data but Starving for Speed.</h2>
+                <div class="badge reveal">The Problem</div>
+                <h2 class="slide-title reveal delay-100" style="margin-bottom: 16px;">Enterprise brands solved this. Local SMBs got left behind.</h2>
+                <p class="slide-subtitle reveal delay-200" style="margin-bottom: 24px; max-width: 900px;">Big corporations use 24/7 call centers and custom data teams to capture every lead. Local businesses are forced to operate blind, starved for speed, and priced out of the solution.</p>
                 <div class="problem-grid">
-                    <div class="problem-card reveal delay-100">
+                    <div class="problem-card reveal delay-300">
                         <div class="visual-container">
                             <div class="funnel-visual">
                                 <div class="funnel-part funnel-top"></div><div class="funnel-part funnel-mid"></div><div class="funnel-part funnel-btm"></div>
@@ -338,16 +330,16 @@
                             </div>
                         </div>
                         <div class="card-header"><div class="card-icon">⏱️</div><h3>The Response Gap</h3></div>
-                        <p><span class="highlight-stat">62%<sup style="font-size: 0.6em; margin-left: 2px;">1</sup> of customer calls and web inquiries</span> go unanswered during busy hours or after-hours.</p>
-                        <p>By the time an owner finally replies, the customer has already booked with a competitor. Missed inquiries equal lost revenue.</p>
+                        <p><span class="highlight-stat">62%<sup style="font-size: 0.6em; margin-left: 2px;">1</sup> of customer calls</span> go unanswered.</p>
+                        <p>Because they can't afford 24/7 enterprise staffing, owners miss calls. By the time they reply, the customer has already booked a competitor.</p>
                     </div>
-                    <div class="problem-card reveal delay-200">
+                    <div class="problem-card reveal delay-400">
                         <div class="visual-container">
                             <div class="labyrinth-visual"><div class="floating-question">?</div></div>
                         </div>
-                        <div class="card-header"><div class="card-icon">📦</div><h3>The Marketing "Black Box"</h3></div>
-                        <p>Owners spend thousands monthly on Meta and Google Ads, yet have <span class="highlight-stat">zero visibility</span> on the actual ROI of specific campaigns.</p>
-                        <p>They are operating completely blind, unable to prove which exact ad generated the sale, leading to wasted ad spend.</p>
+                        <div class="card-header"><div class="card-icon">📦</div><h3>The Analytics Gap</h3></div>
+                        <p>SMBs spend thousands on ads with <span class="highlight-stat">zero visibility</span>.</p>
+                        <p>Without enterprise-grade attribution software, they operate completely blind, unable to prove which exact ad generated the actual sale.</p>
                     </div>
                 </div>
             </div>
@@ -362,9 +354,9 @@
                 <div class="presentation-context">Wright Venture Pitch • Slide 03</div>
             </div>
             <div class="slide-content">
-                <div class="badge reveal">The Fix</div>
-                <h2 class="slide-title reveal delay-100">Meet your 24/7 Autonomous AI Receptionist.</h2>
-                <p class="slide-subtitle reveal delay-200">Pulse is a software engine that plugs the leaks in your business. It answers the phone when you can't, talks to your customers, and books them directly into your calendar.</p>
+                <div class="badge reveal">The Solution</div>
+                <h2 class="slide-title reveal delay-100" style="margin-bottom: 16px;">Enterprise-grade AI, priced for Main Street.</h2>
+                <p class="slide-subtitle reveal delay-200" style="margin-bottom: 40px;">Pulse is an autonomous receptionist and data engine that plugs the leaks in your business. It answers the phone when you can't, and books customers directly into your calendar.</p>
                 <div class="solution-grid">
                     <div class="solution-card card-1 sol-1 reveal delay-300">
                         <div class="card-icon icon-1 sol-icon">⚡</div>
@@ -583,7 +575,7 @@
             <div class="slide-content">
                 <div class="badge reveal">Business Model</div>
                 <h2 class="slide-title reveal delay-100" style="margin-bottom: 12px;">The Revenue Engine</h2>
-                <p class="slide-subtitle reveal delay-100" style="margin-bottom: 24px;">A highly scalable Software-as-a-Service (SaaS) platform.</p>
+                <p class="slide-subtitle reveal delay-100" style="margin-bottom: 36px;">A highly scalable Software-as-a-Service (SaaS) platform.</p>
                 <div class="pricing-grid">
                     <div class="price-card reveal delay-200">
                         <div class="tier-name">Tier 1: The Software</div>
@@ -671,7 +663,7 @@
                     </div>
                 </div>
             </div>
-            <div class="slide-footer reveal delay-400">
+            <div id="slide-11" class="slide-footer reveal delay-400" style="position: absolute; bottom: 40px; left: 60px; right: 60px; display: flex; justify-content: space-between; align-items: center; z-index: 5;">
                 <p class="footer-text">We aren't just developers; we are marketers who know exactly how to solve a marketing problem.</p>
             </div>
             <div class="slide-number">11</div>
@@ -683,7 +675,7 @@
                 <div class="logo"><div class="logo-icon"></div> Pulse</div>
                 <div class="presentation-context">Wright Venture Pitch • Slide 12</div>
             </div>
-            <div class="slide-content" style="padding: 80px 60px 40px;">
+            <div class="slide-content">
                 <div class="badge reveal">THE ASK & THE CLOSE</div>
                 <h1 class="slide-title reveal delay-100" style="margin-bottom: 12px;">Fueling the Go-To-Market.</h1>
                 <p class="slide-subtitle reveal delay-200" style="margin-bottom: 30px;">We are seeking the <span class="highlight-text">$5,000 Wright Venture prize</span> to launch our prototype, stress-test our servers, and fund local market penetration.</p>
