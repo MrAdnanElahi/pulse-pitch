@@ -67,10 +67,6 @@
         #slide-1 .badge { padding: 8px 20px; font-size: 1rem; margin-bottom: 32px; box-shadow: 0 4px 20px rgba(139, 92, 246, 0.1); }
         #slide-1 .headline { font-size: 5.5rem; font-weight: 800; line-height: 1.1; letter-spacing: -2px; margin-bottom: 32px; background: linear-gradient(180deg, #18181b 0%, #52525b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; max-width: 1000px; }
         #slide-1 .sub-headline { font-size: 1.5rem; line-height: 1.6; color: #52525b; max-width: 800px; font-weight: 400; }
-        #slide-1 .slide-footer { position: absolute; bottom: 40px; left: 60px; z-index: 15; display: flex; align-items: center; gap: 16px; }
-        .presenter-avatar { width: 48px; height: 48px; background: #f4f4f5; border: 1px solid #e4e4e7; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: #18181b; }
-        .presenter-info h4 { font-size: 1.1rem; color: #18181b; margin-bottom: 2px; }
-        .presenter-info p { font-size: 0.9rem; color: #71717a; }
 
         /* Slide 2 Styles */
         #slide-2 .slide-glow { top: 40%; left: 50%; transform: translate(-50%, -50%); width: 900px; height: 500px; background: radial-gradient(ellipse, rgba(239, 68, 68, 0.08) 0%, rgba(139, 92, 246, 0.05) 50%, transparent 70%); }
@@ -157,7 +153,7 @@
         .comp-card-sub { font-size: 0.9rem; margin-bottom: 16px; color: #71717a;}
         
         .pulse-card { background: #ffffff; border: 2px solid #8b5cf6; box-shadow: 0 20px 50px rgba(139, 92, 246, 0.1); transform: scale(1.05); z-index: 2; position: relative; overflow: hidden;}
-        .pulse-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, #8b5cf6, #d946ef); }
+
         .pulse-card .comp-card-header { font-size: 1.5rem; display: flex; align-items: center; gap: 8px; margin-bottom: 4px; color: #18181b;}
         .pulse-card .comp-card-sub { color: #7c3aed; font-weight: 600;}
         .feature-list { list-style: none; flex: 1; }
@@ -167,6 +163,34 @@
         .pulse-card .feature-list li::before { content: '✓'; color: #d946ef; font-weight: bold; }
         .tech-highlight { background: rgba(139, 92, 246, 0.05); border: 1px solid rgba(139, 92, 246, 0.2); border-radius: 8px; padding: 10px; margin-top: auto; font-size: 0.8rem; text-align: center; }
         .tech-highlight strong { color: #7c3aed; }
+
+        /* THE SECRET SAUCE EASTER EGG (For Slide 5) */
+        .secret-sauce-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(9, 9, 11, 0.85); backdrop-filter: blur(12px); z-index: 50; display: flex; flex-direction: column; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: all 0.4s ease;}
+        .secret-sauce-overlay.active { opacity: 1; visibility: visible; }
+        
+        /* The Dark Pop-Up Modal */
+        .ss-modal { background: #18181b; border: 1px solid rgba(139, 92, 246, 0.4); border-radius: 32px; padding: 60px; max-width: 1000px; width: 90%; box-shadow: 0 30px 100px rgba(124, 58, 237, 0.2), inset 0 0 0 1px rgba(255,255,255,0.05); transform: scale(0.95) translateY(20px); transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1); opacity: 0; text-align: center; position: relative; overflow: hidden; }
+        .secret-sauce-overlay.active .ss-modal { transform: scale(1) translateY(0); opacity: 1; }
+        
+        /* Subtle top glow inside modal */
+        .ss-modal::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle at top, rgba(139, 92, 246, 0.15), transparent 60%); pointer-events: none; }
+
+        .ss-modal .badge { background: rgba(139, 92, 246, 0.2); border-color: rgba(139, 92, 246, 0.4); color: #c084fc; margin-bottom: 24px; box-shadow: 0 0 20px rgba(139, 92, 246, 0.3); }
+        .ss-modal .slide-title { font-size: 3.2rem; line-height: 1.1; margin-bottom: 40px; color: #ffffff; background: none; -webkit-text-fill-color: #ffffff; letter-spacing: -1px;}
+        .ss-modal .highlight-gradient { background: linear-gradient(90deg, #a78bfa, #f472b6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        .ss-grid { display: flex; gap: 30px; position: relative; z-index: 2;}
+        .ss-card { flex: 1; padding: 40px; border-radius: 24px; text-align: left; }
+        
+        .ss-card.legacy { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); opacity: 0.6; transition: opacity 0.3s;}
+        .ss-card.legacy:hover { opacity: 0.9; }
+        .ss-card.legacy h3 { color: #a1a1aa; font-size: 1.4rem; margin-bottom: 12px;}
+        .ss-card.legacy p { color: #71717a; font-size: 1.05rem; line-height: 1.6;}
+        
+        .ss-card.pulse { background: linear-gradient(180deg, rgba(139, 92, 246, 0.1) 0%, rgba(0,0,0,0) 100%); border: 2px solid #8b5cf6; box-shadow: 0 20px 50px rgba(139, 92, 246, 0.2); transform: scale(1.05); }
+        .ss-card.pulse h3 { color: #ffffff; margin-bottom: 16px; font-size: 1.5rem;}
+        .ss-card.pulse p { font-size: 1.05rem; color: #d4d4d8; line-height: 1.6; }
+        .ss-card.pulse strong { color: #ffffff; }
 
         /* Slide 6 Styles */
         #slide-6 .slide-content { flex-direction: row; justify-content: center; gap: 60px; }
@@ -251,9 +275,7 @@
         .user-count { display: inline-block; padding: 4px 12px; background: #f4f4f5; border-radius: 100px; font-size: 0.85rem; font-weight: 600; border: 1px solid #e4e4e7; margin-bottom: 16px; align-self: flex-start; }
         .focus-text { font-size: 0.95rem; line-height: 1.5; margin: 0; }
 
-        /* =========================================
-           Slide 11 Styles (TEAM OVERRIDES)
-           ========================================= */
+        /* Slide 11 Styles (TEAM) */
         #slide-11 .slide-content { padding: 60px 60px 80px; align-items: center; text-align: center; justify-content: flex-start; } 
         #slide-11 .slide-glow { top: 50%; left: 50%; transform: translate(-50%, -50%); width: 1000px; height: 600px; background: radial-gradient(ellipse, rgba(124, 58, 237, 0.1) 0%, rgba(192, 38, 211, 0.05) 50%, transparent 70%); }
         #slide-11 .badge { margin-bottom: 12px; align-self: center; }
@@ -286,9 +308,10 @@
         .card-1::before { background: linear-gradient(90deg, transparent, #2dd4bf, transparent); } .card-2::before { background: linear-gradient(90deg, transparent, #8b5cf6, transparent); } .card-3::before { background: linear-gradient(90deg, transparent, #d946ef, transparent); }
         .icon-box { width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; margin-bottom: 12px; }
         .card-1 .icon-box { background: rgba(13, 148, 136, 0.1); border: 1px solid rgba(13, 148, 136, 0.2); color: #0d9488; } .card-2 .icon-box { background: rgba(124, 58, 237, 0.1); border: 1px solid rgba(124, 58, 237, 0.2); color: #7c3aed; } .card-3 .icon-box { background: rgba(192, 38, 211, 0.1); border: 1px solid rgba(192, 38, 211, 0.2); color: #c026d3; }
-        .final-cta { margin-top: 40px; display: flex; align-items: center; gap: 16px; padding: 16px 32px; background: #ffffff; border: 1px solid #e4e4e7; border-radius: 100px; box-shadow: 0 10px 30px rgba(139, 92, 246, 0.1); }
-        .final-cta-text { font-size: 1.5rem; font-weight: 800; background: linear-gradient(90deg, #8b5cf6, #d946ef); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
-        .final-cta-sub { font-size: 1rem; color: #52525b; font-weight: 500; border-left: 1px solid #e4e4e7; padding-left: 16px; }
+        
+        /* The Big Prototype Button */
+        .prototype-btn { margin-top: 40px; display: inline-flex; align-items: center; justify-content: center; gap: 12px; padding: 20px 40px; background: linear-gradient(135deg, #8b5cf6, #d946ef); color: #ffffff; border-radius: 100px; font-size: 1.6rem; font-weight: 800; text-decoration: none; box-shadow: 0 15px 40px rgba(139, 92, 246, 0.3); transition: transform 0.3s, box-shadow 0.3s; }
+        .prototype-btn:hover { transform: translateY(-3px); box-shadow: 0 20px 50px rgba(139, 92, 246, 0.4); }
 
     </style>
 </head>
@@ -307,10 +330,6 @@
                 <h1 class="headline reveal delay-100">Stop losing revenue to missed calls.</h1>
                 <p class="sub-headline reveal delay-200">Pulse is the 24/7 AI engine that captures every lead and proves every dollar of ROI.</p>
             </div>
-    <!--    <div class="slide-footer reveal delay-300">
-                <div class="presenter-avatar">👨‍💻</div>
-                <div class="presenter-info"><h4>Adnan</h4><p>Co-Founder, Pulse</p></div>
-            </div> -->
         </section>
 
         <section class="slide" id="slide-2">
@@ -459,6 +478,24 @@
         </section>
 
         <section class="slide" id="slide-5">
+            
+            <div class="secret-sauce-overlay" id="secret-sauce">
+                <div class="ss-modal">
+                    <div class="badge">The Secret Sauce</div>
+                    <h2 class="slide-title">We don't build Customer Service Bots.<br>We build <span class="highlight-gradient">Elite Sales Closers</span>.</h2>
+                    <div class="ss-grid">
+                        <div class="ss-card legacy">
+                            <h3>Generic Chatbots</h3>
+                            <p>Standard AI agents are polite "order takers" that follow a rigid flowchart. If a customer asks for a price, it blindly gives a number. <strong>Result: Lead drop-off.</strong></p>
+                        </div>
+                        <div class="ss-card pulse">
+                            <h3>Pulse AI Engine</h3>
+                            <p>Fine-tuned on top 1% sales methodologies (e.g., <em>Let's Get Real or Let's Not Play</em>). Pulse uses upfront contracts, pain discovery, and strategic empathy. It doesn't just answer questions. <strong>It closes deals.</strong></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="slide-glow"></div>
             <div class="slide-header">
                 <div class="logo"><div class="logo-icon"></div> Pulse</div>
@@ -697,9 +734,14 @@
                         </div>
                     </div>
                 </div>
-                <div class="final-cta reveal delay-400">
-                    <div class="final-cta-text">Thank You.</div><div class="final-cta-sub">We'd love to answer your questions.</div>
+                
+                <div class="reveal delay-400" style="margin-top: 40px; display: flex; flex-direction: column; align-items: center; gap: 12px;">
+                    <a href="https://mradnanelahi.github.io/pulse-prototype/" target="_blank" class="prototype-btn">
+                        Launch Live Prototype 🚀
+                    </a>
+                    <div style="font-size: 1rem; color: #71717a; font-weight: 500;">We'd love to answer your questions.</div>
                 </div>
+
             </div>
             <div class="slide-number">12</div>
         </section>
@@ -713,6 +755,7 @@
             const slides = document.querySelectorAll('.slide');
             const dotsContainer = document.getElementById('dots-container');
             let currentSlide = 0;
+            let secretSauceRevealed = false; // State tracker for our Easter Egg
 
             // 1. Generate Nav Dots
             slides.forEach((_, i) => {
@@ -729,6 +772,26 @@
             // 2. Navigation Function
             function goToSlide(n) {
                 if (n < 0 || n >= slides.length) return; // Boundary check
+                
+                // --- THE SECRET SAUCE INTERCEPT (Slide 5 -> 6) ---
+                if (currentSlide === 4 && n === 5 && !secretSauceRevealed) {
+                    // Show secret sauce instead of going to slide 6
+                    document.getElementById('secret-sauce').classList.add('active');
+                    secretSauceRevealed = true;
+                    return; 
+                }
+                
+                // Logic to handle hiding the secret sauce
+                if (currentSlide === 4 && secretSauceRevealed && n !== 4) {
+                    document.getElementById('secret-sauce').classList.remove('active');
+                    if (n === 3) {
+                        secretSauceRevealed = false; // reset if they went backward
+                    }
+                }
+                if (n < 4) {
+                    secretSauceRevealed = false; // reset if navigating away backwards
+                    document.getElementById('secret-sauce').classList.remove('active');
+                }
                 
                 slides[currentSlide].classList.remove('active');
                 dots[currentSlide].classList.remove('active');
@@ -753,6 +816,12 @@
                 }
                 if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
                     e.preventDefault();
+                    // If on slide 5 and secret sauce is open, close it without changing slides
+                    if (currentSlide === 4 && secretSauceRevealed) {
+                        document.getElementById('secret-sauce').classList.remove('active');
+                        secretSauceRevealed = false;
+                        return;
+                    }
                     if (currentSlide > 0) goToSlide(currentSlide - 1);
                 }
             });
