@@ -35,11 +35,12 @@
         .citation { position: absolute; bottom: 20px; left: 60px; font-size: 10px; color: #a1a1aa; text-align: left; line-height: 1.4; z-index: 15; }
 
         /* PERFECT FLEX CENTERING */
-        .slide-content { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; z-index: 15; position: relative; padding: 80px 80px; }
+        /* Updated padding from 80px to 60px top/bottom to fix vertical crowding */
+        .slide-content { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; z-index: 15; position: relative; padding: 60px 80px; }
         
         .badge { display: inline-flex; align-items: center; padding: 6px 16px; border-radius: 100px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); color: #7c3aed; }
         .slide-title { font-size: 3.2rem; font-weight: 800; letter-spacing: -1.5px; margin-bottom: 20px; background: linear-gradient(180deg, #18181b 0%, #52525b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; max-width: 1000px;}
-        .slide-subtitle { font-size: 1.2rem; color: #52525b; line-height: 1.6; max-width: 800px; margin-bottom: 36px; }
+        .slide-subtitle { font-size: 1.25rem; color: #52525b; line-height: 1.6; max-width: 800px; margin-bottom: 24px; }
         
         .highlight-text { color: #18181b; font-weight: 700; }
         .highlight-stat { color: #ef4444; font-weight: 700; }
@@ -66,7 +67,7 @@
         #slide-1 .pulse-glow { top: 50%; left: 50%; transform: translate(-50%, -50%); width: 800px; height: 800px; background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, rgba(217, 70, 239, 0.05) 40%, transparent 70%); filter: blur(60px); z-index: 1; position: absolute; pointer-events: none;}
         #slide-1 .badge { padding: 8px 20px; font-size: 1rem; margin-bottom: 32px; box-shadow: 0 4px 20px rgba(139, 92, 246, 0.1); }
         #slide-1 .headline { font-size: 5.5rem; font-weight: 800; line-height: 1.1; letter-spacing: -2px; margin-bottom: 32px; background: linear-gradient(180deg, #18181b 0%, #52525b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; max-width: 1000px; }
-        #slide-1 .sub-headline { font-size: 1.5rem; line-height: 1.6; color: #52525b; max-width: 800px; font-weight: 400; }
+        #slide-1 .sub-headline { font-size: 1.6rem; line-height: 1.6; color: #52525b; max-width: 800px; font-weight: 400; }
 
         /* Slide 2 Styles */
         #slide-2 .slide-glow { top: 40%; left: 50%; transform: translate(-50%, -50%); width: 900px; height: 500px; background: radial-gradient(ellipse, rgba(239, 68, 68, 0.08) 0%, rgba(139, 92, 246, 0.05) 50%, transparent 70%); }
@@ -85,13 +86,13 @@
         .card-header { display: flex; align-items: center; gap: 16px; margin-bottom: 12px; }
         .card-icon { width: 42px; height: 42px; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; color: #ef4444; }
         .problem-card h3 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.5px; margin: 0; }
-        .problem-card p { font-size: 0.95rem; line-height: 1.5; margin-bottom: 8px; }
+        .problem-card p { font-size: 1.05rem; line-height: 1.5; margin-bottom: 8px; }
 
         /* Slide 3 Styles */
         #slide-3 .slide-glow { top: 40%; left: 50%; transform: translate(-50%, -50%); width: 900px; height: 600px; background: radial-gradient(ellipse, rgba(13, 148, 136, 0.1) 0%, rgba(139, 92, 246, 0.08) 50%, transparent 70%); }
         #slide-3 .badge { background: rgba(13, 148, 136, 0.1); border-color: rgba(13, 148, 136, 0.3); color: #0f766e;}
         .solution-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; width: 100%; max-width: 1050px; margin: 0 auto; }
-        .solution-card { border-radius: 20px; padding: 32px 24px; display: flex; flex-direction: column; align-items: flex-start; text-align: left; position: relative; overflow: hidden; }
+        .solution-card { border-radius: 20px; padding: 24px 24px; display: flex; flex-direction: column; align-items: flex-start; text-align: left; position: relative; overflow: hidden; }
         .solution-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; }
         .sol-1::before { background: linear-gradient(90deg, transparent, #8b5cf6, transparent); }
         .sol-2::before { background: linear-gradient(90deg, transparent, #d946ef, transparent); }
@@ -101,7 +102,7 @@
         .icon-2 { background: rgba(217, 70, 239, 0.1); border: 1px solid rgba(217, 70, 239, 0.3); color: #c026d3; }
         .icon-3 { background: rgba(45, 212, 191, 0.1); border: 1px solid rgba(45, 212, 191, 0.3); color: #0d9488; }
         .solution-card h3 { font-size: 1.3rem; font-weight: 700; margin-bottom: 10px; }
-        .solution-card p { font-size: 0.95rem; line-height: 1.6; margin: 0; }
+        .solution-card p { font-size: 1.05rem; line-height: 1.6; margin: 0; }
 
         /* Slide 4 Styles (Lottie-Style Flowchart) */
         #slide-4 .slide-glow { top: 50%; left: 50%; transform: translate(-50%, -50%); width: 1000px; height: 500px; background: radial-gradient(ellipse, rgba(13, 148, 136, 0.08) 0%, rgba(124, 58, 237, 0.1) 50%, rgba(192, 38, 211, 0.08) 100%); z-index: 0; }
@@ -121,11 +122,11 @@
         .f-node:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(0,0,0,0.08); }
         .f-node-header { display: flex; align-items: center; gap: 12px; }
         .f-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
-        .f-title { font-size: 1.1rem; font-weight: 700; color: #18181b; margin: 0; }
-        .f-desc { font-size: 0.85rem; color: #52525b; line-height: 1.4; text-align: left; margin: 0; }
+        .f-title { font-size: 1.15rem; font-weight: 700; color: #18181b; margin: 0; }
+        .f-desc { font-size: 0.95rem; color: #52525b; line-height: 1.4; text-align: left; margin: 0; }
         
         /* Phase Badges inside nodes */
-        .f-phase { position: absolute; top: -12px; left: 20px; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; padding: 4px 10px; border-radius: 100px; color: #fff; letter-spacing: 1px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .f-phase { position: absolute; top: -12px; left: 20px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; padding: 4px 10px; border-radius: 100px; color: #fff; letter-spacing: 1px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         .phase-connect { background: #0d9488; } .phase-engage { background: #7c3aed; left: 50%; transform: translateX(-50%); top: -14px; font-size: 0.8rem; padding: 6px 16px;} .phase-sync { background: #c026d3; }
 
         .node-connect .f-icon { background: rgba(13, 148, 136, 0.1); color: #0d9488; border: 1px solid rgba(13,148,136,0.2); }
@@ -139,7 +140,7 @@
         .brain-ripple.r2 { animation: lottieRipple 2s infinite ease-out 1s; }
         @keyframes lottieRipple { 0% { width: 100%; height: 100%; opacity: 0.5; } 100% { width: 250%; height: 250%; opacity: 0; } }
         
-        .tech-chip { display: inline-block; background: rgba(124, 58, 237, 0.05); color: #7c3aed; border: 1px solid rgba(124, 58, 237, 0.2); font-size: 0.75rem; font-weight: 700; padding: 4px 10px; border-radius: 6px; margin-top: 12px; }
+        .tech-chip { display: inline-block; background: rgba(124, 58, 237, 0.05); color: #7c3aed; border: 1px solid rgba(124, 58, 237, 0.2); font-size: 0.8rem; font-weight: 700; padding: 6px 12px; border-radius: 6px; margin-top: 12px; }
 
         /* Slide 5 Styles (Competitor Landscape) */
         #slide-5 .slide-glow { top: 55%; right: 15%; transform: translateY(-50%); width: 600px; height: 600px; background: radial-gradient(circle, rgba(124, 58, 237, 0.1) 0%, rgba(192, 38, 211, 0.05) 50%, transparent 70%); }
@@ -149,19 +150,19 @@
         /* Legacy Card Soft Background */
         .legacy-card { background: #f9fafb; border: 1px solid #f4f4f5; opacity: 0.9; transition: opacity 0.3s, transform 0.3s; }
         .legacy-card:hover { opacity: 1; transform: translateY(-3px); }
-        .comp-card-header { font-size: 1.3rem; font-weight: 700; margin-bottom: 4px;}
-        .comp-card-sub { font-size: 0.9rem; margin-bottom: 16px; color: #71717a;}
+        .comp-card-header { font-size: 1.4rem; font-weight: 700; margin-bottom: 4px;}
+        .comp-card-sub { font-size: 1rem; margin-bottom: 16px; color: #71717a;}
         
         .pulse-card { background: #ffffff; border: 2px solid #8b5cf6; box-shadow: 0 20px 50px rgba(139, 92, 246, 0.1); transform: scale(1.05); z-index: 2; position: relative; overflow: hidden;}
 
-        .pulse-card .comp-card-header { font-size: 1.5rem; display: flex; align-items: center; gap: 8px; margin-bottom: 4px; color: #18181b;}
-        .pulse-card .comp-card-sub { color: #7c3aed; font-weight: 600;}
-        .feature-list { list-style: none; flex: 1; }
-        .feature-list li { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; font-size: 0.9rem; line-height: 1.4; color: #52525b; }
+        .pulse-card .comp-card-header { font-size: 1.6rem; display: flex; align-items: center; gap: 8px; margin-bottom: 4px; color: #18181b;}
+        .pulse-card .comp-card-sub { color: #7c3aed; font-weight: 600; font-size: 1.05rem;}
+        .feature-list { list-style: none; flex: 1; margin-top: 10px; }
+        .feature-list li { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 14px; font-size: 1.05rem; line-height: 1.4; color: #52525b; }
         .legacy-card .feature-list li::before { content: '✗'; color: #ef4444; font-weight: bold; }
-        .pulse-card .feature-list li { color: #18181b; font-size: 0.95rem; }
+        .pulse-card .feature-list li { color: #18181b; font-size: 1.1rem; }
         .pulse-card .feature-list li::before { content: '✓'; color: #d946ef; font-weight: bold; }
-        .tech-highlight { background: rgba(139, 92, 246, 0.05); border: 1px solid rgba(139, 92, 246, 0.2); border-radius: 8px; padding: 10px; margin-top: auto; font-size: 0.8rem; text-align: center; }
+        .tech-highlight { background: rgba(139, 92, 246, 0.05); border: 1px solid rgba(139, 92, 246, 0.2); border-radius: 8px; padding: 12px; margin-top: auto; font-size: 0.9rem; text-align: center; }
         .tech-highlight strong { color: #7c3aed; }
 
         /* THE SECRET SAUCE EASTER EGG (For Slide 5) */
@@ -184,12 +185,12 @@
         
         .ss-card.legacy { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); opacity: 0.6; transition: opacity 0.3s;}
         .ss-card.legacy:hover { opacity: 0.9; }
-        .ss-card.legacy h3 { color: #a1a1aa; font-size: 1.4rem; margin-bottom: 12px;}
-        .ss-card.legacy p { color: #71717a; font-size: 1.05rem; line-height: 1.6;}
+        .ss-card.legacy h3 { color: #a1a1aa; font-size: 1.5rem; margin-bottom: 16px;}
+        .ss-card.legacy p { color: #71717a; font-size: 1.1rem; line-height: 1.6;}
         
         .ss-card.pulse { background: linear-gradient(180deg, rgba(139, 92, 246, 0.1) 0%, rgba(0,0,0,0) 100%); border: 2px solid #8b5cf6; box-shadow: 0 20px 50px rgba(139, 92, 246, 0.2); transform: scale(1.05); }
-        .ss-card.pulse h3 { color: #ffffff; margin-bottom: 16px; font-size: 1.5rem;}
-        .ss-card.pulse p { font-size: 1.05rem; color: #d4d4d8; line-height: 1.6; }
+        .ss-card.pulse h3 { color: #ffffff; margin-bottom: 16px; font-size: 1.6rem;}
+        .ss-card.pulse p { font-size: 1.1rem; color: #d4d4d8; line-height: 1.6; }
         .ss-card.pulse strong { color: #ffffff; }
 
         /* Slide 6 Styles */
@@ -202,12 +203,12 @@
         .status-header { display: flex; align-items: center; gap: 12px; margin-bottom: 32px; padding-bottom: 24px; border-bottom: 1px solid #e4e4e7; }
         .status-dot { width: 12px; height: 12px; background-color: #0d9488; border-radius: 50%; box-shadow: 0 0 10px rgba(13, 148, 136, 0.4); animation: pulse-dot 2s infinite; }
         @keyframes pulse-dot { 0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(13, 148, 136, 0.4); } 70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(13, 148, 136, 0); } 100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(13, 148, 136, 0); } }
-        .status-text { font-size: 1.2rem; font-weight: 700; text-transform: uppercase; color: #18181b;}
+        .status-text { font-size: 1.25rem; font-weight: 700; text-transform: uppercase; color: #18181b;}
         .milestone-list { list-style: none; }
         .milestone-list li { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 24px; }
-        .milestone-icon { width: 32px; height: 32px; background: rgba(124, 58, 237, 0.1); border: 1px solid rgba(124, 58, 237, 0.2); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #7c3aed; font-size: 1rem; flex-shrink: 0; }
-        .milestone-content h4 { font-size: 1.1rem; margin-bottom: 4px; font-weight: 600; color: #18181b; }
-        .milestone-content p { font-size: 0.95rem; color: #52525b; line-height: 1.4; margin: 0; }
+        .milestone-icon { width: 36px; height: 36px; background: rgba(124, 58, 237, 0.1); border: 1px solid rgba(124, 58, 237, 0.2); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #7c3aed; font-size: 1.2rem; flex-shrink: 0; }
+        .milestone-content h4 { font-size: 1.2rem; margin-bottom: 4px; font-weight: 600; color: #18181b; }
+        .milestone-content p { font-size: 1.05rem; color: #52525b; line-height: 1.4; margin: 0; }
 
         /* Slide 7 Styles */
         #slide-7 .slide-glow { bottom: -10%; left: 50%; transform: translateX(-50%); width: 1000px; height: 500px; background: radial-gradient(ellipse, rgba(124, 58, 237, 0.1) 0%, rgba(13, 148, 136, 0.05) 50%, transparent 70%); }
@@ -217,11 +218,12 @@
         .mc-1::before { background: linear-gradient(90deg, transparent, #8b5cf6, transparent); }
         .mc-2::before { background: linear-gradient(90deg, transparent, #2dd4bf, transparent); }
         .mc-3::before { background: linear-gradient(90deg, transparent, #d946ef, transparent); }
-        .metric-value { font-size: 4rem; font-weight: 800; letter-spacing: -2px; margin-bottom: 16px; line-height: 1; }
+        .metric-value { font-size: 4.5rem; font-weight: 800; letter-spacing: -2px; margin-bottom: 16px; line-height: 1; }
         .val-1 { background: linear-gradient(135deg, #7c3aed, #4c1d95); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .val-2 { background: linear-gradient(135deg, #0d9488, #115e59); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .val-3 { background: linear-gradient(135deg, #c026d3, #86198f); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .metric-label { font-size: 1.15rem; font-weight: 700; margin-bottom: 12px; letter-spacing: -0.5px; }
+        .metric-label { font-size: 1.25rem; font-weight: 700; margin-bottom: 12px; letter-spacing: -0.5px; }
+        .metric-desc { font-size: 1.1rem; }
 
         /* Slide 8 Styles (Acquisition) */
         #slide-8 .slide-glow { bottom: 0; right: 0; width: 800px; height: 600px; background: radial-gradient(circle at bottom right, rgba(192, 38, 211, 0.1) 0%, rgba(124, 58, 237, 0.05) 50%, transparent 70%); }
@@ -230,10 +232,10 @@
         .phase-card { border-radius: 20px; padding: 40px 32px; display: flex; flex-direction: column; flex: 1; z-index: 2; position: relative; overflow: hidden; transition: transform 0.3s ease; }
         .phase-card:hover { transform: translateY(-5px); }
         .phase-1 { border-top: 4px solid #2dd4bf; } .phase-2 { border-top: 4px solid #8b5cf6; } .phase-3 { border-top: 4px solid #d946ef; }
-        .phase-badge { display: inline-flex; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }
+        .phase-badge { display: inline-flex; font-size: 0.95rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }
         .phase-1 .phase-badge { color: #0d9488; } .phase-2 .phase-badge { color: #7c3aed; } .phase-3 .phase-badge { color: #c026d3; }
-        .phase-title { font-size: 1.6rem; font-weight: 700; margin-bottom: 24px; }
-        .icon-container { width: 56px; height: 56px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 24px; }
+        .phase-title { font-size: 1.8rem; font-weight: 700; margin-bottom: 24px; }
+        .icon-container { width: 56px; height: 56px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin-bottom: 24px; }
         .phase-1 .icon-container { background: rgba(13, 148, 136, 0.1); border: 1px solid rgba(13, 148, 136, 0.2); color: #0d9488; }
         .phase-2 .icon-container { background: rgba(124, 58, 237, 0.1); border: 1px solid rgba(124, 58, 237, 0.2); color: #7c3aed; }
         .phase-3 .icon-container { background: rgba(192, 38, 211, 0.1); border: 1px solid rgba(192, 38, 211, 0.2); color: #c026d3; }
@@ -244,14 +246,14 @@
         .price-card { border-radius: 24px; padding: 32px 36px; position: relative; overflow: hidden; display: flex; flex-direction: column; }
         .price-card.premium { background: #ffffff; border: 2px solid #8b5cf6; box-shadow: 0 20px 40px rgba(139, 92, 246, 0.1); }
         
-        .premium-badge { position: absolute; top: 16px; right: 16px; background: #7c3aed; color: #ffffff; font-size: 0.7rem; font-weight: 800; padding: 4px 10px; border-radius: 100px; letter-spacing: 1px; text-transform: uppercase; }
+        .premium-badge { position: absolute; top: 16px; right: 16px; background: #7c3aed; color: #ffffff; font-size: 0.8rem; font-weight: 800; padding: 6px 12px; border-radius: 100px; letter-spacing: 1px; text-transform: uppercase; }
         
-        .price-point { font-size: 3.2rem; font-weight: 800; line-height: 1; margin-bottom: 16px; display: flex; align-items: flex-end; gap: 8px; color: #18181b;}
-        .price-point span { font-size: 1.1rem; color: #71717a; font-weight: 500; margin-bottom: 6px; }
-        .tier-name { font-size: 1.5rem; font-weight: 700; margin-bottom: 8px; }
-        .tier-desc { font-size: 0.95rem; color: #52525b; margin-bottom: 24px; }
+        .price-point { font-size: 3.5rem; font-weight: 800; line-height: 1; margin-bottom: 16px; display: flex; align-items: flex-end; gap: 8px; color: #18181b;}
+        .price-point span { font-size: 1.25rem; color: #71717a; font-weight: 500; margin-bottom: 6px; }
+        .tier-name { font-size: 1.6rem; font-weight: 700; margin-bottom: 8px; }
+        .tier-desc { font-size: 1.05rem; color: #52525b; margin-bottom: 24px; }
         .checklist { list-style: none; flex: 1; margin: 0;}
-        .checklist li { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; font-size: 1rem; line-height: 1.4; color: #52525b;}
+        .checklist li { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 14px; font-size: 1.1rem; line-height: 1.4; color: #52525b;}
         .checklist li::before { content: '✓'; color: #7c3aed; font-weight: bold; }
         .premium-list li::before { color: #c026d3; }
 
@@ -259,8 +261,8 @@
         #slide-10 .slide-glow { bottom: -10%; right: 10%; width: 800px; height: 600px; background: radial-gradient(circle at bottom right, rgba(124, 58, 237, 0.1) 0%, rgba(192, 38, 211, 0.05) 50%, transparent 70%); }
         .header-layout { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; width: 100%; max-width: 1000px;}
         .margin-badge { background: #ffffff; border: 1px solid #e4e4e7; padding: 16px 24px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); text-align: right; }
-        .margin-badge h4 { font-size: 1.8rem; color: #c026d3; margin-bottom: 4px; line-height: 1; font-weight: 800;}
-        .margin-badge p { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin: 0; }
+        .margin-badge h4 { font-size: 2rem; color: #c026d3; margin-bottom: 4px; line-height: 1; font-weight: 800;}
+        .margin-badge p { font-size: 0.95rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin: 0; }
         .chart-grid { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; width: 100%; max-width: 1000px; margin: 0 auto; position: relative; height: 320px; }
         .chart-grid::before { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 1px; background: rgba(0, 0, 0, 0.1); }
         .chart-grid::after { content: ''; position: absolute; bottom: 50%; left: 0; width: 100%; height: 1px; background: transparent; border-top: 1px dashed rgba(0, 0, 0, 0.1); }
@@ -268,17 +270,17 @@
         .year-1 { height: 230px; border-top: 4px solid #2dd4bf; } 
         .year-2 { height: 275px; border-top: 4px solid #8b5cf6; background: rgba(139, 92, 246, 0.02); } 
         .year-3 { height: 320px; border-top: 4px solid #d946ef; background: linear-gradient(180deg, rgba(217, 70, 239, 0.05) 0%, rgba(255, 255, 255, 0) 100%); }
-        .year-label { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
+        .year-label { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
         .year-1 .year-label { color: #0d9488; } .year-2 .year-label { color: #7c3aed; } .year-3 .year-label { color: #c026d3; }
-        .arr-value { font-size: 3rem; font-weight: 800; margin-bottom: 8px; line-height: 1; letter-spacing: -1px; color: #18181b;}
-        .user-count { display: inline-block; padding: 4px 12px; background: #f4f4f5; border-radius: 100px; font-size: 0.85rem; font-weight: 600; border: 1px solid #e4e4e7; margin-bottom: 16px; align-self: flex-start; }
-        .focus-text { font-size: 0.95rem; line-height: 1.5; margin: 0; }
+        .arr-value { font-size: 3.2rem; font-weight: 800; margin-bottom: 12px; line-height: 1; letter-spacing: -1px; color: #18181b;}
+        .user-count { display: inline-block; padding: 6px 14px; background: #f4f4f5; border-radius: 100px; font-size: 0.95rem; font-weight: 600; border: 1px solid #e4e4e7; margin-bottom: 16px; align-self: flex-start; }
+        .focus-text { font-size: 1.05rem; line-height: 1.5; margin: 0; }
 
         /* Slide 11 Styles (TEAM) */
-        #slide-11 .slide-content { padding: 60px 60px 80px; align-items: center; text-align: center; justify-content: flex-start; } 
+        #slide-11 .slide-content { padding: 60px 60px; align-items: center; text-align: center; justify-content: flex-start; } 
         #slide-11 .slide-glow { top: 50%; left: 50%; transform: translate(-50%, -50%); width: 1000px; height: 600px; background: radial-gradient(ellipse, rgba(124, 58, 237, 0.1) 0%, rgba(192, 38, 211, 0.05) 50%, transparent 70%); }
         #slide-11 .badge { margin-bottom: 12px; align-self: center; }
-        #slide-11 .slide-title { font-size: 3rem; margin-bottom: 24px; max-width: 900px; }
+        #slide-11 .slide-title { font-size: 3.2rem; margin-bottom: 24px; max-width: 900px; }
         #slide-11 .team-grid { display: flex; justify-content: center; gap: 40px; align-items: stretch; width: 100%; max-width: 900px; margin: 0 auto; }
         #slide-11 .team-card { width: 100%; max-width: 400px; border-radius: 20px; padding: 24px; display: flex; flex-direction: column; align-items: center; position: relative; overflow: hidden; transition: transform 0.3s ease;}
         #slide-11 .team-card:hover { transform: translateY(-5px); }
@@ -288,16 +290,17 @@
         #slide-11 .icon-ring { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; margin-bottom: 12px; border: 1px solid rgba(0, 0, 0, 0.05); }
         #slide-11 .adnan .icon-ring { background: rgba(13, 148, 136, 0.05); border-color: rgba(13, 148, 136, 0.2); color: #0d9488; }
         #slide-11 .anupom .icon-ring { background: rgba(124, 58, 237, 0.05); border-color: rgba(124, 58, 237, 0.2); color: #7c3aed; }
-        #slide-11 .member-title { font-size: 0.9rem; margin-bottom: 16px; min-height: 24px; text-transform: uppercase; font-weight: 500; letter-spacing: 0.5px; }
+        #slide-11 .member-title { font-size: 1rem; margin-bottom: 16px; min-height: 24px; text-transform: uppercase; font-weight: 500; letter-spacing: 0.5px; }
         #slide-11 .member-desc { list-style: none; flex: 1; text-align: left; align-self: flex-start; margin: 0;}
-        #slide-11 .member-desc li { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; font-size: 0.9rem; line-height: 1.4; }
+        #slide-11 .member-desc li { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; font-size: 1rem; line-height: 1.4; }
         #slide-11 .member-desc li::before { content: '✓'; color: #a1a1aa; font-weight: bold; }
-        #slide-11 .anupom-list li h4 { color: #c026d3; font-weight: 700; font-size: 0.9rem; margin: 0;} 
-        #slide-11 .adnan-list li h4 { color: #7c3aed; font-weight: 700; font-size: 0.9rem; margin: 0;}
+        #slide-11 .anupom-list li h4 { color: #c026d3; font-weight: 700; font-size: 1rem; margin: 0;} 
+        #slide-11 .adnan-list li h4 { color: #7c3aed; font-weight: 700; font-size: 1rem; margin: 0;}
         #slide-11 .slide-footer { position: absolute; bottom: 30px; left: 60px; right: 60px; display: flex; justify-content: space-between; align-items: center; z-index: 5; }
-        #slide-11 .footer-text { font-size: 1rem; color: #52525b; font-weight: 400; line-height: 1.6; margin: 0;}
+        #slide-11 .footer-text { font-size: 1.1rem; color: #52525b; font-weight: 400; line-height: 1.6; margin: 0;}
 
         /* Slide 12 Styles (Ask + Close) */
+        #slide-12 .slide-content { padding: 60px 60px; } /* Cleaned up padding to keep things centered */
         #slide-12 .slide-glow { top: 40%; left: 50%; transform: translate(-50%, -50%); width: 900px; height: 600px; background: radial-gradient(ellipse, rgba(13, 148, 136, 0.1) 0%, rgba(124, 58, 237, 0.05) 50%, transparent 70%); }
         .allocation-container { width: 100%; max-width: 1100px; position: relative; margin: 0 auto; }
         .allocation-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; width: 100%; }
@@ -305,11 +308,12 @@
         .alloc-card:hover { transform: translateY(-5px); }
         .alloc-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; }
         .card-1::before { background: linear-gradient(90deg, transparent, #2dd4bf, transparent); } .card-2::before { background: linear-gradient(90deg, transparent, #8b5cf6, transparent); } .card-3::before { background: linear-gradient(90deg, transparent, #d946ef, transparent); }
-        .icon-box { width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; margin-bottom: 12px; }
+        .icon-box { width: 46px; height: 46px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; margin-bottom: 16px; }
         .card-1 .icon-box { background: rgba(13, 148, 136, 0.1); border: 1px solid rgba(13, 148, 136, 0.2); color: #0d9488; } .card-2 .icon-box { background: rgba(124, 58, 237, 0.1); border: 1px solid rgba(124, 58, 237, 0.2); color: #7c3aed; } .card-3 .icon-box { background: rgba(192, 38, 211, 0.1); border: 1px solid rgba(192, 38, 211, 0.2); color: #c026d3; }
         
         /* The Big Prototype Button */
-        .prototype-btn { margin-top: 40px; display: inline-flex; align-items: center; justify-content: center; gap: 12px; padding: 20px 40px; background: linear-gradient(135deg, #8b5cf6, #d946ef); color: #ffffff; border-radius: 100px; font-size: 1.6rem; font-weight: 800; text-decoration: none; box-shadow: 0 15px 40px rgba(139, 92, 246, 0.3); transition: transform 0.3s, box-shadow 0.3s; }
+        /* Increased button text size and reduced top margin to fit perfectly on screen */
+        .prototype-btn { margin-top: 24px; display: inline-flex; align-items: center; justify-content: center; gap: 12px; padding: 16px 36px; background: linear-gradient(135deg, #8b5cf6, #d946ef); color: #ffffff; border-radius: 100px; font-size: 1.4rem; font-weight: 800; text-decoration: none; box-shadow: 0 15px 40px rgba(139, 92, 246, 0.3); transition: transform 0.3s, box-shadow 0.3s; }
         .prototype-btn:hover { transform: translateY(-3px); box-shadow: 0 20px 50px rgba(139, 92, 246, 0.4); }
 
     </style>
@@ -341,7 +345,7 @@
                 <div class="badge reveal">The Problem</div>
                 <h2 class="slide-title reveal delay-100" style="margin-bottom: 16px;">Enterprise brands solved this. Local SMBs got left behind.</h2>
                 
-                <p class="slide-subtitle reveal delay-200" style="margin-bottom: 32px; max-width: 900px; font-size: 1.3rem;">
+                <p class="slide-subtitle reveal delay-200" style="margin-bottom: 24px; max-width: 900px; font-size: 1.3rem;">
                     Enterprises capture every lead. Local businesses are <strong>priced out</strong>, <strong>starved for speed</strong>, and forced to <span style="color: #ef4444; font-weight: 700;">operate blind</span>.
                 </p>
                 
@@ -355,7 +359,7 @@
                         </div>
                         <div class="card-header"><div class="card-icon">⏱️</div><h3>The Response Gap</h3></div>
                         
-                        <ul style="list-style: none; text-align: left; padding: 0; font-size: 0.95rem; color: #52525b; line-height: 1.5; margin-top: 8px;">
+                        <ul style="list-style: none; text-align: left; padding: 0; font-size: 1.05rem; color: #52525b; line-height: 1.5; margin-top: 8px;">
                             <li style="margin-bottom: 12px; display: flex; gap: 10px;"><span style="color:#ef4444; font-weight: bold;">✗</span> <div><span class="highlight-stat">62%<sup style="font-size: 0.6em; margin-left: 2px;">1</sup> of calls</span> go unanswered.</div></li>
                             <li style="margin-bottom: 12px; display: flex; gap: 10px;"><span style="color:#ef4444; font-weight: bold;">✗</span> <div>Cannot afford 24/7 human staffing.</div></li>
                             <li style="margin-bottom: 12px; display: flex; gap: 10px;"><span style="color:#ef4444; font-weight: bold;">✗</span> <div>Lost leads instantly book with competitors.</div></li>
@@ -368,7 +372,7 @@
                         </div>
                         <div class="card-header"><div class="card-icon">📦</div><h3>The Analytics Gap</h3></div>
                         
-                        <ul style="list-style: none; text-align: left; padding: 0; font-size: 0.95rem; color: #52525b; line-height: 1.5; margin-top: 8px;">
+                        <ul style="list-style: none; text-align: left; padding: 0; font-size: 1.05rem; color: #52525b; line-height: 1.5; margin-top: 8px;">
                             <li style="margin-bottom: 12px; display: flex; gap: 10px;"><span style="color:#ef4444; font-weight: bold;">✗</span> <div>Thousands spent with <span class="highlight-stat">unmeasurable ROI</span>.</div></li>
                             <li style="margin-bottom: 12px; display: flex; gap: 10px;"><span style="color:#ef4444; font-weight: bold;">✗</span> <div>No enterprise-grade attribution software.</div></li>
                             <li style="margin-bottom: 12px; display: flex; gap: 10px;"><span style="color:#ef4444; font-weight: bold;">✗</span> <div>Unable to prove which ads drive actual sales.</div></li>
@@ -390,7 +394,7 @@
                 <div class="badge reveal">The Solution</div>
                 <h2 class="slide-title reveal delay-100" style="margin-bottom: 16px;">Enterprise-grade AI, priced for Main Street.</h2>
                 
-                <p class="slide-subtitle reveal delay-200" style="margin-bottom: 40px; max-width: 900px; font-size: 1.3rem;">
+                <p class="slide-subtitle reveal delay-200" style="margin-bottom: 24px; max-width: 900px; font-size: 1.3rem;">
                     An <strong>autonomous AI engine</strong> that captures every lead, books appointments, and <strong>proves your exact marketing ROI</strong>.
                 </p>
                 
@@ -399,7 +403,7 @@
                         <div class="card-icon icon-1 sol-icon">⚡</div>
                         <h3>Instant Omni-Response</h3>
                         
-                        <ul style="list-style: none; text-align: left; padding: 0; font-size: 0.95rem; color: #52525b; line-height: 1.5; margin-top: 12px;">
+                        <ul style="list-style: none; text-align: left; padding: 0; font-size: 1.05rem; color: #52525b; line-height: 1.5; margin-top: 12px;">
                             <li style="margin-bottom: 12px; display: flex; gap: 8px;"><span style="color:#7c3aed; font-weight: bold;">✓</span> <div>Picks up inbound leads in <span class="highlight-text">< 5 seconds</span></div></li>
                             <li style="margin-bottom: 12px; display: flex; gap: 8px;"><span style="color:#7c3aed; font-weight: bold;">✓</span> <div><span class="highlight-text">Sub-second latency</span> for natural voice flow</div></li>
                             <li style="margin-bottom: 12px; display: flex; gap: 8px;"><span style="color:#7c3aed; font-weight: bold;">✓</span> <div>Handles calls, SMS, and web chat</div></li>
@@ -410,7 +414,7 @@
                         <div class="card-icon icon-2 sol-icon">📅</div>
                         <h3>Autonomous Booking</h3>
                         
-                        <ul style="list-style: none; text-align: left; padding: 0; font-size: 0.95rem; color: #52525b; line-height: 1.5; margin-top: 12px;">
+                        <ul style="list-style: none; text-align: left; padding: 0; font-size: 1.05rem; color: #52525b; line-height: 1.5; margin-top: 12px;">
                             <li style="margin-bottom: 12px; display: flex; gap: 8px;"><span style="color:#c026d3; font-weight: bold;">✓</span> <div>Actively qualifies inbound prospects</div></li>
                             <li style="margin-bottom: 12px; display: flex; gap: 8px;"><span style="color:#c026d3; font-weight: bold;">✓</span> <div><span class="highlight-text">Books appointments</span> without human input</div></li>
                             <li style="margin-bottom: 12px; display: flex; gap: 8px;"><span style="color:#c026d3; font-weight: bold;">✓</span> <div>Syncs directly to your calendar & CRM</div></li>
@@ -421,7 +425,7 @@
                         <div class="card-icon icon-3 sol-icon">📊</div>
                         <h3>Actionable ROI Analytics</h3>
                         
-                        <ul style="list-style: none; text-align: left; padding: 0; font-size: 0.95rem; color: #52525b; line-height: 1.5; margin-top: 12px;">
+                        <ul style="list-style: none; text-align: left; padding: 0; font-size: 1.05rem; color: #52525b; line-height: 1.5; margin-top: 12px;">
                             <li style="margin-bottom: 12px; display: flex; gap: 8px;"><span style="color:#0d9488; font-weight: bold;">✓</span> <div>Generates daily performance reports</div></li>
                             <li style="margin-bottom: 12px; display: flex; gap: 8px;"><span style="color:#0d9488; font-weight: bold;">✓</span> <div>Tracks <span class="highlight-text">exact marketing channels</span></div></li>
                             <li style="margin-bottom: 12px; display: flex; gap: 8px;"><span style="color:#0d9488; font-weight: bold;">✓</span> <div>Proves which specific ads drive revenue</div></li>
@@ -463,7 +467,7 @@
                             <div class="f-node-header">
                                 <div class="f-icon">💬</div><div class="f-title">Omni-Channel Setup</div>
                             </div>
-                            <ul style="list-style: none; padding: 0; font-size: 0.85rem; color: #52525b; line-height: 1.4; margin-top: 8px; text-align: left;">
+                            <ul style="list-style: none; padding: 0; font-size: 0.95rem; color: #52525b; line-height: 1.4; margin-top: 8px; text-align: left;">
                                 <li style="margin-bottom: 6px; display: flex; gap: 6px;"><span style="color:#0d9488; font-weight: bold;">✓</span> <div>Captures Voice, SMS & Chat</div></li>
                                 <li style="display: flex; gap: 6px;"><span style="color:#0d9488; font-weight: bold;">✓</span> <div><span class="highlight-text">Zero-latency</span> ingestion</div></li>
                             </ul>
@@ -473,7 +477,7 @@
                             <div class="f-node-header">
                                 <div class="f-icon">🧲</div><div class="f-title">Ad Attribution</div>
                             </div>
-                            <ul style="list-style: none; padding: 0; font-size: 0.85rem; color: #52525b; line-height: 1.4; margin-top: 8px; text-align: left;">
+                            <ul style="list-style: none; padding: 0; font-size: 0.95rem; color: #52525b; line-height: 1.4; margin-top: 8px; text-align: left;">
                                 <li style="margin-bottom: 6px; display: flex; gap: 6px;"><span style="color:#0d9488; font-weight: bold;">✓</span> <div>Tracks Google & Meta Ads</div></li>
                                 <li style="display: flex; gap: 6px;"><span style="color:#0d9488; font-weight: bold;">✓</span> <div>Maps exact <span class="highlight-text">customer journeys</span></div></li>
                             </ul>
@@ -489,7 +493,7 @@
                                 <div class="brain-ripple r2"></div>
                             </div>
                             <div class="f-title" style="font-size: 1.4rem;">Pulse AI Engine</div>
-                            <ul style="list-style: none; padding: 0; font-size: 0.9rem; color: #52525b; line-height: 1.4; margin-top: 16px; margin-bottom: 8px; text-align: left; display: inline-block;">
+                            <ul style="list-style: none; padding: 0; font-size: 1rem; color: #52525b; line-height: 1.4; margin-top: 16px; margin-bottom: 8px; text-align: left; display: inline-block;">
                                 <li style="margin-bottom: 8px; display: flex; gap: 8px;"><span style="color:#7c3aed; font-weight: bold;">✓</span> <div><span class="highlight-text">Sub-second</span> conversational latency</div></li>
                                 <li style="margin-bottom: 8px; display: flex; gap: 8px;"><span style="color:#7c3aed; font-weight: bold;">✓</span> <div>Applies elite <span class="highlight-text">sales psychology</span></div></li>
                                 <li style="display: flex; gap: 8px;"><span style="color:#7c3aed; font-weight: bold;">✓</span> <div>Auto-syncs with Knowledge Base</div></li>
@@ -504,7 +508,7 @@
                             <div class="f-node-header">
                                 <div class="f-icon">📅</div><div class="f-title">Workflow Auto-Sync</div>
                             </div>
-                            <ul style="list-style: none; padding: 0; font-size: 0.85rem; color: #52525b; line-height: 1.4; margin-top: 8px; text-align: left;">
+                            <ul style="list-style: none; padding: 0; font-size: 0.95rem; color: #52525b; line-height: 1.4; margin-top: 8px; text-align: left;">
                                 <li style="margin-bottom: 6px; display: flex; gap: 6px;"><span style="color:#c026d3; font-weight: bold;">✓</span> <div>Auto-books appointments</div></li>
                                 <li style="display: flex; gap: 6px;"><span style="color:#c026d3; font-weight: bold;">✓</span> <div>Updates <span class="highlight-text">your existing CRM</span></div></li>
                             </ul>
@@ -514,7 +518,7 @@
                             <div class="f-node-header">
                                 <div class="f-icon">📊</div><div class="f-title">Live Dashboard</div>
                             </div>
-                            <ul style="list-style: none; padding: 0; font-size: 0.85rem; color: #52525b; line-height: 1.4; margin-top: 8px; text-align: left;">
+                            <ul style="list-style: none; padding: 0; font-size: 0.95rem; color: #52525b; line-height: 1.4; margin-top: 8px; text-align: left;">
                                 <li style="margin-bottom: 6px; display: flex; gap: 6px;"><span style="color:#c026d3; font-weight: bold;">✓</span> <div>Flags <span class="highlight-text">Revenue Recovery</span> leads</div></li>
                                 <li style="display: flex; gap: 6px;"><span style="color:#c026d3; font-weight: bold;">✓</span> <div>Generates exact ROI metrics</div></li>
                             </ul>
@@ -536,7 +540,7 @@
                         <div class="ss-card legacy">
                             <h3>Generic Chatbots</h3>
                             
-                            <ul style="list-style: none; padding: 0; color: #d4d4d8; font-size: 1.05rem; line-height: 1.6;">
+                            <ul style="list-style: none; padding: 0; color: #d4d4d8; font-size: 1.1rem; line-height: 1.6;">
                                 <li style="margin-bottom: 12px; display: flex; gap: 10px;"><span style="color:#ef4444; font-weight: bold;">✗</span> <div>Act as polite "order takers"</div></li>
                                 <li style="margin-bottom: 12px; display: flex; gap: 10px;"><span style="color:#ef4444; font-weight: bold;">✗</span> <div>Rely on rigid, frustrating flowcharts</div></li>
                                 <li style="margin-bottom: 12px; display: flex; gap: 10px;"><span style="color:#ef4444; font-weight: bold;">✗</span> <div>Blindly quote prices with zero context</div></li>
@@ -546,7 +550,7 @@
                         <div class="ss-card pulse">
                             <h3>Pulse AI Engine</h3>
                             
-                            <ul style="list-style: none; padding: 0; color: #e4e4e7; font-size: 1.05rem; line-height: 1.6;">
+                            <ul style="list-style: none; padding: 0; color: #e4e4e7; font-size: 1.1rem; line-height: 1.6;">
                                 <li style="margin-bottom: 12px; display: flex; gap: 10px;"><span style="color:#d946ef; font-weight: bold;">✓</span> <div>Fine-tuned on top 1% sales methodologies</div></li>
                                 <li style="margin-bottom: 12px; display: flex; gap: 10px;"><span style="color:#d946ef; font-weight: bold;">✓</span> <div>Utilizes upfront contracts & pain discovery</div></li>
                                 <li style="margin-bottom: 12px; display: flex; gap: 10px;"><span style="color:#d946ef; font-weight: bold;">✓</span> <div>Controls the frame with strategic empathy</div></li>
@@ -615,7 +619,7 @@
                     <div class="badge reveal">Market Validation</div>
                     <h2 class="slide-title reveal delay-100" style="text-align: left;">Born from a real agency. Built for real clients.</h2>
                     
-                    <ul class="reveal delay-200" style="list-style: none; padding: 0; font-size: 1.1rem; color: #52525b; line-height: 1.5; margin-top: 16px;">
+                    <ul class="reveal delay-200" style="list-style: none; padding: 0; font-size: 1.15rem; color: #52525b; line-height: 1.5; margin-top: 16px;">
                         <li style="margin-bottom: 24px; display: flex; gap: 12px;">
                             <span style="color:#0d9488; font-weight: bold; font-size: 1.2rem;">✓</span> 
                             <div><strong>Agency Founders:</strong> We experience this problem daily alongside our clients.</div>
@@ -711,7 +715,7 @@
                     
                     <div class="phase-card phase-1">
                         <div class="icon-container">🤝</div><div class="phase-badge">Phase 1: Direct</div><h3 class="phase-title">Warm Network</h3>
-                        <ul style="list-style: none; padding: 0; font-size: 0.95rem; color: #52525b; line-height: 1.4; margin-top: 12px; text-align: left;">
+                        <ul style="list-style: none; padding: 0; font-size: 1.05rem; color: #52525b; line-height: 1.4; margin-top: 12px; text-align: left;">
                             <li style="margin-bottom: 10px; display: flex; gap: 8px;"><span style="color:#0d9488; font-weight: bold;">✓</span> <div>Convert <span class="highlight-text">existing agency clients</span></div></li>
                             <li style="margin-bottom: 10px; display: flex; gap: 8px;"><span style="color:#0d9488; font-weight: bold;">✓</span> <div>Target local Dayton & Fairborn networks</div></li>
                             <li style="display: flex; gap: 8px;"><span style="color:#0d9488; font-weight: bold;">✓</span> <div>Secure our initial paid user cohort</div></li>
@@ -720,7 +724,7 @@
                     
                     <div class="phase-card phase-2">
                         <div class="icon-container">📢</div><div class="phase-badge">Phase 2: Scale</div><h3 class="phase-title">Affiliate Network</h3>
-                        <ul style="list-style: none; padding: 0; font-size: 0.95rem; color: #52525b; line-height: 1.4; margin-top: 12px; text-align: left;">
+                        <ul style="list-style: none; padding: 0; font-size: 1.05rem; color: #52525b; line-height: 1.4; margin-top: 12px; text-align: left;">
                             <li style="margin-bottom: 10px; display: flex; gap: 8px;"><span style="color:#7c3aed; font-weight: bold;">✓</span> <div>Launch B2B SaaS Partner Program</div></li>
                             <li style="margin-bottom: 10px; display: flex; gap: 8px;"><span style="color:#7c3aed; font-weight: bold;">✓</span> <div>Offer <span class="highlight-text">Lifetime Recurring</span> commissions</div></li>
                             <li style="display: flex; gap: 8px;"><span style="color:#7c3aed; font-weight: bold;">✓</span> <div>Scale rapidly with zero upfront ad spend</div></li>
@@ -729,7 +733,7 @@
                     
                     <div class="phase-card phase-3">
                         <div class="icon-container">🌐</div><div class="phase-badge">Phase 3: Multiply</div><h3 class="phase-title">White-Labeling</h3>
-                        <ul style="list-style: none; padding: 0; font-size: 0.95rem; color: #52525b; line-height: 1.4; margin-top: 12px; text-align: left;">
+                        <ul style="list-style: none; padding: 0; font-size: 1.05rem; color: #52525b; line-height: 1.4; margin-top: 12px; text-align: left;">
                             <li style="margin-bottom: 10px; display: flex; gap: 8px;"><span style="color:#c026d3; font-weight: bold;">✓</span> <div>Partner with niche marketing agencies</div></li>
                             <li style="margin-bottom: 10px; display: flex; gap: 8px;"><span style="color:#c026d3; font-weight: bold;">✓</span> <div>Provide <span class="highlight-text">white-label</span> AI infrastructure</div></li>
                             <li style="display: flex; gap: 8px;"><span style="color:#c026d3; font-weight: bold;">✓</span> <div>Multiply reach via their client rosters</div></li>
@@ -845,10 +849,6 @@
                     
                 </div>
             </div>
-            
-            <!--<div class="slide-footer reveal delay-400" style="position: absolute; bottom: 40px; width: 100%; display: flex; justify-content: center; z-index: 5;">
-                <p class="footer-text" style="font-size: 1.1rem;">We aren't just developers; we are marketers who know exactly how to solve a marketing problem.</p>
-            </div>-->
             <div class="slide-number">11</div>
         </section>
         
@@ -858,28 +858,46 @@
                 <div class="logo"><div class="logo-icon"></div> Pulse</div>
                 <div class="presentation-context">Wright Venture Pitch • Slide 12</div>
             </div>
-            <div class="slide-content" style="padding: 80px 60px 40px;">
+            <div class="slide-content">
                 <div class="badge reveal">THE ASK & THE CLOSE</div>
                 <h1 class="slide-title reveal delay-100" style="margin-bottom: 12px;">Fueling the Go-To-Market.</h1>
-                <p class="slide-subtitle reveal delay-200" style="margin-bottom: 30px;">We are seeking the <span class="highlight-text">$5,000 Wright Venture prize</span> to launch our prototype, stress-test our servers, and fund local market penetration.</p>
+                
+                <p class="slide-subtitle reveal delay-200" style="margin-bottom: 20px;">We are seeking the <span class="highlight-text">$5,000 Wright Venture prize for Phase 1</span> to scale our architecture, acquire initial users, and prepare the company for future Seed funding.</p>
+                
                 <div class="allocation-container reveal delay-300">
                     <div class="allocation-grid">
+                        
                         <div class="alloc-card card-1">
                             <div class="icon-box">🖥️</div><h3 class="alloc-title">Infrastructure (30%)</h3>
-                            <p class="alloc-desc">Securing dedicated cloud servers to run our custom Python voice models with zero latency.</p>
+                            <ul style="list-style: none; padding: 0; font-size: 1.05rem; color: #52525b; line-height: 1.4; margin-top: 12px; text-align: left;">
+                                <li style="margin-bottom: 8px; display: flex; gap: 8px;"><span style="color:#0d9488; font-weight: bold;">✓</span> <div>Twilio telephony & OpenAI APIs</div></li>
+                                <li style="margin-bottom: 8px; display: flex; gap: 8px;"><span style="color:#0d9488; font-weight: bold;">✓</span> <div>Dedicated low-latency servers</div></li>
+                                <li style="display: flex; gap: 8px;"><span style="color:#0d9488; font-weight: bold;">✓</span> <div>Beta testing compute costs</div></li>
+                            </ul>
                         </div>
+                        
                         <div class="alloc-card card-2">
-                            <div class="icon-box">🧠</div><h3 class="alloc-title">API Computation (40%)</h3>
-                            <p class="alloc-desc">Funding the Twilio telephony and OpenAI processing costs required during our free Beta testing phase.</p>
+                            <div class="icon-box">👨‍💻</div><h3 class="alloc-title">Development (40%)</h3>
+                            <ul style="list-style: none; padding: 0; font-size: 1.05rem; color: #52525b; line-height: 1.4; margin-top: 12px; text-align: left;">
+                                <li style="margin-bottom: 8px; display: flex; gap: 8px;"><span style="color:#7c3aed; font-weight: bold;">✓</span> <div>Hire contract Python developers</div></li>
+                                <li style="margin-bottom: 8px; display: flex; gap: 8px;"><span style="color:#7c3aed; font-weight: bold;">✓</span> <div>Scale core AI architecture</div></li>
+                                <li style="display: flex; gap: 8px;"><span style="color:#7c3aed; font-weight: bold;">✓</span> <div>Build native CRM integrations</div></li>
+                            </ul>
                         </div>
+                        
                         <div class="alloc-card card-3">
-                            <div class="icon-box">🎯</div><h3 class="alloc-title">Local Acquisition (30%)</h3>
-                            <p class="alloc-desc">Direct ad spend targeting service-based businesses in Ohio to secure our first cohort of paying users.</p>
+                            <div class="icon-box">🤝</div><h3 class="alloc-title">Phase 1 Launch (30%)</h3>
+                            <ul style="list-style: none; padding: 0; font-size: 1.05rem; color: #52525b; line-height: 1.4; margin-top: 12px; text-align: left;">
+                                <li style="margin-bottom: 8px; display: flex; gap: 8px;"><span style="color:#c026d3; font-weight: bold;">✓</span> <div>Launch Affiliate Partner Program</div></li>
+                                <li style="margin-bottom: 8px; display: flex; gap: 8px;"><span style="color:#c026d3; font-weight: bold;">✓</span> <div>Initial Beta client onboarding</div></li>
+                                <li style="display: flex; gap: 8px;"><span style="color:#c026d3; font-weight: bold;">✓</span> <div><strong>Validate metrics for future funding</strong></div></li>
+                            </ul>
                         </div>
+                        
                     </div>
                 </div>
                 
-                <div class="reveal delay-400" style="margin-top: 40px; display: flex; flex-direction: column; align-items: center; gap: 12px;">
+                <div class="reveal delay-400" style="margin-top: 24px; display: flex; flex-direction: column; align-items: center; gap: 12px;">
                     <a href="https://mradnanelahi.github.io/pulse-prototype/" target="_blank" class="prototype-btn">
                         Launch Live Prototype 🚀
                     </a>
