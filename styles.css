@@ -1,68 +1,22 @@
 /* =========================================
-   GLOBAL RESET & BULLETPROOF SCALING ENGINE
+   GLOBAL RESET & DECK ENGINE
    ========================================= */
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+body { background-color: #ffffff; display: flex; align-items: center; justify-content: center; height: 100vh; overflow: hidden; color: #18181b; }
 
-html, body { 
-    background-color: #09090b; /* Dark backdrop behind presentation */
-    margin: 0; 
-    padding: 0; 
-    width: 100%; 
-    height: 100%; 
-    position: fixed; /* Prevents mobile browser scrolling/rubber-banding */
-    overflow: hidden; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center;
-    color: #18181b; 
-}
-
-.deck { 
-    position: relative; 
-    width: 1280px; 
-    height: 720px; 
-    background-color: #ffffff; 
-    box-shadow: 0 20px 50px rgba(0,0,0,0.5); 
-    overflow: hidden; 
-    flex-shrink: 0; /* CRITICAL: Prevents the browser from squishing the box */
-    transform-origin: center center; 
-}
-
-/* =========================================
-   MOBILE PORTRAIT LOCK
-   ========================================= */
-.rotate-message { display: none; }
-
-@media screen and (max-width: 900px) and (orientation: portrait) {
-    #deck { display: none !important; }
-    .rotate-message { 
-        display: flex; 
-        flex-direction: column; 
-        align-items: center; 
-        justify-content: center; 
-        color: #ffffff; 
-        font-size: 1.5rem; 
-        text-align: center; 
-        padding: 40px; 
-        position: absolute; 
-        inset: 0; 
-        z-index: 99999; 
-    }
-    .rotate-icon { font-size: 4rem; margin-bottom: 20px; animation: rotate-phone 2s infinite ease-in-out; }
-}
-@keyframes rotate-phone { 0% { transform: rotate(0deg); } 50% { transform: rotate(-90deg); } 100% { transform: rotate(-90deg); } }
-
-/* =========================================
-   SLIDE BASE & COMMON ELEMENTS
-   ========================================= */
+.deck { position: relative; width: 1280px; height: 720px; background-color: #ffffff; box-shadow: 0 20px 50px rgba(0,0,0,0.1); overflow: hidden; transform-origin: center center; }
 .slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; visibility: hidden; transition: opacity 0.4s ease-in-out, visibility 0.4s; z-index: 1; display: flex; flex-direction: column; background-color: #ffffff; }
 .slide.active { opacity: 1; visibility: visible; z-index: 10; }
 
+/* =========================================
+   SLIDE 1: DARK THEME & AI SERVER NETWORK
+   ========================================= */
 .dark-slide { background-color: #09090b !important; color: #ffffff; }
 #networkCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: auto; }
 .pulse-title { font-size: 12rem !important; font-weight: 900; background: linear-gradient(135deg, #a78bfa, #f472b6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -4px; margin-bottom: 0 !important; text-shadow: 0 0 80px rgba(139, 92, 246, 0.4); animation: pulse-text 3s infinite alternate;}
 @keyframes pulse-text { 0% { text-shadow: 0 0 60px rgba(139, 92, 246, 0.3); transform: scale(1); } 100% { text-shadow: 0 0 100px rgba(217, 70, 239, 0.6); transform: scale(1.02); } }
 
+/* Shared Elements */
 .slide-glow { position: absolute; pointer-events: none; z-index: 1; filter: blur(80px); top: 50%; left: 50%; transform: translate(-50%, -50%); width: 900px; height: 500px; background: radial-gradient(ellipse, rgba(124, 58, 237, 0.08) 0%, rgba(13, 148, 136, 0.05) 50%, transparent 70%); }
 .slide-header { position: absolute; top: 40px; left: 60px; right: 60px; display: flex; justify-content: space-between; align-items: center; z-index: 15; }
 .logo { font-size: 1.5rem; font-weight: 800; letter-spacing: -1px; display: flex; align-items: center; gap: 12px; color: #18181b; }
@@ -72,13 +26,14 @@ html, body {
 .citation { position: absolute; bottom: 20px; left: 60px; font-size: 11px; color: #a1a1aa; text-align: left; line-height: 1.4; z-index: 15; }
 .slide-content { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; z-index: 15; position: relative; padding: 60px 80px; }
 
+/* Typography */
 .badge { display: inline-flex; align-items: center; padding: 6px 16px; border-radius: 100px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); color: #7c3aed; }
 .slide-title { font-size: 3.2rem; font-weight: 800; letter-spacing: -1.5px; margin-bottom: 20px; background: linear-gradient(180deg, #18181b 0%, #52525b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; max-width: 1000px;}
 .slide-subtitle { font-size: 1.25rem; color: #52525b; line-height: 1.6; max-width: 800px; margin-bottom: 24px; }
 .highlight-gradient { background: linear-gradient(90deg, #a78bfa, #f472b6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
 /* =========================================
-   STEP ENGINE LOGIC
+   NEW STEP ENGINE LOGIC
    ========================================= */
 .step { opacity: 0; visibility: hidden; transform: translateY(20px); transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }
 .step.active { opacity: 1; visibility: visible; transform: translateY(0); }
@@ -129,7 +84,7 @@ html, body {
 .handoff-text { margin-top: 40px; font-size: 1.5rem; color: #18181b; font-weight: 500; }
 
 /* =========================================
-   SLIDE 4: Architecture Flow
+   SLIDE 4: Architecture Flow & SVG Gradients
    ========================================= */
 .flow-wrapper { position: relative; width: 100%; max-width: 900px; height: 350px; display: flex; justify-content: space-between; align-items: center; margin: 0 auto; z-index: 2; margin-top: 20px;}
 .flow-lines { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
