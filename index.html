@@ -4,334 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pulse - Pitch Deck</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        /* =========================================
-           GLOBAL RESET & DECK ENGINE (LIGHT THEME)
-           ========================================= */
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        body { background-color: #ffffff; display: flex; align-items: center; justify-content: center; height: 100vh; overflow: hidden; color: #18181b; }
-        
-        .deck { position: relative; width: 1280px; height: 720px; background-color: #ffffff; box-shadow: 0 20px 50px rgba(0,0,0,0.1); overflow: hidden; transform-origin: center center; }
-
-        .slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; visibility: hidden; transition: opacity 0.4s ease-in-out, visibility 0.4s; z-index: 1; display: flex; flex-direction: column; background-color: #ffffff; }
-        .slide.active { opacity: 1; visibility: visible; z-index: 10; }
-
-        /* Navigation Dots */
-        .nav-controls { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; gap: 12px; z-index: 100; opacity: 0.4; transition: opacity 0.3s; }
-        .nav-controls:hover { opacity: 1; }
-        .nav-dot { width: 12px; height: 12px; border-radius: 50%; background: rgba(0,0,0,0.15); cursor: pointer; transition: all 0.3s; border: 1px solid transparent; }
-        .nav-dot.active { background: #8b5cf6; box-shadow: 0 0 10px rgba(139, 92, 246, 0.5); transform: scale(1.2); }
-
-        /* =========================================
-           SHARED SLIDE UI ELEMENTS
-           ========================================= */
-        .slide-glow { position: absolute; pointer-events: none; z-index: 1; filter: blur(80px); }
-        .slide-header { position: absolute; top: 40px; left: 60px; right: 60px; display: flex; justify-content: space-between; align-items: center; z-index: 15; }
-        .logo { font-size: 1.5rem; font-weight: 800; letter-spacing: -1px; display: flex; align-items: center; gap: 12px; color: #18181b; }
-        .logo-icon { width: 32px; height: 32px; background: linear-gradient(135deg, #8b5cf6, #d946ef); border-radius: 8px; box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3); }
-        .presentation-context { font-size: 1rem; color: #71717a; font-weight: 500; letter-spacing: 0.5px; }
-        .slide-number { position: absolute; bottom: 40px; right: 60px; font-size: 1rem; font-weight: 700; color: #a1a1aa; z-index: 15; }
-        .citation { position: absolute; bottom: 20px; left: 60px; font-size: 10px; color: #a1a1aa; text-align: left; line-height: 1.4; z-index: 15; }
-
-        /* PERFECT FLEX CENTERING */
-        /* Updated padding from 80px to 60px top/bottom to fix vertical crowding */
-        .slide-content { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; z-index: 15; position: relative; padding: 60px 80px; }
-        
-        .badge { display: inline-flex; align-items: center; padding: 6px 16px; border-radius: 100px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); color: #7c3aed; }
-        .slide-title { font-size: 3.2rem; font-weight: 800; letter-spacing: -1.5px; margin-bottom: 20px; background: linear-gradient(180deg, #18181b 0%, #52525b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; max-width: 1000px;}
-        .slide-subtitle { font-size: 1.25rem; color: #52525b; line-height: 1.6; max-width: 800px; margin-bottom: 24px; }
-        
-        .highlight-text { color: #18181b; font-weight: 700; }
-        .highlight-stat { color: #ef4444; font-weight: 700; }
-
-        /* Animation Classes */
-        .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.8s cubic-bezier(0.25, 0.8, 0.25, 1), transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1); }
-        .active .reveal.active { opacity: 1; transform: translateY(0); }
-        .delay-100 { transition-delay: 0.1s; } .delay-200 { transition-delay: 0.2s; } 
-        .delay-300 { transition-delay: 0.3s; } .delay-400 { transition-delay: 0.4s; }
-
-        /* General Card Styles */
-        .problem-card, .solution-card, .comp-card, .phase-card, .price-card, .metric-card, .alloc-card, .team-card, .summary-bar, .pillar {
-            background: #ffffff; border: 1px solid #e4e4e7; box-shadow: 0 10px 30px rgba(0,0,0,0.04);
-        }
-        .problem-card h3, .solution-card h3, .alloc-title, .comp-card-header, .phase-title, .metric-label, .tier-name, .member-name, .bar-title { color: #18181b; }
-        .problem-card p, .solution-card p, .alloc-desc, .comp-card-sub, .phase-desc, .metric-desc, .tier-desc, .member-title, .bar-desc { color: #52525b; }
-
-        /* =========================================
-           SLIDE-SPECIFIC STYLES
-           ========================================= */
-
-        /* Slide 1 Styles */
-        #slide-1 .slide-content { justify-content: center; padding: 0 120px; margin-top: -20px; }
-        #slide-1 .pulse-glow { top: 50%; left: 50%; transform: translate(-50%, -50%); width: 800px; height: 800px; background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, rgba(217, 70, 239, 0.05) 40%, transparent 70%); filter: blur(60px); z-index: 1; position: absolute; pointer-events: none;}
-        #slide-1 .badge { padding: 8px 20px; font-size: 1rem; margin-bottom: 32px; box-shadow: 0 4px 20px rgba(139, 92, 246, 0.1); }
-        #slide-1 .headline { font-size: 5.5rem; font-weight: 800; line-height: 1.1; letter-spacing: -2px; margin-bottom: 32px; background: linear-gradient(180deg, #18181b 0%, #52525b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; max-width: 1000px; }
-        #slide-1 .sub-headline { font-size: 1.6rem; line-height: 1.6; color: #52525b; max-width: 800px; font-weight: 400; }
-
-        /* Slide 2 Styles */
-        #slide-2 .slide-glow { top: 40%; left: 50%; transform: translate(-50%, -50%); width: 900px; height: 500px; background: radial-gradient(ellipse, rgba(239, 68, 68, 0.08) 0%, rgba(139, 92, 246, 0.05) 50%, transparent 70%); }
-        .problem-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; width: 100%; max-width: 900px; margin: 0 auto; text-align: left; }
-        .problem-card { border-radius: 20px; padding: 20px 24px; display: flex; flex-direction: column; position: relative; overflow: hidden; background: #fafafa; }
-        .problem-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: linear-gradient(90deg, transparent, #ef4444, transparent); opacity: 0.8; }
-        .visual-container { height: 70px; margin-bottom: 16px; border-radius: 12px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #ffffff; border: 1px solid #e4e4e7; }
-        .funnel-visual { width: 80px; height: 80px; position: relative; transform: scale(0.85); }
-        .funnel-part { position: absolute; left: 50%; transform: translateX(-50%); background: rgba(239, 68, 68, 0.1); border: 2px solid rgba(239, 68, 68, 0.4); border-radius: 4px; }
-        .funnel-top { width: 100%; height: 16px; top: 0; border-radius: 8px; } .funnel-mid { width: 70%; height: 24px; top: 20px; } .funnel-btm { width: 40%; height: 20px; top: 48px; }
-        .leak-drop { position: absolute; bottom: 5px; left: 50%; width: 6px; height: 6px; background-color: #ef4444; border-radius: 50%; transform: translateX(-50%); box-shadow: 0 0 10px rgba(239, 68, 68, 0.5); animation: funnel-leak 1.5s infinite ease-in-out; }
-        @keyframes funnel-leak { 0% { transform: translate(-50%, 0) scale(1); opacity: 1; } 100% { transform: translate(-50%, 15px) scale(0.5); opacity: 0; } }
-        .labyrinth-visual { width: 100px; height: 60px; position: relative; background-image: linear-gradient(rgba(0,0,0,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.05) 1px, transparent 1px); background-size: 12px 12px; border-radius: 8px; border: 2px solid rgba(0,0,0,0.1); transform: scale(0.9); }
-        .floating-question { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 2rem; font-weight: 800; color: rgba(0,0,0,0.2); animation: labyrinth-float 3s infinite ease-in-out; }
-        @keyframes labyrinth-float { 0%, 100% { transform: translate(-50%, -45%); } 50% { transform: translate(-50%, -55%); } }
-        .card-header { display: flex; align-items: center; gap: 16px; margin-bottom: 12px; }
-        .card-icon { width: 42px; height: 42px; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; color: #ef4444; }
-        .problem-card h3 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.5px; margin: 0; }
-        .problem-card p { font-size: 1.05rem; line-height: 1.5; margin-bottom: 8px; }
-
-        /* Slide 3 Styles */
-        #slide-3 .slide-glow { top: 40%; left: 50%; transform: translate(-50%, -50%); width: 900px; height: 600px; background: radial-gradient(ellipse, rgba(13, 148, 136, 0.1) 0%, rgba(139, 92, 246, 0.08) 50%, transparent 70%); }
-        #slide-3 .badge { background: rgba(13, 148, 136, 0.1); border-color: rgba(13, 148, 136, 0.3); color: #0f766e;}
-        .solution-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; width: 100%; max-width: 1050px; margin: 0 auto; }
-        .solution-card { border-radius: 20px; padding: 24px 24px; display: flex; flex-direction: column; align-items: flex-start; text-align: left; position: relative; overflow: hidden; }
-        .solution-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; }
-        .sol-1::before { background: linear-gradient(90deg, transparent, #8b5cf6, transparent); }
-        .sol-2::before { background: linear-gradient(90deg, transparent, #d946ef, transparent); }
-        .sol-3::before { background: linear-gradient(90deg, transparent, #2dd4bf, transparent); }
-        .sol-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; margin-bottom: 16px; }
-        .icon-1 { background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); color: #7c3aed; }
-        .icon-2 { background: rgba(217, 70, 239, 0.1); border: 1px solid rgba(217, 70, 239, 0.3); color: #c026d3; }
-        .icon-3 { background: rgba(45, 212, 191, 0.1); border: 1px solid rgba(45, 212, 191, 0.3); color: #0d9488; }
-        .solution-card h3 { font-size: 1.3rem; font-weight: 700; margin-bottom: 10px; }
-        .solution-card p { font-size: 1.05rem; line-height: 1.6; margin: 0; }
-
-        /* Slide 4 Styles (Lottie-Style Flowchart) */
-        #slide-4 .slide-glow { top: 50%; left: 50%; transform: translate(-50%, -50%); width: 1000px; height: 500px; background: radial-gradient(ellipse, rgba(13, 148, 136, 0.08) 0%, rgba(124, 58, 237, 0.1) 50%, rgba(192, 38, 211, 0.08) 100%); z-index: 0; }
-        .flow-wrapper { position: relative; width: 100%; max-width: 1050px; height: 380px; display: flex; justify-content: space-between; align-items: center; margin: 0 auto; z-index: 2; }
-        .flow-col { display: flex; flex-direction: column; justify-content: space-between; height: 100%; z-index: 5; width: 280px; }
-        .flow-col.center { justify-content: center; width: 320px; }
-        
-        /* SVG Connecting Lines */
-        .flow-lines { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
-        .line-path { fill: none; stroke: #f4f4f5; stroke-width: 4px; stroke-linecap: round; }
-        .line-animate { fill: none; stroke-width: 4px; stroke-linecap: round; stroke-dasharray: 12 24; animation: flowMove 1.5s linear infinite; }
-        .path-teal { stroke: #0d9488; } .path-purple { stroke: #7c3aed; } .path-pink { stroke: #c026d3; }
-        @keyframes flowMove { to { stroke-dashoffset: -36; } }
-
-        /* Interactive Nodes */
-        .f-node { background: #ffffff; border: 1px solid #e4e4e7; border-radius: 16px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.04); display: flex; flex-direction: column; gap: 10px; transition: transform 0.3s ease, box-shadow 0.3s ease; position: relative; cursor: default; }
-        .f-node:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(0,0,0,0.08); }
-        .f-node-header { display: flex; align-items: center; gap: 12px; }
-        .f-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
-        .f-title { font-size: 1.15rem; font-weight: 700; color: #18181b; margin: 0; }
-        .f-desc { font-size: 0.95rem; color: #52525b; line-height: 1.4; text-align: left; margin: 0; }
-        
-        /* Phase Badges inside nodes */
-        .f-phase { position: absolute; top: -12px; left: 20px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; padding: 4px 10px; border-radius: 100px; color: #fff; letter-spacing: 1px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .phase-connect { background: #0d9488; } .phase-engage { background: #7c3aed; left: 50%; transform: translateX(-50%); top: -14px; font-size: 0.8rem; padding: 6px 16px;} .phase-sync { background: #c026d3; }
-
-        .node-connect .f-icon { background: rgba(13, 148, 136, 0.1); color: #0d9488; border: 1px solid rgba(13,148,136,0.2); }
-        .node-sync .f-icon { background: rgba(192, 38, 211, 0.1); color: #c026d3; border: 1px solid rgba(192,38,211,0.2); }
-        
-        /* Central Brain Node (Engage) */
-        .node-engage { border: 2px solid #7c3aed; padding: 30px 24px; text-align: center; align-items: center; box-shadow: 0 15px 40px rgba(124, 58, 237, 0.15); }
-        .brain-icon-wrapper { position: relative; width: 64px; height: 64px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; font-size: 2rem; background: #ffffff; border-radius: 50%; border: 2px solid #e4e4e7; z-index: 5; }
-        .brain-ripple { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); border-radius: 50%; border: 2px solid #7c3aed; opacity: 0; pointer-events: none; z-index: 1;}
-        .brain-ripple.r1 { animation: lottieRipple 2s infinite ease-out; }
-        .brain-ripple.r2 { animation: lottieRipple 2s infinite ease-out 1s; }
-        @keyframes lottieRipple { 0% { width: 100%; height: 100%; opacity: 0.5; } 100% { width: 250%; height: 250%; opacity: 0; } }
-        
-        .tech-chip { display: inline-block; background: rgba(124, 58, 237, 0.05); color: #7c3aed; border: 1px solid rgba(124, 58, 237, 0.2); font-size: 0.8rem; font-weight: 700; padding: 6px 12px; border-radius: 6px; margin-top: 12px; }
-
-        /* Slide 5 Styles (Competitor Landscape) */
-        #slide-5 .slide-glow { top: 55%; right: 15%; transform: translateY(-50%); width: 600px; height: 600px; background: radial-gradient(circle, rgba(124, 58, 237, 0.1) 0%, rgba(192, 38, 211, 0.05) 50%, transparent 70%); }
-        .comparison-grid { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 24px; align-items: stretch; width: 100%; max-width: 1050px; margin: 0 auto; text-align: left;}
-        .comp-card { border-radius: 20px; padding: 32px 24px; display: flex; flex-direction: column; text-align: left; position: relative; overflow: hidden; }
-        
-        /* Legacy Card Soft Background */
-        .legacy-card { background: #f9fafb; border: 1px solid #f4f4f5; opacity: 0.9; transition: opacity 0.3s, transform 0.3s; }
-        .legacy-card:hover { opacity: 1; transform: translateY(-3px); }
-        .comp-card-header { font-size: 1.4rem; font-weight: 700; margin-bottom: 4px;}
-        .comp-card-sub { font-size: 1rem; margin-bottom: 16px; color: #71717a;}
-        
-        .pulse-card { background: #ffffff; border: 2px solid #8b5cf6; box-shadow: 0 20px 50px rgba(139, 92, 246, 0.1); transform: scale(1.05); z-index: 2; position: relative; overflow: hidden;}
-
-        .pulse-card .comp-card-header { font-size: 1.6rem; display: flex; align-items: center; gap: 8px; margin-bottom: 4px; color: #18181b;}
-        .pulse-card .comp-card-sub { color: #7c3aed; font-weight: 600; font-size: 1.05rem;}
-        .feature-list { list-style: none; flex: 1; margin-top: 10px; }
-        .feature-list li { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 14px; font-size: 1.05rem; line-height: 1.4; color: #52525b; }
-        .legacy-card .feature-list li::before { content: '✗'; color: #ef4444; font-weight: bold; }
-        .pulse-card .feature-list li { color: #18181b; font-size: 1.1rem; }
-        .pulse-card .feature-list li::before { content: '✓'; color: #d946ef; font-weight: bold; }
-        .tech-highlight { background: rgba(139, 92, 246, 0.05); border: 1px solid rgba(139, 92, 246, 0.2); border-radius: 8px; padding: 12px; margin-top: auto; font-size: 0.9rem; text-align: center; }
-        .tech-highlight strong { color: #7c3aed; }
-
-        /* THE SECRET SAUCE EASTER EGG (For Slide 5) */
-        .secret-sauce-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(9, 9, 11, 0.85); backdrop-filter: blur(12px); z-index: 50; display: flex; flex-direction: column; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: all 0.4s ease;}
-        .secret-sauce-overlay.active { opacity: 1; visibility: visible; }
-        
-        /* The Dark Pop-Up Modal */
-        .ss-modal { background: #18181b; border: 1px solid rgba(139, 92, 246, 0.4); border-radius: 32px; padding: 60px; max-width: 1000px; width: 90%; box-shadow: 0 30px 100px rgba(124, 58, 237, 0.2), inset 0 0 0 1px rgba(255,255,255,0.05); transform: scale(0.95) translateY(20px); transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1); opacity: 0; text-align: center; position: relative; overflow: hidden; }
-        .secret-sauce-overlay.active .ss-modal { transform: scale(1) translateY(0); opacity: 1; }
-        
-        /* Subtle top glow inside modal */
-        .ss-modal::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle at top, rgba(139, 92, 246, 0.15), transparent 60%); pointer-events: none; }
-
-        .ss-modal .badge { background: rgba(139, 92, 246, 0.2); border-color: rgba(139, 92, 246, 0.4); color: #c084fc; margin-bottom: 24px; box-shadow: 0 0 20px rgba(139, 92, 246, 0.3); }
-        .ss-modal .slide-title { font-size: 3.2rem; line-height: 1.1; margin-bottom: 40px; color: #ffffff; background: none; -webkit-text-fill-color: #ffffff; letter-spacing: -1px;}
-        .ss-modal .highlight-gradient { background: linear-gradient(90deg, #a78bfa, #f472b6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        
-        .ss-grid { display: flex; gap: 30px; position: relative; z-index: 2;}
-        .ss-card { flex: 1; padding: 40px; border-radius: 24px; text-align: left; }
-        
-        .ss-card.legacy { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); opacity: 0.6; transition: opacity 0.3s;}
-        .ss-card.legacy:hover { opacity: 0.9; }
-        .ss-card.legacy h3 { color: #a1a1aa; font-size: 1.5rem; margin-bottom: 16px;}
-        .ss-card.legacy p { color: #71717a; font-size: 1.1rem; line-height: 1.6;}
-        
-        .ss-card.pulse { background: linear-gradient(180deg, rgba(139, 92, 246, 0.1) 0%, rgba(0,0,0,0) 100%); border: 2px solid #8b5cf6; box-shadow: 0 20px 50px rgba(139, 92, 246, 0.2); transform: scale(1.05); }
-        .ss-card.pulse h3 { color: #ffffff; margin-bottom: 16px; font-size: 1.6rem;}
-        .ss-card.pulse p { font-size: 1.1rem; color: #d4d4d8; line-height: 1.6; }
-        .ss-card.pulse strong { color: #ffffff; }
-
-        /* Slide 6 Styles */
-        #slide-6 .slide-content { flex-direction: row; justify-content: center; gap: 60px; }
-        #slide-6 .slide-glow { top: 50%; right: 10%; transform: translateY(-50%); width: 800px; height: 600px; background: radial-gradient(ellipse, rgba(13, 148, 136, 0.1) 0%, rgba(124, 58, 237, 0.1) 50%, transparent 70%); }
-        .narrative-col { flex: 1; display: flex; flex-direction: column; align-items: flex-start; text-align: left; }
-        #slide-6 .slide-title { text-align: left; margin-bottom: 24px; }
-        .beta-col { flex: 1; display: flex; justify-content: center; }
-        .beta-card { width: 100%; max-width: 500px; background: #ffffff; border: 1px solid #e4e4e7; border-radius: 24px; padding: 40px; box-shadow: 0 20px 40px rgba(0,0,0,0.05); text-align: left;}
-        .status-header { display: flex; align-items: center; gap: 12px; margin-bottom: 32px; padding-bottom: 24px; border-bottom: 1px solid #e4e4e7; }
-        .status-dot { width: 12px; height: 12px; background-color: #0d9488; border-radius: 50%; box-shadow: 0 0 10px rgba(13, 148, 136, 0.4); animation: pulse-dot 2s infinite; }
-        @keyframes pulse-dot { 0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(13, 148, 136, 0.4); } 70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(13, 148, 136, 0); } 100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(13, 148, 136, 0); } }
-        .status-text { font-size: 1.25rem; font-weight: 700; text-transform: uppercase; color: #18181b;}
-        .milestone-list { list-style: none; }
-        .milestone-list li { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 24px; }
-        .milestone-icon { width: 36px; height: 36px; background: rgba(124, 58, 237, 0.1); border: 1px solid rgba(124, 58, 237, 0.2); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #7c3aed; font-size: 1.2rem; flex-shrink: 0; }
-        .milestone-content h4 { font-size: 1.2rem; margin-bottom: 4px; font-weight: 600; color: #18181b; }
-        .milestone-content p { font-size: 1.05rem; color: #52525b; line-height: 1.4; margin: 0; }
-
-        /* Slide 7 Styles */
-        #slide-7 .slide-glow { bottom: -10%; left: 50%; transform: translateX(-50%); width: 1000px; height: 500px; background: radial-gradient(ellipse, rgba(124, 58, 237, 0.1) 0%, rgba(13, 148, 136, 0.05) 50%, transparent 70%); }
-        .metrics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; width: 100%; max-width: 1100px; margin: 0 auto; }
-        .metric-card { border-radius: 24px; padding: 50px 32px; position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center; }
-        .metric-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; }
-        .mc-1::before { background: linear-gradient(90deg, transparent, #8b5cf6, transparent); }
-        .mc-2::before { background: linear-gradient(90deg, transparent, #2dd4bf, transparent); }
-        .mc-3::before { background: linear-gradient(90deg, transparent, #d946ef, transparent); }
-        .metric-value { font-size: 4.5rem; font-weight: 800; letter-spacing: -2px; margin-bottom: 16px; line-height: 1; }
-        .val-1 { background: linear-gradient(135deg, #7c3aed, #4c1d95); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .val-2 { background: linear-gradient(135deg, #0d9488, #115e59); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .val-3 { background: linear-gradient(135deg, #c026d3, #86198f); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .metric-label { font-size: 1.25rem; font-weight: 700; margin-bottom: 12px; letter-spacing: -0.5px; }
-        .metric-desc { font-size: 1.1rem; }
-
-        /* Slide 8 Styles (Acquisition) */
-        #slide-8 .slide-glow { bottom: 0; right: 0; width: 800px; height: 600px; background: radial-gradient(circle at bottom right, rgba(192, 38, 211, 0.1) 0%, rgba(124, 58, 237, 0.05) 50%, transparent 70%); }
-        .strategy-container { display: flex; justify-content: space-between; align-items: stretch; gap: 24px; position: relative; width: 100%; max-width: 1100px; margin: 0 auto; text-align: left; }
-        .strategy-container::before { content: ''; position: absolute; top: 50%; left: 10%; right: 10%; height: 2px; background: linear-gradient(90deg, rgba(13, 148, 136, 0.2), rgba(124, 58, 237, 0.5), rgba(192, 38, 211, 0.2)); z-index: 0; transform: translateY(-50%); }
-        .phase-card { border-radius: 20px; padding: 40px 32px; display: flex; flex-direction: column; flex: 1; z-index: 2; position: relative; overflow: hidden; transition: transform 0.3s ease; }
-        .phase-card:hover { transform: translateY(-5px); }
-        .phase-1 { border-top: 4px solid #2dd4bf; } .phase-2 { border-top: 4px solid #8b5cf6; } .phase-3 { border-top: 4px solid #d946ef; }
-        .phase-badge { display: inline-flex; font-size: 0.95rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }
-        .phase-1 .phase-badge { color: #0d9488; } .phase-2 .phase-badge { color: #7c3aed; } .phase-3 .phase-badge { color: #c026d3; }
-        .phase-title { font-size: 1.8rem; font-weight: 700; margin-bottom: 24px; }
-        .icon-container { width: 56px; height: 56px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin-bottom: 24px; }
-        .phase-1 .icon-container { background: rgba(13, 148, 136, 0.1); border: 1px solid rgba(13, 148, 136, 0.2); color: #0d9488; }
-        .phase-2 .icon-container { background: rgba(124, 58, 237, 0.1); border: 1px solid rgba(124, 58, 237, 0.2); color: #7c3aed; }
-        .phase-3 .icon-container { background: rgba(192, 38, 211, 0.1); border: 1px solid rgba(192, 38, 211, 0.2); color: #c026d3; }
-
-        /* Slide 9 Styles (Pricing) */
-        #slide-9 .slide-glow { top: 50%; left: 50%; transform: translate(-50%, -50%); width: 900px; height: 500px; background: radial-gradient(ellipse, rgba(124, 58, 237, 0.1) 0%, rgba(192, 38, 211, 0.05) 50%, transparent 70%); }
-        .pricing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; width: 100%; max-width: 900px; margin: 0 auto; text-align: left; }
-        .price-card { border-radius: 24px; padding: 32px 36px; position: relative; overflow: hidden; display: flex; flex-direction: column; }
-        .price-card.premium { background: #ffffff; border: 2px solid #8b5cf6; box-shadow: 0 20px 40px rgba(139, 92, 246, 0.1); }
-        
-        .premium-badge { position: absolute; top: 16px; right: 16px; background: #7c3aed; color: #ffffff; font-size: 0.8rem; font-weight: 800; padding: 6px 12px; border-radius: 100px; letter-spacing: 1px; text-transform: uppercase; }
-        
-        .price-point { font-size: 3.5rem; font-weight: 800; line-height: 1; margin-bottom: 16px; display: flex; align-items: flex-end; gap: 8px; color: #18181b;}
-        .price-point span { font-size: 1.25rem; color: #71717a; font-weight: 500; margin-bottom: 6px; }
-        .tier-name { font-size: 1.6rem; font-weight: 700; margin-bottom: 8px; }
-        .tier-desc { font-size: 1.05rem; color: #52525b; margin-bottom: 24px; }
-        .checklist { list-style: none; flex: 1; margin: 0;}
-        .checklist li { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 14px; font-size: 1.1rem; line-height: 1.4; color: #52525b;}
-        .checklist li::before { content: '✓'; color: #7c3aed; font-weight: bold; }
-        .premium-list li::before { color: #c026d3; }
-
-        /* Slide 10 Styles */
-        #slide-10 .slide-glow { bottom: -10%; right: 10%; width: 800px; height: 600px; background: radial-gradient(circle at bottom right, rgba(124, 58, 237, 0.1) 0%, rgba(192, 38, 211, 0.05) 50%, transparent 70%); }
-        .header-layout { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; width: 100%; max-width: 1000px;}
-        .margin-badge { background: #ffffff; border: 1px solid #e4e4e7; padding: 16px 24px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); text-align: right; }
-        .margin-badge h4 { font-size: 2rem; color: #c026d3; margin-bottom: 4px; line-height: 1; font-weight: 800;}
-        .margin-badge p { font-size: 0.95rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin: 0; }
-        .chart-grid { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; width: 100%; max-width: 1000px; margin: 0 auto; position: relative; height: 320px; }
-        .chart-grid::before { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 1px; background: rgba(0, 0, 0, 0.1); }
-        .chart-grid::after { content: ''; position: absolute; bottom: 50%; left: 0; width: 100%; height: 1px; background: transparent; border-top: 1px dashed rgba(0, 0, 0, 0.1); }
-        .pillar { border-bottom: none; border-top-left-radius: 24px; border-top-right-radius: 24px; padding: 24px 24px 24px; display: flex; flex-direction: column; width: 31%; position: relative; box-shadow: 0 -5px 20px rgba(0,0,0,0.03); z-index: 2; text-align: left; }
-        .year-1 { height: 230px; border-top: 4px solid #2dd4bf; } 
-        .year-2 { height: 275px; border-top: 4px solid #8b5cf6; background: rgba(139, 92, 246, 0.02); } 
-        .year-3 { height: 320px; border-top: 4px solid #d946ef; background: linear-gradient(180deg, rgba(217, 70, 239, 0.05) 0%, rgba(255, 255, 255, 0) 100%); }
-        .year-label { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
-        .year-1 .year-label { color: #0d9488; } .year-2 .year-label { color: #7c3aed; } .year-3 .year-label { color: #c026d3; }
-        .arr-value { font-size: 3.2rem; font-weight: 800; margin-bottom: 12px; line-height: 1; letter-spacing: -1px; color: #18181b;}
-        .user-count { display: inline-block; padding: 6px 14px; background: #f4f4f5; border-radius: 100px; font-size: 0.95rem; font-weight: 600; border: 1px solid #e4e4e7; margin-bottom: 16px; align-self: flex-start; }
-        .focus-text { font-size: 1.05rem; line-height: 1.5; margin: 0; }
-
-        /* Slide 11 Styles (TEAM) */
-        #slide-11 .slide-content { padding: 60px 60px; align-items: center; text-align: center; justify-content: flex-start; } 
-        #slide-11 .slide-glow { top: 50%; left: 50%; transform: translate(-50%, -50%); width: 1000px; height: 600px; background: radial-gradient(ellipse, rgba(124, 58, 237, 0.1) 0%, rgba(192, 38, 211, 0.05) 50%, transparent 70%); }
-        #slide-11 .badge { margin-bottom: 12px; align-self: center; }
-        #slide-11 .slide-title { font-size: 3.2rem; margin-bottom: 24px; max-width: 900px; }
-        #slide-11 .team-grid { display: flex; justify-content: center; gap: 40px; align-items: stretch; width: 100%; max-width: 900px; margin: 0 auto; }
-        #slide-11 .team-card { width: 100%; max-width: 400px; border-radius: 20px; padding: 24px; display: flex; flex-direction: column; align-items: center; position: relative; overflow: hidden; transition: transform 0.3s ease;}
-        #slide-11 .team-card:hover { transform: translateY(-5px); }
-        #slide-11 .team-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; }
-        #slide-11 .adnan::before { background: linear-gradient(90deg, transparent, #2dd4bf, transparent); } 
-        #slide-11 .anupom::before { background: linear-gradient(90deg, transparent, #8b5cf6, transparent); } 
-        #slide-11 .icon-ring { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; margin-bottom: 12px; border: 1px solid rgba(0, 0, 0, 0.05); }
-        #slide-11 .adnan .icon-ring { background: rgba(13, 148, 136, 0.05); border-color: rgba(13, 148, 136, 0.2); color: #0d9488; }
-        #slide-11 .anupom .icon-ring { background: rgba(124, 58, 237, 0.05); border-color: rgba(124, 58, 237, 0.2); color: #7c3aed; }
-        #slide-11 .member-title { font-size: 1rem; margin-bottom: 16px; min-height: 24px; text-transform: uppercase; font-weight: 500; letter-spacing: 0.5px; }
-        #slide-11 .member-desc { list-style: none; flex: 1; text-align: left; align-self: flex-start; margin: 0;}
-        #slide-11 .member-desc li { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; font-size: 1rem; line-height: 1.4; }
-        #slide-11 .member-desc li::before { content: '✓'; color: #a1a1aa; font-weight: bold; }
-        #slide-11 .anupom-list li h4 { color: #c026d3; font-weight: 700; font-size: 1rem; margin: 0;} 
-        #slide-11 .adnan-list li h4 { color: #7c3aed; font-weight: 700; font-size: 1rem; margin: 0;}
-        #slide-11 .slide-footer { position: absolute; bottom: 30px; left: 60px; right: 60px; display: flex; justify-content: space-between; align-items: center; z-index: 5; }
-        #slide-11 .footer-text { font-size: 1.1rem; color: #52525b; font-weight: 400; line-height: 1.6; margin: 0;}
-
-        /* Slide 12 Styles (Ask + Close) */
-        #slide-12 .slide-content { padding: 60px 60px; } /* Cleaned up padding to keep things centered */
-        #slide-12 .slide-glow { top: 40%; left: 50%; transform: translate(-50%, -50%); width: 900px; height: 600px; background: radial-gradient(ellipse, rgba(13, 148, 136, 0.1) 0%, rgba(124, 58, 237, 0.05) 50%, transparent 70%); }
-        .allocation-container { width: 100%; max-width: 1100px; position: relative; margin: 0 auto; }
-        .allocation-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; width: 100%; }
-        .alloc-card { border-radius: 20px; padding: 24px 24px; display: flex; flex-direction: column; align-items: flex-start; text-align: left; position: relative; overflow: hidden; transition: transform 0.3s ease; }
-        .alloc-card:hover { transform: translateY(-5px); }
-        .alloc-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; }
-        .card-1::before { background: linear-gradient(90deg, transparent, #2dd4bf, transparent); } .card-2::before { background: linear-gradient(90deg, transparent, #8b5cf6, transparent); } .card-3::before { background: linear-gradient(90deg, transparent, #d946ef, transparent); }
-        .icon-box { width: 46px; height: 46px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; margin-bottom: 16px; }
-        .card-1 .icon-box { background: rgba(13, 148, 136, 0.1); border: 1px solid rgba(13, 148, 136, 0.2); color: #0d9488; } .card-2 .icon-box { background: rgba(124, 58, 237, 0.1); border: 1px solid rgba(124, 58, 237, 0.2); color: #7c3aed; } .card-3 .icon-box { background: rgba(192, 38, 211, 0.1); border: 1px solid rgba(192, 38, 211, 0.2); color: #c026d3; }
-        
-        /* The Big Prototype Button */
-        /* Increased button text size and reduced top margin to fit perfectly on screen */
-        .prototype-btn { margin-top: 24px; display: inline-flex; align-items: center; justify-content: center; gap: 12px; padding: 16px 36px; background: linear-gradient(135deg, #8b5cf6, #d946ef); color: #ffffff; border-radius: 100px; font-size: 1.4rem; font-weight: 800; text-decoration: none; box-shadow: 0 15px 40px rgba(139, 92, 246, 0.3); transition: transform 0.3s, box-shadow 0.3s; }
-        .prototype-btn:hover { transform: translateY(-3px); box-shadow: 0 20px 50px rgba(139, 92, 246, 0.4); }
-
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
     <div class="deck" id="deck">
 
-        <section class="slide active" id="slide-1">
-            <div class="pulse-glow"></div>
-            <div class="slide-header">
-                <div class="logo"><div class="logo-icon"></div> Pulse</div>
-                <div class="presentation-context">Wright Venture Pitch • 2026</div>
-            </div>
-            <div class="slide-content">
-                <div class="badge reveal">⚡ The 10-Minute Delay</div>
-                <h1 class="headline reveal delay-100">Stop losing revenue to missed calls.</h1>
-                <p class="sub-headline reveal delay-200"><b>Pulse</b> is the <b>24/7 AI engine</b> that captures every lead and proves every <b>dollar of ROI.</b></p>
+        <section class="slide active dark-slide" id="slide-1">
+            <canvas id="networkCanvas"></canvas>
+            <div class="slide-content" style="z-index: 10;">
+                <h1 class="headline-glow pulse-title">PULSE</h1>
+                <div style="margin-top: 20px; font-size: 1.8rem; color: #d4d4d8; letter-spacing: 6px; text-transform: uppercase; font-weight: 600;">
+                    The Elite Sales Closer
+                </div>
             </div>
         </section>
 
@@ -339,48 +25,44 @@
             <div class="slide-glow"></div>
             <div class="slide-header">
                 <div class="logo"><div class="logo-icon"></div> Pulse</div>
-                <div class="presentation-context">Wright Venture Pitch • Slide 02</div>
+                <div class="presentation-context">Wright Venture Pitch • The Friction</div>
             </div>
             <div class="slide-content">
-                <div class="badge reveal">The Problem</div>
-                <h2 class="slide-title reveal delay-100" style="margin-bottom: 16px;">Enterprise brands solved this. Local SMBs got left behind.</h2>
                 
-                <p class="slide-subtitle reveal delay-200" style="margin-bottom: 24px; max-width: 900px; font-size: 1.3rem;">
-                    Enterprises capture every lead. Local businesses are <strong>priced out</strong>, <strong>starved for speed</strong>, and forced to <span style="color: #ef4444; font-weight: 700;">operate blind</span>.
-                </p>
+                <div class="story-title-container">
+                    <h2 class="slide-title" style="margin-bottom: 40px;">Imagine a plumbing emergency...</h2>
+                </div>
                 
-                <div class="problem-grid">
-                    <div class="problem-card reveal delay-300">
-                        <div class="visual-container">
-                            <div class="funnel-visual">
-                                <div class="funnel-part funnel-top"></div><div class="funnel-part funnel-mid"></div><div class="funnel-part funnel-btm"></div>
-                                <div class="leak-drop"></div>
+                <div class="story-journey">
+                    <div class="journey-stage step" data-step="1">
+                        <div class="search-bar-mockup">
+                            <span class="search-icon">🔍</span>
+                            <span class="search-text">Emergency plumber near me</span>
+                        </div>
+                        <p class="journey-caption">You click the top sponsored ad.</p>
+                    </div>
+
+                    <div class="journey-arrow step" data-step="2">➔</div>
+                    <div class="journey-stage step" data-step="2">
+                        <div class="phone-mockup ringing">
+                            <div class="phone-screen">
+                                <div class="caller-id">Joe's Plumbing</div>
+                                <div class="call-status" style="color: #ef4444;">No Answer...</div>
                             </div>
                         </div>
-                        <div class="card-header"><div class="card-icon">⏱️</div><h3>The Response Gap</h3></div>
-                        
-                        <ul style="list-style: none; text-align: left; padding: 0; font-size: 1.05rem; color: #52525b; line-height: 1.5; margin-top: 8px;">
-                            <li style="margin-bottom: 12px; display: flex; gap: 10px;"><span style="color:#ef4444; font-weight: bold;">✗</span> <div><span class="highlight-stat">62%<sup style="font-size: 0.6em; margin-left: 2px;">1</sup> of calls</span> go unanswered.</div></li>
-                            <li style="margin-bottom: 12px; display: flex; gap: 10px;"><span style="color:#ef4444; font-weight: bold;">✗</span> <div>Cannot afford 24/7 human staffing.</div></li>
-                            <li style="margin-bottom: 12px; display: flex; gap: 10px;"><span style="color:#ef4444; font-weight: bold;">✗</span> <div>Lost leads instantly book with competitors.</div></li>
-                        </ul>
+                        <p class="journey-caption">They are busy. You hang up.</p>
                     </div>
-                    
-                    <div class="problem-card reveal delay-400">
-                        <div class="visual-container">
-                            <div class="labyrinth-visual"><div class="floating-question">?</div></div>
+
+                    <div class="journey-arrow step" data-step="3">➔</div>
+                    <div class="journey-stage step" data-step="3">
+                        <div class="competitor-mockup">
+                            <div class="comp-icon">🏢</div>
+                            <div class="comp-text">Competitor booked!</div>
                         </div>
-                        <div class="card-header"><div class="card-icon">📦</div><h3>The Analytics Gap</h3></div>
-                        
-                        <ul style="list-style: none; text-align: left; padding: 0; font-size: 1.05rem; color: #52525b; line-height: 1.5; margin-top: 8px;">
-                            <li style="margin-bottom: 12px; display: flex; gap: 10px;"><span style="color:#ef4444; font-weight: bold;">✗</span> <div>Thousands spent with <span class="highlight-stat">unmeasurable ROI</span>.</div></li>
-                            <li style="margin-bottom: 12px; display: flex; gap: 10px;"><span style="color:#ef4444; font-weight: bold;">✗</span> <div>No enterprise-grade attribution software.</div></li>
-                            <li style="margin-bottom: 12px; display: flex; gap: 10px;"><span style="color:#ef4444; font-weight: bold;">✗</span> <div>Unable to prove which ads drive actual sales.</div></li>
-                        </ul>
+                        <p class="journey-caption">You instantly call the next option.</p>
                     </div>
                 </div>
             </div>
-            <div class="citation"><sup>1</sup> Invoca (2023). "The State of the Customer Experience."</div>
             <div class="slide-number">02</div>
         </section>
 
@@ -388,140 +70,98 @@
             <div class="slide-glow"></div>
             <div class="slide-header">
                 <div class="logo"><div class="logo-icon"></div> Pulse</div>
-                <div class="presentation-context">Wright Venture Pitch • Slide 03</div>
+                <div class="presentation-context">Wright Venture Pitch • The Bleed</div>
             </div>
             <div class="slide-content">
-                <div class="badge reveal">The Solution</div>
-                <h2 class="slide-title reveal delay-100" style="margin-bottom: 16px;">Enterprise-grade AI, priced for Main Street.</h2>
                 
-                <p class="slide-subtitle reveal delay-200" style="margin-bottom: 24px; max-width: 900px; font-size: 1.3rem;">
-                    An <strong>autonomous AI engine</strong> that captures every lead, books appointments, and <strong>proves your exact marketing ROI</strong>.
-                </p>
-                
-                <div class="solution-grid">
-                    <div class="solution-card card-1 sol-1 reveal delay-300">
-                        <div class="card-icon icon-1 sol-icon">⚡</div>
-                        <h3>Instant Omni-Response</h3>
-                        
-                        <ul style="list-style: none; text-align: left; padding: 0; font-size: 1.05rem; color: #52525b; line-height: 1.5; margin-top: 12px;">
-                            <li style="margin-bottom: 12px; display: flex; gap: 8px;"><span style="color:#7c3aed; font-weight: bold;">✓</span> <div>Picks up inbound leads in <span class="highlight-text">< 5 seconds</span></div></li>
-                            <li style="margin-bottom: 12px; display: flex; gap: 8px;"><span style="color:#7c3aed; font-weight: bold;">✓</span> <div><span class="highlight-text">Sub-second latency</span> for natural voice flow</div></li>
-                            <li style="margin-bottom: 12px; display: flex; gap: 8px;"><span style="color:#7c3aed; font-weight: bold;">✓</span> <div>Handles calls, SMS, and web chat</div></li>
-                        </ul>
+                <div class="hero-stat-container">
+                    <div class="hero-number">62%</div>
+                    <div class="hero-sub">of small business calls go unanswered.</div>
+                </div>
+
+                <div class="math-grid">
+                    <div class="math-card step" data-step="1">
+                        <div class="math-icon">📉</div>
+                        <div class="math-text"><strong>2 Missed Customers</strong> per day</div>
+                        <div class="math-sub">At a $250 average job value</div>
                     </div>
-                    
-                    <div class="solution-card card-2 sol-2 reveal delay-400">
-                        <div class="card-icon icon-2 sol-icon">📅</div>
-                        <h3>Autonomous Booking</h3>
-                        
-                        <ul style="list-style: none; text-align: left; padding: 0; font-size: 1.05rem; color: #52525b; line-height: 1.5; margin-top: 12px;">
-                            <li style="margin-bottom: 12px; display: flex; gap: 8px;"><span style="color:#c026d3; font-weight: bold;">✓</span> <div>Actively qualifies inbound prospects</div></li>
-                            <li style="margin-bottom: 12px; display: flex; gap: 8px;"><span style="color:#c026d3; font-weight: bold;">✓</span> <div><span class="highlight-text">Books appointments</span> without human input</div></li>
-                            <li style="margin-bottom: 12px; display: flex; gap: 8px;"><span style="color:#c026d3; font-weight: bold;">✓</span> <div>Syncs directly to your calendar & CRM</div></li>
-                        </ul>
+                    <div class="math-card step bleeding" data-step="2">
+                        <div class="math-icon">🩸</div>
+                        <div class="math-text"><strong>$500 Bleeding</strong> every day</div>
                     </div>
-                    
-                    <div class="solution-card card-3 sol-3 reveal delay-400">
-                        <div class="card-icon icon-3 sol-icon">📊</div>
-                        <h3>Actionable ROI Analytics</h3>
-                        
-                        <ul style="list-style: none; text-align: left; padding: 0; font-size: 1.05rem; color: #52525b; line-height: 1.5; margin-top: 12px;">
-                            <li style="margin-bottom: 12px; display: flex; gap: 8px;"><span style="color:#0d9488; font-weight: bold;">✓</span> <div>Generates daily performance reports</div></li>
-                            <li style="margin-bottom: 12px; display: flex; gap: 8px;"><span style="color:#0d9488; font-weight: bold;">✓</span> <div>Tracks <span class="highlight-text">exact marketing channels</span></div></li>
-                            <li style="margin-bottom: 12px; display: flex; gap: 8px;"><span style="color:#0d9488; font-weight: bold;">✓</span> <div>Proves which specific ads drive revenue</div></li>
-                        </ul>
+                    <div class="math-card step total" data-step="3">
+                        <div class="math-icon">💸</div>
+                        <div class="math-text"><strong>$130,000 Lost Revenue</strong> annually</div>
+                        <div class="math-sub">Walking directly to competitors.</div>
                     </div>
                 </div>
+
+                <div class="step handoff-text" data-step="4">
+                    Here comes <strong>Pulse</strong> to rescue that revenue.
+                </div>
+
             </div>
+            <div class="citation">Invoca (2023). "The State of the Customer Experience."</div>
             <div class="slide-number">03</div>
         </section>
 
         <section class="slide" id="slide-4">
-            <div class="slide-glow" style="top: 50%; left: 50%; transform: translate(-50%, -50%); width: 1000px; height: 500px; background: radial-gradient(ellipse, rgba(13, 148, 136, 0.08) 0%, rgba(124, 58, 237, 0.1) 50%, rgba(192, 38, 211, 0.08) 100%); z-index: 0;"></div>
+            <div class="slide-glow"></div>
             <div class="slide-header">
                 <div class="logo"><div class="logo-icon"></div> Pulse</div>
-                <div class="presentation-context">Wright Venture Pitch • Slide 04</div>
+                <div class="presentation-context">Wright Venture Pitch • Architecture</div>
             </div>
             
             <div class="slide-content">
-                <div class="badge reveal">The Product</div>
-                <h2 class="slide-title reveal delay-100" style="margin-bottom: 20px;">How the Engine Works</h2>
+                <div class="badge">The Product</div>
+                <h2 class="slide-title" style="margin-bottom: 20px;">The Autonomous AI Sales Rep</h2>
                 
-                <div class="flow-wrapper reveal delay-200">
-                    
+                <div class="flow-wrapper">
                     <svg class="flow-lines" viewBox="0 0 1050 400" preserveAspectRatio="none">
-                        <path class="line-path" d="M 140 80 C 300 80, 300 200, 525 200" />
-                        <path class="line-path" d="M 140 320 C 300 320, 300 200, 525 200" />
-                        <path class="line-path" d="M 525 200 C 750 200, 750 80, 910 80" />
-                        <path class="line-path" d="M 525 200 C 750 200, 750 320, 910 320" />
+                        <defs>
+                            <linearGradient id="flowGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" stop-color="#0d9488" />
+                                <stop offset="50%" stop-color="#7c3aed" />
+                                <stop offset="100%" stop-color="#c026d3" />
+                            </linearGradient>
+                        </defs>
                         
-                        <path class="line-animate path-teal" d="M 140 80 C 300 80, 300 200, 525 200" />
-                        <path class="line-animate path-teal" d="M 140 320 C 300 320, 300 200, 525 200" style="animation-delay: 0.7s;" />
-                        <path class="line-animate path-pink" d="M 525 200 C 750 200, 750 80, 910 80" style="animation-delay: 0.3s;" />
-                        <path class="line-animate path-pink" d="M 525 200 C 750 200, 750 320, 910 320" style="animation-delay: 1.1s;" />
+                        <path class="line-animate" stroke="url(#flowGrad)" d="M 140 100 C 300 100, 300 200, 525 200" />
+                        <path class="line-animate" stroke="url(#flowGrad)" d="M 140 300 C 300 300, 300 200, 525 200" style="animation-delay: 0.7s;" />
+                        <path class="line-animate" stroke="url(#flowGrad)" d="M 525 200 C 750 200, 750 100, 910 100" style="animation-delay: 0.4s;" />
+                        <path class="line-animate" stroke="url(#flowGrad)" d="M 525 200 C 750 200, 750 300, 910 300" style="animation-delay: 1.1s;" />
                     </svg>
 
                     <div class="flow-col">
-                        <div class="f-node node-connect">
-                            <div class="f-phase phase-connect">1. Connect</div>
-                            <div class="f-node-header">
-                                <div class="f-icon">💬</div><div class="f-title">Omni-Channel Setup</div>
-                            </div>
-                            <ul style="list-style: none; padding: 0; font-size: 0.95rem; color: #52525b; line-height: 1.4; margin-top: 8px; text-align: left;">
-                                <li style="margin-bottom: 6px; display: flex; gap: 6px;"><span style="color:#0d9488; font-weight: bold;">✓</span> <div>Captures Voice, SMS & Chat</div></li>
-                                <li style="display: flex; gap: 6px;"><span style="color:#0d9488; font-weight: bold;">✓</span> <div><span class="highlight-text">Zero-latency</span> ingestion</div></li>
-                            </ul>
+                        <div class="f-node node-connect step" data-step="1">
+                            <div class="f-phase phase-connect">Connect</div>
+                            <div class="f-node-header"><div class="f-icon">⚡</div><div class="f-title">Omni-Channel</div></div>
+                            <p class="f-desc">Captures Voice, Text & Social in under 5 seconds.</p>
                         </div>
-
-                        <div class="f-node node-connect">
-                            <div class="f-node-header">
-                                <div class="f-icon">🧲</div><div class="f-title">Ad Attribution</div>
-                            </div>
-                            <ul style="list-style: none; padding: 0; font-size: 0.95rem; color: #52525b; line-height: 1.4; margin-top: 8px; text-align: left;">
-                                <li style="margin-bottom: 6px; display: flex; gap: 6px;"><span style="color:#0d9488; font-weight: bold;">✓</span> <div>Tracks Google & Meta Ads</div></li>
-                                <li style="display: flex; gap: 6px;"><span style="color:#0d9488; font-weight: bold;">✓</span> <div>Maps exact <span class="highlight-text">customer journeys</span></div></li>
-                            </ul>
+                        <div class="f-node node-connect step" data-step="4">
+                            <div class="f-node-header"><div class="f-icon">🧲</div><div class="f-title">Ad Attribution</div></div>
+                            <p class="f-desc">Shows exactly which ads drive real business.</p>
                         </div>
                     </div>
 
                     <div class="flow-col center">
-                        <div class="f-node node-engage pulse-active">
-                            <div class="f-phase phase-engage">2. Engage</div>
-                            <div class="brain-icon-wrapper">
-                                🧠
-                                <div class="brain-ripple r1"></div>
-                                <div class="brain-ripple r2"></div>
-                            </div>
-                            <div class="f-title" style="font-size: 1.4rem;">Pulse AI Engine</div>
-                            <ul style="list-style: none; padding: 0; font-size: 1rem; color: #52525b; line-height: 1.4; margin-top: 16px; margin-bottom: 8px; text-align: left; display: inline-block;">
-                                <li style="margin-bottom: 8px; display: flex; gap: 8px;"><span style="color:#7c3aed; font-weight: bold;">✓</span> <div><span class="highlight-text">Sub-second</span> conversational latency</div></li>
-                                <li style="margin-bottom: 8px; display: flex; gap: 8px;"><span style="color:#7c3aed; font-weight: bold;">✓</span> <div>Applies elite <span class="highlight-text">sales psychology</span></div></li>
-                                <li style="display: flex; gap: 8px;"><span style="color:#7c3aed; font-weight: bold;">✓</span> <div>Auto-syncs with Knowledge Base</div></li>
-                            </ul>
-                            <div class="tech-chip">🐍 Custom Python Architecture</div>
+                        <div class="f-node node-engage pulse-active step" data-step="2">
+                            <div class="f-phase phase-engage">Engage</div>
+                            <div class="brain-icon-wrapper">🧠</div>
+                            <div class="f-title" style="font-size: 1.4rem;">Pulse Engine</div>
+                            <p class="f-desc" style="text-align: center; margin-top: 8px;">Sub-second conversational latency applying elite sales psychology.</p>
                         </div>
                     </div>
 
                     <div class="flow-col">
-                        <div class="f-node node-sync">
-                            <div class="f-phase phase-sync">3. Sync</div>
-                            <div class="f-node-header">
-                                <div class="f-icon">📅</div><div class="f-title">Workflow Auto-Sync</div>
-                            </div>
-                            <ul style="list-style: none; padding: 0; font-size: 0.95rem; color: #52525b; line-height: 1.4; margin-top: 8px; text-align: left;">
-                                <li style="margin-bottom: 6px; display: flex; gap: 6px;"><span style="color:#c026d3; font-weight: bold;">✓</span> <div>Auto-books appointments</div></li>
-                                <li style="display: flex; gap: 6px;"><span style="color:#c026d3; font-weight: bold;">✓</span> <div>Updates <span class="highlight-text">your existing CRM</span></div></li>
-                            </ul>
+                        <div class="f-node node-sync step" data-step="3">
+                            <div class="f-phase phase-sync">Sync</div>
+                            <div class="f-node-header"><div class="f-icon">📅</div><div class="f-title">Workflow Auto-Sync</div></div>
+                            <p class="f-desc">Books the appointment directly into your CRM.</p>
                         </div>
-
-                        <div class="f-node node-sync">
-                            <div class="f-node-header">
-                                <div class="f-icon">📊</div><div class="f-title">Live Dashboard</div>
-                            </div>
-                            <ul style="list-style: none; padding: 0; font-size: 0.95rem; color: #52525b; line-height: 1.4; margin-top: 8px; text-align: left;">
-                                <li style="margin-bottom: 6px; display: flex; gap: 6px;"><span style="color:#c026d3; font-weight: bold;">✓</span> <div>Flags <span class="highlight-text">Revenue Recovery</span> leads</div></li>
-                                <li style="display: flex; gap: 6px;"><span style="color:#c026d3; font-weight: bold;">✓</span> <div>Generates exact ROI metrics</div></li>
-                            </ul>
+                        <div class="f-node node-sync step" data-step="4">
+                            <div class="f-node-header"><div class="f-icon">📊</div><div class="f-title">Live Dashboard</div></div>
+                            <p class="f-desc">Generates actionable performance reports.</p>
                         </div>
                     </div>
 
@@ -531,78 +171,50 @@
         </section>
 
         <section class="slide" id="slide-5">
-            
-            <div class="secret-sauce-overlay" id="secret-sauce">
+            <div class="secret-sauce-overlay step" data-step="1">
                 <div class="ss-modal">
-                    <div class="badge">The Secret Sauce</div>
-                    <h2 class="slide-title">We don't build Customer Service Bots.<br>We build <span class="highlight-gradient">Elite Sales Closers</span>.</h2>
-                    <div class="ss-grid">
-                        <div class="ss-card legacy">
-                            <h3>Generic Chatbots</h3>
-                            
-                            <ul style="list-style: none; padding: 0; color: #d4d4d8; font-size: 1.1rem; line-height: 1.6;">
-                                <li style="margin-bottom: 12px; display: flex; gap: 10px;"><span style="color:#ef4444; font-weight: bold;">✗</span> <div>Act as polite "order takers"</div></li>
-                                <li style="margin-bottom: 12px; display: flex; gap: 10px;"><span style="color:#ef4444; font-weight: bold;">✗</span> <div>Rely on rigid, frustrating flowcharts</div></li>
-                                <li style="margin-bottom: 12px; display: flex; gap: 10px;"><span style="color:#ef4444; font-weight: bold;">✗</span> <div>Blindly quote prices with zero context</div></li>
-                                <li style="display: flex; gap: 10px; margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.1);"><strong style="color: #fca5a5;">Result: High lead drop-off</strong></li>
-                            </ul>
-                        </div>
-                        <div class="ss-card pulse">
-                            <h3>Pulse AI Engine</h3>
-                            
-                            <ul style="list-style: none; padding: 0; color: #e4e4e7; font-size: 1.1rem; line-height: 1.6;">
-                                <li style="margin-bottom: 12px; display: flex; gap: 10px;"><span style="color:#d946ef; font-weight: bold;">✓</span> <div>Fine-tuned on top 1% sales methodologies</div></li>
-                                <li style="margin-bottom: 12px; display: flex; gap: 10px;"><span style="color:#d946ef; font-weight: bold;">✓</span> <div>Utilizes upfront contracts & pain discovery</div></li>
-                                <li style="margin-bottom: 12px; display: flex; gap: 10px;"><span style="color:#d946ef; font-weight: bold;">✓</span> <div>Controls the frame with strategic empathy</div></li>
-                                <li style="display: flex; gap: 10px; margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.1);"><strong style="color: #ffffff;">Result: Books the appointment</strong></li>
-                            </ul>
-                        </div>
-                    </div>
+                    <div class="badge" style="background: rgba(139, 92, 246, 0.2); color: #c084fc;">Pulse Fixes It All</div>
+                    <h2 class="slide-title" style="color: #ffffff; background: none; -webkit-text-fill-color: #ffffff; font-size: 3.5rem;">
+                        We didn't build a polite customer service bot.<br>We built an <span class="highlight-gradient">Elite Sales Closer.</span>
+                    </h2>
                 </div>
             </div>
 
             <div class="slide-glow"></div>
             <div class="slide-header">
                 <div class="logo"><div class="logo-icon"></div> Pulse</div>
-                <div class="presentation-context">Wright Venture Pitch • Slide 05</div>
+                <div class="presentation-context">Wright Venture Pitch • The Landscape</div>
             </div>
-            <div class="slide-content" style="align-items: flex-start;">
-                <div class="badge reveal" style="align-self: flex-start;">The Landscape</div>
-                <h2 class="slide-title reveal delay-100" style="text-align: left; margin-bottom: 24px;">Why legacy solutions are failing SMBs.</h2>
-                <div class="comparison-grid">
-                    
-                    <div class="comp-card legacy-card reveal delay-200">
-                        <div class="comp-card-header">Human Receptionists</div><div class="comp-card-sub">e.g., Ruby, VoiceNation</div>
-                        
-                        <ul class="feature-list">
-                            <li>High cost ($300+/mo for limited mins)</li>
-                            <li>Inconsistent tone & human error</li>
-                            <li>Zero ROI tracking</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="comp-card legacy-card reveal delay-300">
-                        <div class="comp-card-header">Generic Chatbots</div><div class="comp-card-sub">e.g., Intercom, ManyChat</div>
-                        
-                        <ul class="feature-list">
-                            <li>Text-only (No voice capabilities)</li>
-                            <li>Rigid, frustrating phone trees</li>
-                            <li>Disconnected from operational CRMs</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="comp-card pulse-card reveal delay-400">
-                        <div class="comp-card-header">Pulse</div><div class="comp-card-sub">Autonomous AI Analyst & Receptionist</div>
-                        
-                        <ul class="feature-list">
-                            <li><strong>Omni-Channel:</strong> Natural Voice & Text</li>
-                            <li><strong>Data-Driven:</strong> Dollar-for-dollar ROI tracking</li>
-                            <li><strong>Automated:</strong> Direct CRM & Calendar sync</li>
-                        </ul>
-                        <div class="tech-highlight">Built on <strong>Custom Python Architecture</strong>. Not fragile templates.</div>
-                    </div>
-                    
+            <div class="slide-content">
+                <h2 class="slide-title" style="margin-bottom: 40px;">Why existing solutions are failing.</h2>
+                
+                <div class="matrix-container">
+                    <div class="matrix-header"></div>
+                    <div class="matrix-header col-title">Human Receptionists</div>
+                    <div class="matrix-header col-title">Generic Chatbots</div>
+                    <div class="matrix-header col-title pulse-col-title">PULSE AI</div>
+
+                    <div class="matrix-row-title">Cost & Availability</div>
+                    <div class="matrix-cell fail">Expensive, limited hours</div>
+                    <div class="matrix-cell pass">Cheap, 24/7</div>
+                    <div class="matrix-cell pass pulse-cell">Scalable, 24/7</div>
+
+                    <div class="matrix-row-title">Voice Capabilities</div>
+                    <div class="matrix-cell pass">Natural Voice</div>
+                    <div class="matrix-cell fail">Text-Only</div>
+                    <div class="matrix-cell pass pulse-cell">Sub-Second AI Voice</div>
+
+                    <div class="matrix-row-title">Sales Psychology</div>
+                    <div class="matrix-cell fail">Inconsistent tone</div>
+                    <div class="matrix-cell fail">Robotic & frustrating</div>
+                    <div class="matrix-cell pass pulse-cell">Trained on Top 1% Closers</div>
+
+                    <div class="matrix-row-title">Operational Data</div>
+                    <div class="matrix-cell fail">Zero ROI Tracking</div>
+                    <div class="matrix-cell fail">Disconnected from CRM</div>
+                    <div class="matrix-cell pass pulse-cell">Native CRM & Ad Attribution</div>
                 </div>
+
             </div>
             <div class="slide-number">05</div>
         </section>
@@ -611,60 +223,35 @@
             <div class="slide-glow"></div>
             <div class="slide-header">
                 <div class="logo"><div class="logo-icon"></div> Pulse</div>
-                <div class="presentation-context">Wright Venture Pitch • Slide 06</div>
+                <div class="presentation-context">Wright Venture Pitch • Scale</div>
             </div>
-            <div class="slide-content" style="flex-direction: row; gap: 60px;">
-                
-                <div class="narrative-col">
-                    <div class="badge reveal">Market Validation</div>
-                    <h2 class="slide-title reveal delay-100" style="text-align: left;">Born from a real agency. Built for real clients.</h2>
-                    
-                    <ul class="reveal delay-200" style="list-style: none; padding: 0; font-size: 1.15rem; color: #52525b; line-height: 1.5; margin-top: 16px;">
-                        <li style="margin-bottom: 24px; display: flex; gap: 12px;">
-                            <span style="color:#0d9488; font-weight: bold; font-size: 1.2rem;">✓</span> 
-                            <div><strong>Agency Founders:</strong> We experience this problem daily alongside our clients.</div>
-                        </li>
-                        <li style="margin-bottom: 24px; display: flex; gap: 12px;">
-                            <span style="color:#0d9488; font-weight: bold; font-size: 1.2rem;">✓</span> 
-                            <div><strong>Client-Driven:</strong> Built specifically to solve their exact lead-leakage demands.</div>
-                        </li>
-                        <li style="display: flex; gap: 12px;">
-                            <span style="color:#0d9488; font-weight: bold; font-size: 1.2rem;">✓</span> 
-                            <div><strong>Warm Launch:</strong> Leveraging our existing client base for immediate beta testing.</div>
-                        </li>
-                    </ul>
-                </div>
-                
-                <div class="beta-col reveal delay-300">
-                    <div class="beta-card">
-                        <div class="status-header"><div class="status-dot"></div><div class="status-text">Beta Launch Strategy</div></div>
-                        <ul class="milestone-list">
-                            <li>
-                                <div class="milestone-icon">👥</div>
-                                <div class="milestone-content">
-                                    <h4>Beta Deployment</h4>
-                                    <p>Deploying directly to our active agency clients.</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="milestone-icon">⚡</div>
-                                <div class="milestone-content">
-                                    <h4>Live Validation</h4>
-                                    <p>Proving our instant response model in live environments.</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="milestone-icon">📈</div>
-                                <div class="milestone-content">
-                                    <h4>ROI Baseline</h4>
-                                    <p>Generating exact case studies to fuel future SaaS sales.</p>
-                                </div>
-                            </li>
-                        </ul>
+            <div class="slide-content">
+                <div class="badge">The Opportunity</div>
+                <h2 class="slide-title">A massive market hiding in plain sight.</h2>
+                <div class="metrics-grid" style="margin-top: 20px;">
+                    <div class="metric-card mc-1">
+                        <div class="metric-value val-1">$40B+<sup style="font-size: 0.5em; margin-left: 4px;">1</sup></div>
+                        <div class="metric-label">Total Addressable Market</div>
+                        <div class="metric-desc">SMB marketing automation</div>
+                    </div>
+                    <div class="metric-card mc-2">
+                        <div class="metric-value val-2">33M<sup style="font-size: 0.5em; margin-left: 4px;">2</sup></div>
+                        <div class="metric-label">US Small Businesses</div>
+                        <div class="metric-desc">Need instant lead capture</div>
+                    </div>
+                    <div class="metric-card mc-3">
+                        <div class="metric-value val-3">$118M</div>
+                        <div class="metric-label">Annual Recurring Revenue</div>
+                        <div class="metric-desc">Capturing just <strong>0.1%</strong> of the market</div>
                     </div>
                 </div>
-                
             </div>
+            
+            <div class="citation">
+                <sup>1</sup> Grand View Research (2023). Marketing Automation Market Size Report.<br>
+                <sup>2</sup> U.S. Small Business Administration (SBA) Office of Advocacy (2023).
+            </div>
+            
             <div class="slide-number">06</div>
         </section>
 
@@ -672,370 +259,75 @@
             <div class="slide-glow"></div>
             <div class="slide-header">
                 <div class="logo"><div class="logo-icon"></div> Pulse</div>
-                <div class="presentation-context">Wright Venture Pitch • Slide 07</div>
+                <div class="presentation-context">Wright Venture Pitch • Execution</div>
             </div>
-            <div class="slide-content">
-                <div class="badge reveal">The Opportunity</div>
-                <h2 class="slide-title reveal delay-100">A massive market hiding in plain sight.</h2>
-                <div class="metrics-grid">
-                    <div class="metric-card mc-1 reveal delay-200">
-                        <div class="metric-value val-1">$40B+<sup style="font-size: 0.5em; margin-left: 4px;">1</sup></div>
-                        <div class="metric-label">Total Addressable Market</div>
-                        <div class="metric-desc">US market size for <strong>SMB marketing automation</strong>.</div>
+            <div class="slide-content" style="padding-top: 40px;">
+                <h2 class="slide-title" style="margin-bottom: 40px;">The Path to $5.3M</h2>
+                
+                <div class="timeline-container">
+                    <div class="timeline-node">
+                        <div class="t-dot"></div>
+                        <div class="t-date">2.5 Months</div>
+                        <div class="t-title">MVP & Beta</div>
+                        <div class="t-desc">Live with existing agency clients.</div>
                     </div>
-                    <div class="metric-card mc-2 reveal delay-300">
-                        <div class="metric-value val-2">33M<sup style="font-size: 0.5em; margin-left: 4px;">2</sup></div>
-                        <div class="metric-label">US Small Businesses</div>
-                        <div class="metric-desc">Each needing <strong>instant lead capture</strong> and <strong>proven ROI</strong>.</div>
+                    <div class="timeline-node">
+                        <div class="t-dot"></div>
+                        <div class="t-date">Year 1</div>
+                        <div class="t-title">50 Active Users</div>
+                        <div class="t-desc">$180,000 ARR targeted in OH, IN, KY.</div>
                     </div>
-                    <div class="metric-card mc-3 reveal delay-400">
-                        <div class="metric-value val-3">$118M</div>
-                        <div class="metric-label">Annual Recurring Revenue</div>
-                        <div class="metric-desc">Achievable by capturing just <strong>0.1% of the market</strong>.</div>
+                    <div class="timeline-node">
+                        <div class="t-dot"></div>
+                        <div class="t-date">Year 2</div>
+                        <div class="t-title">200 Active Users</div>
+                        <div class="t-desc">Launch lifetime-commission affiliate program.</div>
+                    </div>
+                    <div class="timeline-node">
+                        <div class="t-dot" style="background:#c026d3; box-shadow: 0 0 15px #c026d3;"></div>
+                        <div class="t-date" style="color:#c026d3;">Year 3 & 4</div>
+                        <div class="t-title">Scale to $5.3M</div>
+                        <div class="t-desc">1,500 users via white-label agency partnerships.</div>
                     </div>
                 </div>
-            </div>
-            <div class="citation">
-                <sup>1</sup> Grand View Research (2023). Marketing Automation Market Size Report.<br>
-                <sup>2</sup> U.S. Small Business Administration (SBA) Office of Advocacy (2023).
+
+                <div class="ask-container step" data-step="1">
+                    <h3 style="margin-bottom: 16px; font-size: 1.4rem;">The Ask: $5,000 Wright Venture Prize</h3>
+                    <div class="ask-grid">
+                        <div class="ask-card">
+                            <div class="ask-val">30%</div><div class="ask-label">Infrastructure</div>
+                        </div>
+                        <div class="ask-card">
+                            <div class="ask-val" style="color:#7c3aed;">40%</div><div class="ask-label">Contract Dev</div>
+                        </div>
+                        <div class="ask-card">
+                            <div class="ask-val" style="color:#c026d3;">30%</div><div class="ask-label">Phase 1 Launch</div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
             <div class="slide-number">07</div>
         </section>
 
         <section class="slide" id="slide-8">
-            <div class="slide-glow"></div>
+            <div class="slide-glow" style="top: 50%; left: 50%; transform: translate(-50%, -50%); width: 800px; height: 800px; background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 70%);"></div>
             <div class="slide-header">
                 <div class="logo"><div class="logo-icon"></div> Pulse</div>
-                <div class="presentation-context">Wright Venture Pitch • Slide 08</div>
-            </div>
-            <div class="slide-content" style="align-items: flex-start; text-align: left;">
-                <div class="badge reveal" style="align-self: flex-start;">Acquisition Strategy</div>
-                <h2 class="slide-title reveal delay-100">The Go-To-Market Playbook</h2>
-                <div class="strategy-container reveal delay-200">
-                    
-                    <div class="phase-card phase-1">
-                        <div class="icon-container">🤝</div><div class="phase-badge">Phase 1: Direct</div><h3 class="phase-title">Warm Network</h3>
-                        <ul style="list-style: none; padding: 0; font-size: 1.05rem; color: #52525b; line-height: 1.4; margin-top: 12px; text-align: left;">
-                            <li style="margin-bottom: 10px; display: flex; gap: 8px;"><span style="color:#0d9488; font-weight: bold;">✓</span> <div>Convert <span class="highlight-text">existing agency clients</span></div></li>
-                            <li style="margin-bottom: 10px; display: flex; gap: 8px;"><span style="color:#0d9488; font-weight: bold;">✓</span> <div>Target local Dayton & Fairborn networks</div></li>
-                            <li style="display: flex; gap: 8px;"><span style="color:#0d9488; font-weight: bold;">✓</span> <div>Secure our initial paid user cohort</div></li>
-                        </ul>
-                    </div>
-                    
-                    <div class="phase-card phase-2">
-                        <div class="icon-container">📢</div><div class="phase-badge">Phase 2: Scale</div><h3 class="phase-title">Affiliate Network</h3>
-                        <ul style="list-style: none; padding: 0; font-size: 1.05rem; color: #52525b; line-height: 1.4; margin-top: 12px; text-align: left;">
-                            <li style="margin-bottom: 10px; display: flex; gap: 8px;"><span style="color:#7c3aed; font-weight: bold;">✓</span> <div>Launch B2B SaaS Partner Program</div></li>
-                            <li style="margin-bottom: 10px; display: flex; gap: 8px;"><span style="color:#7c3aed; font-weight: bold;">✓</span> <div>Offer <span class="highlight-text">Lifetime Recurring</span> commissions</div></li>
-                            <li style="display: flex; gap: 8px;"><span style="color:#7c3aed; font-weight: bold;">✓</span> <div>Scale rapidly with zero upfront ad spend</div></li>
-                        </ul>
-                    </div>
-                    
-                    <div class="phase-card phase-3">
-                        <div class="icon-container">🌐</div><div class="phase-badge">Phase 3: Multiply</div><h3 class="phase-title">White-Labeling</h3>
-                        <ul style="list-style: none; padding: 0; font-size: 1.05rem; color: #52525b; line-height: 1.4; margin-top: 12px; text-align: left;">
-                            <li style="margin-bottom: 10px; display: flex; gap: 8px;"><span style="color:#c026d3; font-weight: bold;">✓</span> <div>Partner with niche marketing agencies</div></li>
-                            <li style="margin-bottom: 10px; display: flex; gap: 8px;"><span style="color:#c026d3; font-weight: bold;">✓</span> <div>Provide <span class="highlight-text">white-label</span> AI infrastructure</div></li>
-                            <li style="display: flex; gap: 8px;"><span style="color:#c026d3; font-weight: bold;">✓</span> <div>Multiply reach via their client rosters</div></li>
-                        </ul>
-                    </div>
-                    
-                </div>
-            </div>
-            <div class="slide-number">08</div>
-        </section>
-
-        <section class="slide" id="slide-9">
-            <div class="slide-glow"></div>
-            <div class="slide-header">
-                <div class="logo"><div class="logo-icon"></div> Pulse</div>
-                <div class="presentation-context">Wright Venture Pitch • Slide 09</div>
+                <div class="presentation-context">Wright Venture Pitch • Live Demo</div>
             </div>
             <div class="slide-content">
-                <div class="badge reveal">Business Model</div>
-                <h2 class="slide-title reveal delay-100" style="margin-bottom: 40px;">The Revenue Engine</h2>
-                <div class="pricing-grid">
-                    
-                    <div class="price-card reveal delay-200">
-                        <div class="tier-name">Tier 1: The Software</div>
-                        <div class="price-point">$299<span>/mo</span></div>
-                        <ul class="checklist">
-                            <li><strong>Pure SaaS:</strong> Highly scalable recurring revenue</li>
-                            <li>24/7 AI Voice & Text</li>
-                            <li>Actionable ROI Analytics Dashboard</li>
-                            <li>Direct CRM & Calendar Integration</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="price-card premium reveal delay-300">
-                        <div class="premium-badge">Recommended</div>
-                        <div class="tier-name">Tier 2: White-Glove</div>
-                        <div class="price-point">$1,000+<span>/mo</span></div>
-                        <ul class="checklist premium-list">
-                            <li><strong>Custom Deployment:</strong> Full agency execution</li>
-                            <li>Includes everything in Tier 1</li>
-                            <li>Advanced Ad Attribution (Meta & Google)</li>
-                            <li>Dedicated growth strategy & consulting</li>
-                        </ul>
-                    </div>
-                    
-                </div>
-            </div>
-            <div class="slide-number">09</div>
-        </section>
-
-        <section class="slide" id="slide-10">
-            <div class="slide-glow"></div>
-            <div class="slide-header">
-                <div class="logo"><div class="logo-icon"></div> Pulse</div>
-                <div class="presentation-context">Wright Venture Pitch • Slide 10</div>
-            </div>
-            <div class="slide-content" style="align-items: stretch; text-align: left;">
-                <div class="header-layout w-full" style="width: 100%;">
-                    <div><div class="badge reveal" style="align-self: flex-start; margin-bottom: 20px;">Financials</div><h2 class="slide-title reveal delay-100" style="margin-bottom: 0;">3-Year ARR Projection</h2></div>
-                    <div class="margin-badge reveal delay-200"><h4>75%+</h4><p>Gross Margins via Python</p></div>
-                </div>
-                <div class="chart-grid">
-                    
-                    <div class="pillar year-1 reveal delay-200">
-                        <div class="year-label">Year 1</div><div class="arr-value">$358K</div><div class="user-count">100 Active Users</div>
-                        <div class="focus-text">Initial launch focusing on beta onboarding and <strong>local market penetration</strong>.</div>
-                    </div>
-                    
-                    <div class="pillar year-2 reveal delay-300">
-                        <div class="year-label">Year 2</div><div class="arr-value">$1.6M</div><div class="user-count">450 Active Users</div>
-                        <div class="focus-text">Rapid scaling powered by our <strong>B2B Affiliate Network</strong> and recurring commissions.</div>
-                    </div>
-                    
-                    <div class="pillar year-3 reveal delay-400">
-                        <div class="year-label">Year 3</div><div class="arr-value">$5.3M</div><div class="user-count">1,500 Active Users</div>
-                        <div class="focus-text">Exponential expansion fueled by scalable <strong>White-Label Agency Partnerships</strong>.</div>
-                    </div>
-                    
-                </div>
-            </div>
-            <div class="slide-number">10</div>
-        </section>
-
-        <section class="slide" id="slide-11">
-            <div class="slide-glow"></div>
-            <div class="slide-header">
-                <div class="logo"><div class="logo-icon"></div> Pulse</div>
-                <div class="presentation-context">Wright Venture Pitch • Slide 11</div>
-            </div>
-            <div class="slide-content">
-                <div class="badge reveal">THE EXPERTISE</div>
-                <h1 class="slide-title reveal delay-100">Marketers who actually know how to code.</h1>
+                <h1 class="slide-title">Thank you.</h1>
+                <p class="slide-subtitle" style="font-size: 1.4rem; margin-bottom: 40px;">Now, I'd love to jump into the prototype and show you exactly what we built.</p>
                 
-                <div class="team-grid" style="margin-top: 20px;">
-                    
-                    <div class="team-card adnan reveal delay-200" style="padding: 50px 40px; justify-content: center;">
-                        <div style="width: 180px; height: 180px; border-radius: 50%; margin: 0 auto 24px; border: 4px solid #ffffff; box-shadow: 0 15px 40px rgba(13, 148, 136, 0.2); overflow: hidden; background: #f4f4f5;">
-                            <img src="img/adnan.jpg" alt="Adnan" style="width: 100%; height: 100%; object-fit: cover; display: block;">
-                        </div>
-                        <h3 class="member-name" style="font-size: 2rem; margin-bottom: 8px;">ADNAN</h3>
-                        <p class="member-title" style="font-size: 1.1rem; color: #52525b; margin-bottom: 12px; text-transform: none; min-height: auto;">Technical Lead & Product Design</p>
-                        <div style="font-size: 0.95rem; font-weight: 800; color: #0d9488; letter-spacing: 2px; text-transform: uppercase;">Pulse</div>
-                    </div>
-                    
-                    <div class="team-card anupom reveal delay-300" style="padding: 50px 40px; justify-content: center;">
-                        <div style="width: 180px; height: 180px; border-radius: 50%; margin: 0 auto 24px; border: 4px solid #ffffff; box-shadow: 0 15px 40px rgba(124, 58, 237, 0.2); overflow: hidden; background: #f4f4f5;">
-                            <img src="img/anupom.jpg" alt="Anupom" style="width: 100%; height: 100%; object-fit: cover; display: block;">
-                        </div>
-                        <h3 class="member-name" style="font-size: 2rem; margin-bottom: 8px;">ANUPOM</h3>
-                        <p class="member-title" style="font-size: 1.1rem; color: #52525b; margin-bottom: 12px; text-transform: none; min-height: auto;">Operations & Strategy</p>
-                        <div style="font-size: 0.95rem; font-weight: 800; color: #7c3aed; letter-spacing: 2px; text-transform: uppercase;">Pulse</div>
-                    </div>
-                    
-                </div>
+                <a href="https://mradnanelahi.github.io/pulse-prototype/" target="_blank" class="prototype-btn">
+                    Launch Live Prototype 🚀
+                </a>
             </div>
-            <div class="slide-number">11</div>
-        </section>
-        
-        <section class="slide" id="slide-12">
-            <div class="slide-glow"></div>
-            <div class="slide-header">
-                <div class="logo"><div class="logo-icon"></div> Pulse</div>
-                <div class="presentation-context">Wright Venture Pitch • Slide 12</div>
-            </div>
-            <div class="slide-content">
-                <div class="badge reveal">THE ASK & THE CLOSE</div>
-                <h1 class="slide-title reveal delay-100" style="margin-bottom: 12px;">Fueling the Go-To-Market.</h1>
-                
-                <p class="slide-subtitle reveal delay-200" style="margin-bottom: 20px;">We are seeking the <span class="highlight-text">$5,000 Wright Venture prize for Phase 1</span> to scale our architecture, acquire initial users, and prepare the company for future Seed funding.</p>
-                
-                <div class="allocation-container reveal delay-300">
-                    <div class="allocation-grid">
-                        
-                        <div class="alloc-card card-1">
-                            <div class="icon-box">🖥️</div><h3 class="alloc-title">Infrastructure (30%)</h3>
-                            <ul style="list-style: none; padding: 0; font-size: 1.05rem; color: #52525b; line-height: 1.4; margin-top: 12px; text-align: left;">
-                                <li style="margin-bottom: 8px; display: flex; gap: 8px;"><span style="color:#0d9488; font-weight: bold;">✓</span> <div>Twilio telephony & OpenAI APIs</div></li>
-                                <li style="margin-bottom: 8px; display: flex; gap: 8px;"><span style="color:#0d9488; font-weight: bold;">✓</span> <div>Dedicated low-latency servers</div></li>
-                                <li style="display: flex; gap: 8px;"><span style="color:#0d9488; font-weight: bold;">✓</span> <div>Beta testing compute costs</div></li>
-                            </ul>
-                        </div>
-                        
-                        <div class="alloc-card card-2">
-                            <div class="icon-box">👨‍💻</div><h3 class="alloc-title">Development (40%)</h3>
-                            <ul style="list-style: none; padding: 0; font-size: 1.05rem; color: #52525b; line-height: 1.4; margin-top: 12px; text-align: left;">
-                                <li style="margin-bottom: 8px; display: flex; gap: 8px;"><span style="color:#7c3aed; font-weight: bold;">✓</span> <div>Hire contract Python developers</div></li>
-                                <li style="margin-bottom: 8px; display: flex; gap: 8px;"><span style="color:#7c3aed; font-weight: bold;">✓</span> <div>Scale core AI architecture</div></li>
-                                <li style="display: flex; gap: 8px;"><span style="color:#7c3aed; font-weight: bold;">✓</span> <div>Build native CRM integrations</div></li>
-                            </ul>
-                        </div>
-                        
-                        <div class="alloc-card card-3">
-                            <div class="icon-box">🤝</div><h3 class="alloc-title">Phase 1 Launch (30%)</h3>
-                            <ul style="list-style: none; padding: 0; font-size: 1.05rem; color: #52525b; line-height: 1.4; margin-top: 12px; text-align: left;">
-                                <li style="margin-bottom: 8px; display: flex; gap: 8px;"><span style="color:#c026d3; font-weight: bold;">✓</span> <div>Launch Affiliate Partner Program</div></li>
-                                <li style="margin-bottom: 8px; display: flex; gap: 8px;"><span style="color:#c026d3; font-weight: bold;">✓</span> <div>Initial Beta client onboarding</div></li>
-                                <li style="display: flex; gap: 8px;"><span style="color:#c026d3; font-weight: bold;">✓</span> <div><strong>Validate metrics for future funding</strong></div></li>
-                            </ul>
-                        </div>
-                        
-                    </div>
-                </div>
-                
-                <div class="reveal delay-400" style="margin-top: 24px; display: flex; flex-direction: column; align-items: center; gap: 12px;">
-                    <a href="https://mradnanelahi.github.io/pulse-prototype/" target="_blank" class="prototype-btn">
-                        Launch Live Prototype 🚀
-                    </a>
-                    <div style="font-size: 1rem; color: #71717a; font-weight: 500;">We'd love to answer your questions.</div>
-                </div>
-
-            </div>
-            <div class="slide-number">12</div>
         </section>
 
     </div>
-
-    <div class="nav-controls" id="dots-container"></div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const slides = document.querySelectorAll('.slide');
-            const dotsContainer = document.getElementById('dots-container');
-            let currentSlide = 0;
-            let secretSauceRevealed = false; // State tracker for our Easter Egg
-
-            // 1. Generate Nav Dots
-            slides.forEach((_, i) => {
-                const dot = document.createElement('div');
-                dot.classList.add('nav-dot');
-                if (i === 0) dot.classList.add('active');
-                
-                dot.addEventListener('click', () => goToSlide(i));
-                dotsContainer.appendChild(dot);
-            });
-
-            const dots = document.querySelectorAll('.nav-dot');
-
-            // 2. Navigation Function
-            function goToSlide(n) {
-                if (n < 0 || n >= slides.length) return; // Boundary check
-                
-                // --- THE SECRET SAUCE INTERCEPT (Slide 5 -> 6) ---
-                if (currentSlide === 4 && n === 5 && !secretSauceRevealed) {
-                    // Show secret sauce instead of going to slide 6
-                    document.getElementById('secret-sauce').classList.add('active');
-                    secretSauceRevealed = true;
-                    return; 
-                }
-                
-                // Logic to handle hiding the secret sauce
-                if (currentSlide === 4 && secretSauceRevealed && n !== 4) {
-                    document.getElementById('secret-sauce').classList.remove('active');
-                    if (n === 3) {
-                        secretSauceRevealed = false; // reset if they went backward
-                    }
-                }
-                if (n < 4) {
-                    secretSauceRevealed = false; // reset if navigating away backwards
-                    document.getElementById('secret-sauce').classList.remove('active');
-                }
-                
-                slides[currentSlide].classList.remove('active');
-                dots[currentSlide].classList.remove('active');
-                
-                slides[currentSlide].querySelectorAll('.reveal').forEach(el => el.classList.remove('active'));
-
-                currentSlide = n;
-
-                slides[currentSlide].classList.add('active');
-                dots[currentSlide].classList.add('active');
-
-                setTimeout(() => {
-                    slides[currentSlide].querySelectorAll('.reveal').forEach(el => el.classList.add('active'));
-                }, 50);
-            }
-
-            // 3. Keyboard Listeners
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
-                    e.preventDefault();
-                    if (currentSlide < slides.length - 1) goToSlide(currentSlide + 1);
-                }
-                if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
-                    e.preventDefault();
-                    // If on slide 5 and secret sauce is open, close it without changing slides
-                    if (currentSlide === 4 && secretSauceRevealed) {
-                        document.getElementById('secret-sauce').classList.remove('active');
-                        secretSauceRevealed = false;
-                        return;
-                    }
-                    if (currentSlide > 0) goToSlide(currentSlide - 1);
-                }
-            });
-
-            // 4. Responsive Scale-to-Fit Engine
-            function resizeDeck() {
-                const deck = document.getElementById('deck');
-                const availableWidth = window.innerWidth;
-                const availableHeight = window.innerHeight;
-                
-                // Calculate the scale needed to fit both width and height perfectly
-                const scaleX = availableWidth / 1280;
-                const scaleY = availableHeight / 720;
-                let scale = Math.min(scaleX, scaleY);
-                
-                // Add a tiny margin on smaller screens so it doesn't touch the exact edges
-                if (scale < 1) scale = scale * 0.98;
-
-                deck.style.transform = `scale(${scale})`;
-            }
-
-            window.addEventListener('resize', resizeDeck);
-            resizeDeck(); // Init on load
-
-            // 5. Mobile Swipe Gestures
-            let touchStartX = 0;
-            let touchEndX = 0;
-
-            document.addEventListener('touchstart', e => {
-                touchStartX = e.changedTouches[0].screenX;
-            }, { passive: true });
-
-            document.addEventListener('touchend', e => {
-                touchEndX = e.changedTouches[0].screenX;
-                handleSwipe();
-            }, { passive: true });
-
-            function handleSwipe() {
-                const swipeThreshold = 50; // minimum pixel distance to trigger swipe
-                if (touchEndX < touchStartX - swipeThreshold) {
-                    if (currentSlide < slides.length - 1) goToSlide(currentSlide + 1); // Swiped Left
-                }
-                if (touchEndX > touchStartX + swipeThreshold) {
-                    if (currentSlide > 0) goToSlide(currentSlide - 1); // Swiped Right
-                }
-            }
-
-            // 6. Initial Animation Trigger
-            setTimeout(() => {
-                slides[0].querySelectorAll('.reveal').forEach(el => el.classList.add('active'));
-            }, 100);
-        });
-    </script>
+    
+    <script src="script.js"></script>
 </body>
 </html>
