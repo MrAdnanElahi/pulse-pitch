@@ -31,13 +31,16 @@ document.addEventListener('DOMContentLoaded', () => {
         let maxStep = parseInt(slide.getAttribute('data-max-step'));
 
         if (currentStep < maxStep) {
+            // Reveal the next group of steps
             currentStep++;
             slide.setAttribute('data-current-step', currentStep);
             
+            // Activate all elements belonging to this step number
             slide.querySelectorAll(`.step[data-step="${currentStep}"]`).forEach(el => {
                 el.classList.add('active');
             });
         } else {
+            // Out of steps, go to next slide
             if (currentSlideIndex < slides.length - 1) {
                 goToSlide(currentSlideIndex + 1);
             }
@@ -49,12 +52,15 @@ document.addEventListener('DOMContentLoaded', () => {
         let currentStep = parseInt(slide.getAttribute('data-current-step'));
 
         if (currentStep > 0) {
+            // Hide the current step
             slide.querySelectorAll(`.step[data-step="${currentStep}"]`).forEach(el => {
                 el.classList.remove('active');
             });
+            // Decrement
             currentStep--;
             slide.setAttribute('data-current-step', currentStep);
         } else {
+            // At step 0, go to previous slide
             if (currentSlideIndex > 0) {
                 goToSlide(currentSlideIndex - 1);
             }
@@ -68,12 +74,14 @@ document.addEventListener('DOMContentLoaded', () => {
         currentSlideIndex = n;
         const newSlide = slides[currentSlideIndex];
         
+        // Reset steps on the new slide so they start hidden
         newSlide.setAttribute('data-current-step', '0');
         newSlide.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
         
         newSlide.classList.add('active');
     }
 
+    // Input Listeners
     document.addEventListener('keydown', (e) => {
         if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
             e.preventDefault();
@@ -86,26 +94,20 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.getElementById('deck').addEventListener('click', (e) => {
+        // Don't advance if clicking a button/link
         if (e.target.tagName === 'A' || e.target.closest('a')) return;
         advance();
     });
 
-    // --- 2. BULLETPROOF SCALING ENGINE --- //
+    // --- 2. RESPONSIVE SCALE ENGINE --- //
     function resizeDeck() {
         const deck = document.getElementById('deck');
-        if (!deck) return;
-        
-        const availableWidth = window.innerWidth;
-        const availableHeight = window.innerHeight;
-        
-        const scaleX = availableWidth / 1280;
-        const scaleY = availableHeight / 720;
+        const scaleX = window.innerWidth / 1280;
+        const scaleY = window.innerHeight / 720;
         let scale = Math.min(scaleX, scaleY);
-        
-        // No translation needed, just pure uniform scaling from the Flexbox center!
+        if (scale < 1) scale = scale * 0.98;
         deck.style.transform = `scale(${scale})`;
     }
-    
     window.addEventListener('resize', resizeDeck);
 
     // --- 3. SLIDE 1: AI SERVER NETWORK --- //
@@ -162,10 +164,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             draw() {
                 let alpha = 0.2 + 0.8 * Math.abs(Math.sin(this.blinkOffset));
-                ctx.fillStyle = `rgba(217, 70, 239, ${alpha})`;
+                ctx.fillStyle = `rgba(217, 70, 239, ${alpha})`; // Glowing pink/purple node
                 ctx.shadowBlur = 15;
                 ctx.shadowColor = 'rgba(217, 70, 239, 0.8)';
+                
+                // Draw as digital squares instead of circles
                 ctx.fillRect(this.x - this.size, this.y - this.size, this.size * 2, this.size * 2);
+                
                 ctx.shadowBlur = 0;
                 this.blinkOffset += this.blinkSpeed;
             }
