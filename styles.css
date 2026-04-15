@@ -1,22 +1,61 @@
 /* =========================================
-   GLOBAL RESET & DECK ENGINE
+   GLOBAL RESET & BULLETPROOF SCALING ENGINE
    ========================================= */
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-body { background-color: #ffffff; display: flex; align-items: center; justify-content: center; height: 100vh; overflow: hidden; color: #18181b; transition: background-color 0.4s ease;}
 
-.deck { position: relative; width: 1280px; height: 720px; background-color: #ffffff; box-shadow: 0 20px 50px rgba(0,0,0,0.1); overflow: hidden; transform-origin: center center; }
+html, body { 
+    background-color: #09090b; 
+    margin: 0; 
+    padding: 0; 
+    width: 100%; 
+    height: 100%; 
+    position: fixed; 
+    overflow: hidden; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    color: #18181b; 
+    transition: background-color 0.4s ease; /* Smooth background theme transitions */
+}
+
+.deck { 
+    position: relative; 
+    width: 1280px; 
+    height: 720px; 
+    background-color: #ffffff; 
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5); 
+    overflow: hidden; 
+    flex-shrink: 0; 
+    transform-origin: center center; 
+}
+
+/* =========================================
+   MOBILE PORTRAIT LOCK
+   ========================================= */
+.rotate-message { display: none; }
+
+@media screen and (max-width: 900px) and (orientation: portrait) {
+    #deck { display: none !important; }
+    .rotate-message { 
+        display: flex; flex-direction: column; align-items: center; justify-content: center; 
+        color: #ffffff; font-size: 1.5rem; text-align: center; padding: 40px; 
+        position: absolute; inset: 0; z-index: 99999; 
+    }
+    .rotate-icon { font-size: 4rem; margin-bottom: 20px; animation: rotate-phone 2s infinite ease-in-out; }
+}
+@keyframes rotate-phone { 0% { transform: rotate(0deg); } 50% { transform: rotate(-90deg); } 100% { transform: rotate(-90deg); } }
+
+/* =========================================
+   SLIDE BASE & COMMON ELEMENTS
+   ========================================= */
 .slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; visibility: hidden; transition: opacity 0.4s ease-in-out, visibility 0.4s; z-index: 1; display: flex; flex-direction: column; background-color: #ffffff; }
 .slide.active { opacity: 1; visibility: visible; z-index: 10; }
 
-/* =========================================
-   SLIDE 1: DARK THEME & AI SERVER NETWORK
-   ========================================= */
 .dark-slide { background-color: #09090b !important; color: #ffffff; }
 #networkCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: auto; }
 .pulse-title { font-size: 12rem !important; font-weight: 900; background: linear-gradient(135deg, #a78bfa, #f472b6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -4px; margin-bottom: 0 !important; text-shadow: 0 0 80px rgba(139, 92, 246, 0.4); animation: pulse-text 3s infinite alternate;}
 @keyframes pulse-text { 0% { text-shadow: 0 0 60px rgba(139, 92, 246, 0.3); transform: scale(1); } 100% { text-shadow: 0 0 100px rgba(217, 70, 239, 0.6); transform: scale(1.02); } }
 
-/* Shared Elements */
 .slide-glow { position: absolute; pointer-events: none; z-index: 1; filter: blur(80px); top: 50%; left: 50%; transform: translate(-50%, -50%); width: 900px; height: 500px; background: radial-gradient(ellipse, rgba(124, 58, 237, 0.08) 0%, rgba(13, 148, 136, 0.05) 50%, transparent 70%); }
 .slide-header { position: absolute; top: 40px; left: 60px; right: 60px; display: flex; justify-content: space-between; align-items: center; z-index: 15; }
 .logo { font-size: 1.5rem; font-weight: 800; letter-spacing: -1px; display: flex; align-items: center; gap: 12px; color: #18181b; }
@@ -26,14 +65,13 @@ body { background-color: #ffffff; display: flex; align-items: center; justify-co
 .citation { position: absolute; bottom: 20px; left: 60px; font-size: 11px; color: #a1a1aa; text-align: left; line-height: 1.4; z-index: 15; }
 .slide-content { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; z-index: 15; position: relative; padding: 60px 80px; }
 
-/* Typography */
 .badge { display: inline-flex; align-items: center; padding: 6px 16px; border-radius: 100px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); color: #7c3aed; }
 .slide-title { font-size: 3.2rem; font-weight: 800; letter-spacing: -1.5px; margin-bottom: 20px; background: linear-gradient(180deg, #18181b 0%, #52525b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; max-width: 1000px;}
 .slide-subtitle { font-size: 1.25rem; color: #52525b; line-height: 1.6; max-width: 800px; margin-bottom: 24px; }
 .highlight-gradient { background: linear-gradient(90deg, #a78bfa, #f472b6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
 /* =========================================
-   NEW STEP ENGINE LOGIC
+   STEP ENGINE LOGIC
    ========================================= */
 .step { opacity: 0; visibility: hidden; transform: translateY(20px); transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }
 .step.active { opacity: 1; visibility: visible; transform: translateY(0); }
@@ -139,7 +177,22 @@ body { background-color: #ffffff; display: flex; align-items: center; justify-co
 .metric-desc { font-size: 1rem; color: #52525b; }
 
 /* =========================================
-   SLIDE 7: Roadmap
+   SLIDE 7: Pricing / Business Model
+   ========================================= */
+.pricing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; width: 100%; max-width: 900px; margin: 0 auto; text-align: left; }
+.price-card { border-radius: 24px; padding: 40px; background: #fff; border: 1px solid #e4e4e7; box-shadow: 0 10px 30px rgba(0,0,0,0.04); position: relative; overflow: hidden; transition: transform 0.3s ease; }
+.price-card.premium { border: 2px solid #8b5cf6; box-shadow: 0 20px 50px rgba(139,92,246,0.15); transform: scale(1.05); }
+.premium-badge { position: absolute; top: 16px; right: 16px; background: #7c3aed; color: #fff; font-size: 0.8rem; font-weight: 800; padding: 6px 12px; border-radius: 100px; text-transform: uppercase; letter-spacing: 1px; }
+.tier-name { font-size: 1.4rem; font-weight: 700; margin-bottom: 12px; color: #18181b; }
+.price-point { font-size: 3.5rem; font-weight: 800; color: #18181b; margin-bottom: 24px; display: flex; align-items: flex-end; gap: 8px; line-height: 1;}
+.price-point span { font-size: 1.2rem; color: #71717a; font-weight: 500; margin-bottom: 6px; }
+.checklist { list-style: none; padding: 0; }
+.checklist li { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px; font-size: 1.05rem; color: #52525b; line-height: 1.4;}
+.checklist li::before { content: '✓'; color: #0d9488; font-weight: bold; font-size: 1.2rem; }
+.premium-list li::before { color: #c026d3; }
+
+/* =========================================
+   SLIDE 8: Roadmap
    ========================================= */
 .timeline-container { display: flex; justify-content: space-between; position: relative; width: 100%; max-width: 1000px; margin: 0 auto 50px; padding-top: 20px;}
 .timeline-container::before { content: ''; position: absolute; top: 30px; left: 5%; right: 5%; height: 2px; background: #e4e4e7; z-index: 0; }
@@ -156,7 +209,7 @@ body { background-color: #ffffff; display: flex; align-items: center; justify-co
 .ask-label { font-size: 1rem; font-weight: 600; color: #52525b; text-transform: uppercase; }
 
 /* =========================================
-   SLIDE 8: Close Button
+   SLIDE 9: Close Button
    ========================================= */
 .prototype-btn { display: inline-flex; align-items: center; justify-content: center; gap: 12px; padding: 20px 40px; background: linear-gradient(135deg, #8b5cf6, #d946ef); color: #ffffff; border-radius: 100px; font-size: 1.6rem; font-weight: 800; text-decoration: none; box-shadow: 0 15px 40px rgba(139, 92, 246, 0.3); transition: transform 0.3s, box-shadow 0.3s; cursor: pointer; position: relative; z-index: 50;}
 .prototype-btn:hover { transform: translateY(-3px); box-shadow: 0 20px 50px rgba(139, 92, 246, 0.4); color: #fff;}

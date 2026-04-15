@@ -21,7 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 slide.classList.remove('active');
             }
             
-            // Calculate how many total steps this slide has
             let maxStep = 0;
             slide.querySelectorAll('.step').forEach(el => {
                 let s = parseInt(el.getAttribute('data-step') || '1');
@@ -40,16 +39,13 @@ document.addEventListener('DOMContentLoaded', () => {
         let maxStep = parseInt(slide.getAttribute('data-max-step'));
 
         if (currentStep < maxStep) {
-            // Reveal the next group of steps
             currentStep++;
             slide.setAttribute('data-current-step', currentStep);
             
-            // Activate all elements belonging to this step number
             slide.querySelectorAll(`.step[data-step="${currentStep}"]`).forEach(el => {
                 el.classList.add('active');
             });
         } else {
-            // Out of steps, go to next slide
             if (currentSlideIndex < slides.length - 1) {
                 goToSlide(currentSlideIndex + 1);
             }
@@ -61,15 +57,12 @@ document.addEventListener('DOMContentLoaded', () => {
         let currentStep = parseInt(slide.getAttribute('data-current-step'));
 
         if (currentStep > 0) {
-            // Hide the current step
             slide.querySelectorAll(`.step[data-step="${currentStep}"]`).forEach(el => {
                 el.classList.remove('active');
             });
-            // Decrement
             currentStep--;
             slide.setAttribute('data-current-step', currentStep);
         } else {
-            // At step 0, go to previous slide
             if (currentSlideIndex > 0) {
                 goToSlide(currentSlideIndex - 1);
             }
@@ -83,15 +76,13 @@ document.addEventListener('DOMContentLoaded', () => {
         currentSlideIndex = n;
         const newSlide = slides[currentSlideIndex];
         
-        // Reset steps on the new slide so they start hidden
         newSlide.setAttribute('data-current-step', '0');
         newSlide.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
         
         newSlide.classList.add('active');
-        updateTheme(newSlide); // Update background to match new slide!
+        updateTheme(newSlide); // Match background to new slide
     }
 
-    // Input Listeners
     document.addEventListener('keydown', (e) => {
         if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
             e.preventDefault();
@@ -104,12 +95,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.getElementById('deck').addEventListener('click', (e) => {
-        // Don't advance if clicking a button/link
         if (e.target.tagName === 'A' || e.target.closest('a')) return;
         advance();
     });
 
-    // --- 2. RESPONSIVE SCALE ENGINE --- //
+    // --- 2. BULLETPROOF SCALING ENGINE --- //
     function resizeDeck() {
         const deck = document.getElementById('deck');
         if (!deck) return;
@@ -121,7 +111,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const scaleY = availableHeight / 720;
         let scale = Math.min(scaleX, scaleY);
         
-        // Ensure no scrollbars
         if (scale < 1) scale = scale * 0.99;
         
         deck.style.transform = `scale(${scale})`;
