@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const slides = document.querySelectorAll('.slide');
     let currentSlideIndex = 0;
 
-    // --- NEW: Theme matching to hide the letterbox bars --- //
+    // --- Theme matching to hide the letterbox bars --- //
     function updateTheme(slide) {
         if (slide.classList.contains('dark-slide')) {
             document.body.style.backgroundColor = '#09090b';
@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
         newSlide.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
         
         newSlide.classList.add('active');
-        updateTheme(newSlide); // Match background to new slide
+        updateTheme(newSlide); // Update background to match new slide
     }
 
     document.addEventListener('keydown', (e) => {
