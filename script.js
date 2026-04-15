@@ -2,12 +2,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const slides = document.querySelectorAll('.slide');
     let currentSlideIndex = 0;
 
+    // --- NEW: Theme matching to hide the letterbox bars --- //
+    function updateTheme(slide) {
+        if (slide.classList.contains('dark-slide')) {
+            document.body.style.backgroundColor = '#09090b';
+        } else {
+            document.body.style.backgroundColor = '#ffffff';
+        }
+    }
+
     // --- 1. THE ADVANCED STEP ENGINE --- //
-    
     function initSlides() {
         slides.forEach((slide, index) => {
             if (index === 0) {
                 slide.classList.add('active');
+                updateTheme(slide); // Match background on load
             } else {
                 slide.classList.remove('active');
             }
@@ -79,6 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
         newSlide.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
         
         newSlide.classList.add('active');
+        updateTheme(newSlide); // Update background to match new slide!
     }
 
     // Input Listeners
@@ -102,12 +112,21 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- 2. RESPONSIVE SCALE ENGINE --- //
     function resizeDeck() {
         const deck = document.getElementById('deck');
-        const scaleX = window.innerWidth / 1280;
-        const scaleY = window.innerHeight / 720;
+        if (!deck) return;
+        
+        const availableWidth = window.innerWidth;
+        const availableHeight = window.innerHeight;
+        
+        const scaleX = availableWidth / 1280;
+        const scaleY = availableHeight / 720;
         let scale = Math.min(scaleX, scaleY);
-        if (scale < 1) scale = scale * 0.98;
+        
+        // Ensure no scrollbars
+        if (scale < 1) scale = scale * 0.99;
+        
         deck.style.transform = `scale(${scale})`;
     }
+    
     window.addEventListener('resize', resizeDeck);
 
     // --- 3. SLIDE 1: AI SERVER NETWORK --- //
@@ -164,13 +183,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             draw() {
                 let alpha = 0.2 + 0.8 * Math.abs(Math.sin(this.blinkOffset));
-                ctx.fillStyle = `rgba(217, 70, 239, ${alpha})`; // Glowing pink/purple node
+                ctx.fillStyle = `rgba(217, 70, 239, ${alpha})`;
                 ctx.shadowBlur = 15;
                 ctx.shadowColor = 'rgba(217, 70, 239, 0.8)';
-                
-                // Draw as digital squares instead of circles
                 ctx.fillRect(this.x - this.size, this.y - this.size, this.size * 2, this.size * 2);
-                
                 ctx.shadowBlur = 0;
                 this.blinkOffset += this.blinkSpeed;
             }
